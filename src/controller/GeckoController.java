@@ -2,6 +2,9 @@ package controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+
+import javax.swing.JFileChooser;
 
 import view.GUI;
 import model.FrameExtraction;
@@ -25,8 +28,19 @@ public class GeckoController
 			@Override
 			public void actionPerformed(ActionEvent arg0) 
 			{
-				geckoView.setLblSomething(extractionModel.helloworld());
-				System.out.println(geckoView.getLblSomething().getText());				
+				
+				JFileChooser fileChooser = new JFileChooser();	
+				fileChooser.setMultiSelectionEnabled(false);
+				int option = fileChooser.showOpenDialog(null);
+				if(option == JFileChooser.APPROVE_OPTION)
+				{
+					File movieFileChosen = fileChooser.getSelectedFile();
+					FrameExtraction frameExtractor = new FrameExtraction();
+					frameExtractor.setMovieFile(movieFileChosen);
+					frameExtractor.extractImages();
+				}
+				
+						
 			}
 		});
 	}

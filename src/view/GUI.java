@@ -28,7 +28,7 @@ public class GUI extends JFrame
 		contentPane.setLayout(null);
 		
 		btnNewButton = new JButton("Test");
-		btnNewButton.setBounds(10, 32, 99, 23);
+		btnNewButton.setBounds(325, 71, 99, 23);
 		contentPane.add(btnNewButton);
 		
 		lblSomething = new JLabel("Something");
