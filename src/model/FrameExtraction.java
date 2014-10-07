@@ -1,7 +1,9 @@
 package model;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
 
 public class FrameExtraction 
 {
@@ -13,18 +15,31 @@ public class FrameExtraction
 
 	private String parentResultPath;
 	
+	/**
+	 * Extract 720p JPEG images from movie input
+	 */
 	public void extractImages()
 	{
-		String movieFilePath = this.movieFile.getAbsolutePath();
+		String movieFilePath = "\"" + this.movieFile.getAbsolutePath() + "\"";			
+		
+		//Put up File does not exist err capture
 		setupResultsFolder();
-		try {
-			String command = "ffmpeg -i " + movieFilePath + " -r 16 -s hd720 -f image2 " + framesPath + "\\%d.jpeg";
-			Process extractionProcess = Runtime.getRuntime().exec(command);
-			extractionProcess.waitFor();
+		String command = "ffmpeg -i " + movieFilePath + " -r 16 -s film -f image2 " + "\"" + framesPath + "\\%d.jpeg\"";
+		
+		try 
+		{	
+			// Fix using Threads
+			Runtime runTime = Runtime.getRuntime();
+			Process extractionProcess = runTime.exec(command);									
 			
-		} catch (IOException | InterruptedException e) {			
+			extractionProcess.waitFor();
+		} catch (Throwable e) 
+		{			
 			e.printStackTrace();
 		}
+		
+		
+		System.out.println("Extraction Completed");
 		
 	}
 	
