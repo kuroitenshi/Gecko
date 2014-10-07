@@ -5,6 +5,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+import model.Objects.StreamConsumer;
+
 public class FrameExtraction 
 {
 	private File movieFile;
@@ -32,7 +34,13 @@ public class FrameExtraction
 			Runtime runTime = Runtime.getRuntime();
 			Process extractionProcess = runTime.exec(command);									
 			
-			extractionProcess.waitFor();
+			StreamConsumer errorGobbler = new StreamConsumer(extractionProcess.getErrorStream(), "ERROR");            
+			StreamConsumer outputGobbler = new StreamConsumer(extractionProcess.getInputStream(), "OUTPUT");
+			
+	        errorGobbler.start();
+	        outputGobbler.start();
+	        int exitVal = extractionProcess.waitFor();
+            System.out.println("ExitValue: " + exitVal);   
 		} catch (Throwable e) 
 		{			
 			e.printStackTrace();
