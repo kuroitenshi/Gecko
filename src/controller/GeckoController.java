@@ -8,6 +8,7 @@ import javax.swing.JFileChooser;
 
 import view.GUI;
 import model.FrameExtraction;
+import model.Segmentation;
 
 public class GeckoController 
 {
@@ -35,9 +36,15 @@ public class GeckoController
 				if(option == JFileChooser.APPROVE_OPTION)
 				{
 					File movieFileChosen = fileChooser.getSelectedFile();
+					
 					FrameExtraction frameExtractor = new FrameExtraction();
 					frameExtractor.setMovieFile(movieFileChosen);
 					frameExtractor.extractImages();
+					
+					System.out.println(frameExtractor.getParentResultPath());
+					System.out.println(frameExtractor.getFramesPath());
+					Segmentation movieSegmentation = new Segmentation(frameExtractor.getFramesPath(), frameExtractor.getParentResultPath());
+					movieSegmentation.segmentMovie();
 				}
 				
 						

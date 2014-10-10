@@ -1,10 +1,6 @@
 package model;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
-
 import model.Objects.StreamConsumer;
 
 public class FrameExtraction 
@@ -30,7 +26,6 @@ public class FrameExtraction
 		
 		try 
 		{	
-			// Fix using Threads
 			Runtime runTime = Runtime.getRuntime();
 			Process extractionProcess = runTime.exec(command);									
 			
