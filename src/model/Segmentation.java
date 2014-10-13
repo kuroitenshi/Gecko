@@ -54,7 +54,7 @@ public class Segmentation
     		{
     			
     			int currentPixel = buffImage.getRGB(x, y);
-    			
+    			    			
     			
     			int red = (currentPixel >> 16) & 0xff;
     			int green = (currentPixel >> 8) & 0xff;
@@ -103,12 +103,17 @@ public class Segmentation
 	{
 		
 		System.out.println(this.framesPath);
-		File f = new File(this.framesPath);							
-		int imageCount = f.listFiles().length;
-		System.out.println(imageCount);
-		int counterImage = 0; 
-		double distance_threshold = 89908.84; //experimental threshold
+		
+		File f = new File(this.framesPath);				
+		int imageCount = f.listFiles().length;		
 		int fileEnd = imageCount;
+		int counterImage = 0;
+		int shotRangeCounter = 1;
+		System.out.println(imageCount);
+		 
+		double distance_threshold = 89908.84; //experimental threshold
+		
+		
 		
 		Histogram histA;
 		Histogram histB;
@@ -116,6 +121,8 @@ public class Segmentation
 		int shotNumber = 1;
 		
 		StringBuilder shotNumbersString = new StringBuilder();
+		StringBuilder shotRangeString = new StringBuilder();
+		
 		for(int i = 1; i < imageCount-1; i++)
 		{
 			
@@ -163,7 +170,13 @@ public class Segmentation
                 {
                     if (counterImage > 4)
                     {
-                    	shotNumbersString = shotNumbersString.append("Shot No: " + shotNumber + " Frame " + i + " to " + (i+1)  + " Difference " + imageDiff + "\r\n");   
+                    	shotNumbersString = shotNumbersString.append("Shot No: " + shotNumber + " Frame " + i + " to " + (i+1)  + " Difference " + imageDiff + "\r\n");
+                    	if(shotNumber != 1)
+                    	{
+                    		shotRangeString = shotRangeString.append("Shot No: " + (shotNumber-1) + " Frames " + shotRangeCounter + " to " + i + "\r\n");
+                        	shotRangeCounter = (i+1);
+                        	
+                    	}
                     	System.out.println(shotNumber);
                     	shotNumber++;
                         counterImage = 0;
@@ -173,21 +186,37 @@ public class Segmentation
             
     		
 		}
-		File resultFile = new File(resultsPath.concat("\\Visual Data\\Shots.txt"));
+				
+		shotRangeString = shotRangeString.append("Shot No: " + (shotNumber-1) + " Frames " + shotRangeCounter + " to " + (imageCount-1) + "\r\n");
+		
+		File resultShotFile = new File(resultsPath.concat("\\Visual Data\\Shots.txt"));
+		File resultShotRangeFile = new File(resultsPath.concat("\\Visual Data\\ShotRange.txt"));
+    	
+		FileWriter resultShotRangeWriter = null;
     	FileWriter resultWriter = null;
-		try {
-			resultWriter = new FileWriter(resultFile.getAbsoluteFile());
-		} catch (IOException e) {
+    	
+    	
+		
+    	try 
+		{
+		
+			resultWriter = new FileWriter(resultShotFile.getAbsoluteFile());			
+			resultShotRangeWriter = new FileWriter(resultShotRangeFile.getAbsoluteFile());
+			
+			BufferedWriter shotWriter = new BufferedWriter(resultWriter);
+	    	BufferedWriter shotRangeWriter = new BufferedWriter(resultShotRangeWriter);
+	    	
+	    	shotWriter.write(shotNumbersString.toString());
+			shotWriter.close();
+			
+			shotRangeWriter.write(shotRangeString.toString());
+    		shotRangeWriter.close();
+		} catch (IOException e) 
+		{
 			e.printStackTrace();
 		};
-    	BufferedWriter writer = new BufferedWriter(resultWriter);
-    	try {
-			writer.write(shotNumbersString.toString());
-			writer.close();
-		} catch (IOException e) {							
-			e.printStackTrace();
-		}
-    	
+
+		
 		
 	}
 
