@@ -44,7 +44,6 @@ public class Segmentation
 			e1.printStackTrace();
 		}
 		
-		
 		int width = buffImage.getWidth();
 		int height = buffImage.getHeight();			
 				
@@ -52,9 +51,7 @@ public class Segmentation
     	{
     		for(int x = 0; x < width; x++)
     		{
-    			
     			int currentPixel = buffImage.getRGB(x, y);
-    			
     			
     			int red = (currentPixel >> 16) & 0xff;
     			int green = (currentPixel >> 8) & 0xff;
@@ -67,8 +64,6 @@ public class Segmentation
                 currentHist.setRED(tempRed);
                 currentHist.setGREEN(tempGreen);
                 currentHist.setBLUE(tempBlue);
-                		    	
-    		    			
     		}
     	}
 		
