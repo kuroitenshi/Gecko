@@ -1,9 +1,13 @@
 package model;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 
 import model.Objects.StreamConsumer;
-//Tentative, instantiate to GeckoController
+
 public class AudioExtraction {
 	
 	private String audioPath;
@@ -25,13 +29,12 @@ public class AudioExtraction {
 		//Extracting Audio
 		String filePath = "\"" + directoryMain  + "\"";	
 		String dirPath = "\"" + this.audioPath.concat("\\Audial Data");
-		String ffmpegCmd = "ffmpeg -i "+ filePath + " -ab 160k -ac 2 -ar 44100 -vn " +  dirPath+ "\\"+" output.wav\"";
-
-		System.out.println(ffmpegCmd);
+		String ffmpegCmd = "ffmpeg -i "+ filePath + " -ab 160k -ac 2 -ar 44100 -vn " +  dirPath+ "\\"+"output.wav\"";
+		
+		System.out.println("1st com: "+ ffmpegCmd);
 		
 		try 
 		{
-		
 			// Fix using Threads
 			Runtime runTime = Runtime.getRuntime();
 			Process extractionProcess = runTime.exec(ffmpegCmd);									
@@ -49,12 +52,10 @@ public class AudioExtraction {
 		}
 		
 		
-		System.out.println("Audio Completed");
+		
 		
 	}
-	
-	
-	
+		
 	
 
 }

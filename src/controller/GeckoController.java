@@ -3,10 +3,13 @@ package controller;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.IOException;
 
 import javax.swing.JFileChooser;
 
 import view.GUI;
+import model.AudialSegmentation;
+import model.AudioExtraction;
 import model.FrameExtraction;
 import model.Segmentation;
 
@@ -45,6 +48,23 @@ public class GeckoController
 					System.out.println(frameExtractor.getFramesPath());
 					Segmentation movieSegmentation = new Segmentation(frameExtractor.getFramesPath(), frameExtractor.getParentResultPath());
 					movieSegmentation.segmentMovie();
+					
+					AudioExtraction audioExtractor = new AudioExtraction(frameExtractor.getParentResultPath());
+					audioExtractor.setFile(movieFileChosen);
+					audioExtractor.extractAudio();
+					
+					AudialSegmentation audialSeg = new AudialSegmentation(frameExtractor.getAudialDataPath());
+					audialSeg.setFile(frameExtractor.getParentResultPath());
+					try 
+					{
+						audialSeg.segmentAudio();
+					}
+					catch (IOException e) 
+					{
+						e.printStackTrace();
+					}
+
+
 				}
 				
 						
