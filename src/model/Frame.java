@@ -4,21 +4,17 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-
 import javax.imageio.ImageIO;
-
-import model.Objects.Histogram;
 
 public class Frame
 {
 	private BufferedImage image;
 	private int key;
-	private ArrayList<RGB> rgb;
-	private String directory;
+	private ArrayList<RGB> rgb;	
 	
 	public Frame(int key, String directory)
 	{
-		this.directory = directory;
+		
 		File file = new File(directory);
 	
 		try 
@@ -28,35 +24,11 @@ public class Frame
 			e.printStackTrace();
 		}
 		
-		setKey(key);
+		this.setKey(key);
 		rgb = new ArrayList<RGB>();
-		computeRGB();
+		this.computeRGB();
 	}
 
-	public BufferedImage getImage() 
-	{
-		return image;
-	}
-
-	public void setImage(BufferedImage image) 
-	{
-		this.image = image;
-	}
-
-	public int getKey() 
-	{
-		return key;
-	}
-
-	public void setKey(int key) 
-	{
-		this.key = key;
-	}
-
-	public RGB getRgb(int index) 
-	{
-		return rgb.get(index);
-	}
 
 	private void computeRGB() 
 	{
@@ -99,49 +71,84 @@ public class Frame
 		{
 			for(int j = 0; j < width; j++)
 			{
+				int currentPixel = image.getRGB(i, j);
+				int red = (currentPixel >> 16) & 0xff;
+				int green = (currentPixel >> 8) & 0xff;
+    			int blue = (currentPixel) & 0xff;
+				
 				try
 				{
 					// first block
 					if(row1hs <= i && i <= row1he && col1ws <= j && j <= col1we)
-					{
-//						  data1.r += p[0];             //gets red values
-//                          data1.g += p[1];             //gets green values
-//                          data1.b += p[2];             //gets blue values
+					{						
+		    			rgb1.setR(red);
+						rgb1.setG(green);
+						rgb1.setB(blue);
+
 					} 
 					// second block
 					else if(row1hs <= i && i <= row1he && col2ws <= j && j<= col2we)
 					{
-						
+						rgb2.setR(red);
+						rgb2.setG(green);
+						rgb2.setB(blue);
+
 					}
 					// third block
 					else if(row1hs <= i && i <= row1he && col3ws <= j && j<= col3we)
 					{
-						
+						rgb3.setR(red);
+						rgb3.setG(green);
+						rgb3.setB(blue);
+
 					}
 					// fourth block
 					else if(row2hs <= i && i <= row2he && col1ws <= j && j <= col1we)
 					{
-						
+						rgb4.setR(red);
+						rgb4.setG(green);
+						rgb4.setB(blue);
+
 					}
 					//5th block
 					else if (row2hs <= i && i <= row2he && col2ws <= j && j <= col2we)
 					{
+						rgb5.setR(red);
+						rgb5.setG(green);
+						rgb5.setB(blue);
+
 					}
 					//6th block
 					else if (row2hs <= i && i <= row2he && col3ws <= j && j <= col3we)
 					{
+						rgb6.setR(red);
+						rgb6.setG(green);
+						rgb6.setB(blue);
+
 					}
 					//7th block
 					else if (row3hs <= i && i <= row3he && col1ws <= j && j <= col1we)
 					{
+						rgb7.setR(red);
+						rgb7.setG(green);
+						rgb7.setB(blue);
+
 	                }
 					//8th block
 					else if (row3hs <= i && i <= row3he && col2ws <= j && j <= col2we)
 					{
+						rgb8.setR(red);
+						rgb8.setG(green);
+						rgb8.setB(blue);
+
 	                }
 					//9th block
 					else if (row3hs <= i && i <= row3he && col3ws <= j && j <= col3we)
 					{
+						rgb9.setR(red);
+						rgb9.setG(green);
+						rgb9.setB(blue);
+
 	                }
 				}
 				catch(Exception ex)
@@ -162,5 +169,31 @@ public class Frame
 		rgb.add(rgb7);
 		rgb.add(rgb8);
 		rgb.add(rgb9);
+	}
+	
+
+	public BufferedImage getImage() 
+	{
+		return image;
+	}
+
+	public void setImage(BufferedImage image) 
+	{
+		this.image = image;
+	}
+
+	public int getKey() 
+	{
+		return key;
+	}
+
+	public void setKey(int key) 
+	{
+		this.key = key;
+	}
+
+	public RGB getRgb(int index) 
+	{
+		return rgb.get(index);
 	}
 }
