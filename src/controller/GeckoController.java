@@ -33,12 +33,8 @@ public class GeckoController
 			public void actionPerformed(ActionEvent arg0) 
 			{
 				
-				JFileChooser fileChooser = new JFileChooser();	
-				fileChooser.setMultiSelectionEnabled(false);
-				int option = fileChooser.showOpenDialog(null);
-				if(option == JFileChooser.APPROVE_OPTION)
-				{
-					File movieFileChosen = fileChooser.getSelectedFile();
+				
+					File movieFileChosen = new File(geckoView.getFilepath());
 					
 					FrameExtraction frameExtractor = new FrameExtraction();
 					frameExtractor.setMovieFile(movieFileChosen);
@@ -65,7 +61,7 @@ public class GeckoController
 					}
 
 
-				}
+				
 				
 						
 			}

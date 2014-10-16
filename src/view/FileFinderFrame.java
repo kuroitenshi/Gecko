@@ -25,7 +25,7 @@ public class FileFinderFrame extends JFrame{
 
 	private static String filepath = "";
 	JPanel cards = new JPanel(new CardLayout());
-	static JButton go_button = new JButton("Classify");
+	JButton go_button = new JButton("Classify");
 
 	
 	public FileFinderFrame() {
@@ -65,7 +65,7 @@ public class FileFinderFrame extends JFrame{
 			    	int result = fileChooser.showDialog(FileFinderFrame.this, "Go");
 			    	if (result == JFileChooser.APPROVE_OPTION) {
 			    	    File selectedFile = fileChooser.getSelectedFile();
-			    	    FileFinderFrame.filepath = selectedFile.getAbsolutePath();
+			    	    FileFinderFrame.setFilepath(selectedFile.getAbsolutePath());
 			    	    confirm();
 			    	}
 			    }
@@ -128,6 +128,14 @@ public class FileFinderFrame extends JFrame{
 	    cl.show(cards, "cfm");
 
 		
+	}
+
+	public String getFilepath() {
+		return filepath;
+	}
+
+	public static void setFilepath(String filepath) {
+		FileFinderFrame.filepath = filepath;
 	}
 	
 	
