@@ -26,7 +26,7 @@ public class GeckoController
 	}
 	public void setActionListeners()
 	{
-		geckoView.putListener(new ActionListener() 
+		geckoView.setNewButtonActionListener(new ActionListener() 
 		{
 			
 			@Override

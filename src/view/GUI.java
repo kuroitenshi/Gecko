@@ -27,7 +27,7 @@ public class GUI
 	
 	
 	/*Sample Action Listener for buttons*/
-	public void putListener(ActionListener l)
+	public void setNewButtonActionListener(ActionListener l)
 	{
 		btnProcess.addActionListener(new ActionListener() {
 		    public void actionPerformed(ActionEvent evt) {
