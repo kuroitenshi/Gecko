@@ -7,6 +7,7 @@ import java.io.IOException;
 
 import javax.swing.JFileChooser;
 
+import view.FileFinderFrame;
 import view.GUI;
 import model.AudialSegmentation;
 import model.AudioExtraction;
@@ -26,31 +27,32 @@ public class GeckoController
 	}
 	public void setActionListeners()
 	{
-		geckoView.setNewButtonActionListener(new ActionListener() 
+		geckoView.setClassifyButtonActionListener(new ActionListener() 
 		{
 			
 			@Override
 			public void actionPerformed(ActionEvent arg0) 
 			{
-				
-				
-					File movieFileChosen = new File(geckoView.getFilepath());
+								
+					FileFinderFrame fileFinder = new FileFinderFrame();
+					String filepath = fileFinder.getFilepath();
+					fileFinder.dispose();
+					File movieFileChosen = new File(filepath);
+										
+					extractionModel.setMovieFile(movieFileChosen);
+					extractionModel.extractImages();
 					
-					FrameExtraction frameExtractor = new FrameExtraction();
-					frameExtractor.setMovieFile(movieFileChosen);
-					frameExtractor.extractImages();
-					
-					System.out.println(frameExtractor.getParentResultPath());
-					System.out.println(frameExtractor.getFramesPath());
-					Segmentation movieSegmentation = new Segmentation(frameExtractor.getFramesPath(), frameExtractor.getParentResultPath());
+					System.out.println(extractionModel.getParentResultPath());
+					System.out.println(extractionModel.getFramesPath());
+					Segmentation movieSegmentation = new Segmentation(extractionModel.getFramesPath(), extractionModel.getParentResultPath());
 					movieSegmentation.segmentMovie();
 					
-					AudioExtraction audioExtractor = new AudioExtraction(frameExtractor.getParentResultPath());
+					AudioExtraction audioExtractor = new AudioExtraction(extractionModel.getParentResultPath());
 					audioExtractor.setFile(movieFileChosen);
 					audioExtractor.extractAudio();
 					
-					AudialSegmentation audialSeg = new AudialSegmentation(frameExtractor.getAudialDataPath());
-					audialSeg.setFile(frameExtractor.getParentResultPath());
+					AudialSegmentation audialSeg = new AudialSegmentation(extractionModel.getAudialDataPath());
+					audialSeg.setFile(extractionModel.getParentResultPath());
 					try 
 					{
 						audialSeg.segmentAudio();
