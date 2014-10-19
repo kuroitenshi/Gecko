@@ -15,11 +15,13 @@ public class Segmentation
 	private int BINS = 16;
 	private String framesPath;
 	private String resultsPath;
+	private int shotNumber;
 	
 	public Segmentation(String framesPath, String resultsPath) 
 	{
 		this.framesPath = framesPath;	
 		this.resultsPath = resultsPath;
+		setShotRangeNumber(1);
 	}
 	
 	/**
@@ -107,8 +109,7 @@ public class Segmentation
 		
 		Histogram histA;
 		Histogram histB;
-		Histogram histCheck;		
-		int shotNumber = 1;
+		Histogram histCheck;	
 		
 		StringBuilder shotNumbersString = new StringBuilder();
 		StringBuilder shotRangeString = new StringBuilder();
@@ -159,25 +160,23 @@ public class Segmentation
                 {
                     if (counterImage > 4)
                     {
-                    	shotNumbersString = shotNumbersString.append("Shot No: " + shotNumber + " Frame " + i + " to " + (i+1)  + " Difference " + imageDiff + "\r\n");
-                    	if(shotNumber != 1)
+                    	shotNumbersString = shotNumbersString.append("Shot No: " + getShotRangeNumber() + " Frame " + i + " to " + (i+1)  + " Difference " + imageDiff + "\r\n");
+                    	if(getShotRangeNumber() != 1)
                     	{
-                    		shotRangeString = shotRangeString.append("Shot No: " + (shotNumber-1) + " Frames " + shotRangeCounter + " to " + i + "\r\n");
+                    		shotRangeString = shotRangeString.append("Shot No: " + (getShotRangeNumber()-1) + " Frames " + shotRangeCounter + " to " + i + "\r\n");
                         	shotRangeCounter = (i+1);
                         	
                     	}
-                    	System.out.println(shotNumber);
-                    	shotNumber++;
+                    	System.out.println(getShotRangeNumber());
+                    	setShotRangeNumber(getShotRangeNumber() + 1);
                         counterImage = 0;
                     }
                 }
             }
-            
-    		
 		}
 				
-		shotRangeString = shotRangeString.append("Shot No: " + (shotNumber-1) + " Frames " + shotRangeCounter + " to " + (imageCount-1) + "\r\n");
-		
+		shotRangeString = shotRangeString.append("Shot No: " + (getShotRangeNumber()-1) + " Frames " + shotRangeCounter + " to " + (imageCount-1) + "\r\n");
+		this.setShotRangeNumber(getShotRangeNumber()-1);
 		File resultShotFile = new File(resultsPath.concat("\\Visual Data\\Shots.txt"));
 		File resultShotRangeFile = new File(resultsPath.concat("\\Visual Data\\ShotRange.txt"));
     	
@@ -202,5 +201,15 @@ public class Segmentation
 		{
 			e.printStackTrace();
 		};
+	}
+
+	public int getShotRangeNumber() 
+	{
+		return shotNumber;
+	}
+
+	public void setShotRangeNumber(int shotNumber) 
+	{
+		this.shotNumber = shotNumber;
 	}
 }

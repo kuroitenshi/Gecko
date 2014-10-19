@@ -1,10 +1,8 @@
 package view;
 
 import java.awt.CardLayout;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.dnd.DropTarget;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
@@ -21,19 +19,22 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
-public class FileFinderFrame extends JFrame{
+public class FileFinderFrame extends JFrame
+{
 
+	private static final long serialVersionUID = 1L;
 	private static String filepath = "";
 	JPanel cards = new JPanel(new CardLayout());
 	JButton go_button = new JButton("Classify");
 
 	
-	public FileFinderFrame() {
+	public FileFinderFrame() 
+	{
 		
 		super("Genre Classifier - Movie Selection");	
 		cards.setPreferredSize(new Dimension(300, 300));
 		add(cards);
-
+		setLocationRelativeTo(null);
 		findfile();
 		pack();
 		setVisible(true);
@@ -41,7 +42,8 @@ public class FileFinderFrame extends JFrame{
 
 	}
 	
-	public void findfile() {
+	public void findfile() 
+	{
 		
 		JPanel FindFileCard = new JPanel();
 		

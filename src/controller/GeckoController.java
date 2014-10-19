@@ -4,14 +4,15 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
-import javax.swing.JFileChooser;
-
+import view.FileFinderFrame;
 import view.GUI;
 import model.AudialSegmentation;
 import model.AudioExtraction;
 import model.FrameExtraction;
 import model.Segmentation;
+import model.Shot;
 
 public class GeckoController 
 {
@@ -26,61 +27,36 @@ public class GeckoController
 	}
 	public void setActionListeners()
 	{
-		geckoView.setNewButtonActionListener(new ActionListener() 
+		geckoView.setClassifyButtonActionListener(new ActionListener() 
 		{
 			
 			@Override
 			public void actionPerformed(ActionEvent arg0) 
-			{
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 7a533b123d2164c5ad3e577bf1a2d76069b3b49b
+			{	
 				
-				
-					File movieFileChosen = new File(geckoView.getFilepath());
-					
-					FrameExtraction frameExtractor = new FrameExtraction();
-					frameExtractor.setMovieFile(movieFileChosen);
-					frameExtractor.extractImages();
-					
-					System.out.println(frameExtractor.getParentResultPath());
-					System.out.println(frameExtractor.getFramesPath());
-					Segmentation movieSegmentation = new Segmentation(frameExtractor.getFramesPath(), frameExtractor.getParentResultPath());
-					movieSegmentation.segmentMovie();
-					
-					AudioExtraction audioExtractor = new AudioExtraction(frameExtractor.getParentResultPath());
-					audioExtractor.setFile(movieFileChosen);
-					audioExtractor.extractAudio();
-					
-					AudialSegmentation audialSeg = new AudialSegmentation(frameExtractor.getAudialDataPath());
-					audialSeg.setFile(frameExtractor.getParentResultPath());
-=======
-<<<<<<< HEAD
-=======
->>>>>>> parent of d96f079... Added skeleton for Luminance Computation
-=======
->>>>>>> 7a533b123d2164c5ad3e577bf1a2d76069b3b49b
-								
 					FileFinderFrame fileFinder = new FileFinderFrame();
 					String filepath = fileFinder.getFilepath();
 					fileFinder.dispose();
 					File movieFileChosen = new File(filepath);
-					ArrayList<Shot> shots = new ArrayList<Shot>();
-										
+					ArrayList<Double> shotVisualDisturbance = new ArrayList<Double>();
+			
+					
 					extractionModel.setMovieFile(movieFileChosen);
 					extractionModel.extractImages();
+					
 					
 					System.out.println(extractionModel.getParentResultPath());
 					System.out.println(extractionModel.getFramesPath());
 					Segmentation movieSegmentation = new Segmentation(extractionModel.getFramesPath(), extractionModel.getParentResultPath());
 					movieSegmentation.segmentMovie();
 					
-					for(int i = 1; i <= movieSegmentation.getShotNumber(); i++)
-					{
+					System.out.println("VISUAL DISTURBANCE VALUES");
+					for(int i = 1; i <= movieSegmentation.getShotRangeNumber(); i++)						
+					{						
 						Shot shot = new Shot(i, extractionModel.getVisualDataPath() + "\\ShotRange.txt", extractionModel.getFramesPath());
-						shots.add(shot);
+						shotVisualDisturbance.add(shot.computeVisualDisturbance());
+						System.out.println("SHOT " + i + " VALUE " + shotVisualDisturbance.get(i-1));
+						
 					}
 					
 					AudioExtraction audioExtractor = new AudioExtraction(extractionModel.getParentResultPath());
@@ -89,13 +65,7 @@ public class GeckoController
 					
 					AudialSegmentation audialSeg = new AudialSegmentation(extractionModel.getAudialDataPath());
 					audialSeg.setFile(extractionModel.getParentResultPath());
-<<<<<<< HEAD
-<<<<<<< HEAD
->>>>>>> parent of d96f079... Added skeleton for Luminance Computation
-=======
-=======
->>>>>>> 7a533b123d2164c5ad3e577bf1a2d76069b3b49b
->>>>>>> parent of d96f079... Added skeleton for Luminance Computation
+	
 					try 
 					{
 						audialSeg.segmentAudio();
@@ -104,23 +74,7 @@ public class GeckoController
 					{
 						e.printStackTrace();
 					}
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 7a533b123d2164c5ad3e577bf1a2d76069b3b49b
 
-
-				
-				
-						
-=======
->>>>>>> parent of d96f079... Added skeleton for Luminance Computation
-<<<<<<< HEAD
-=======
->>>>>>> parent of d96f079... Added skeleton for Luminance Computation
-=======
->>>>>>> 7a533b123d2164c5ad3e577bf1a2d76069b3b49b
 			}
 		});
 	}

@@ -20,10 +20,9 @@ public class FrameExtraction
 	public void extractImages()
 	{
 		String movieFilePath = "\"" + this.movieFile.getAbsolutePath() + "\"";			
-		
-		//Put up File does not exist err capture
 		setupResultsFolder();
-		String command = "ffmpeg -i " + movieFilePath + " -r 16 -s film -f image2 " + "\"" + framesPath + "\\%d.jpeg\"";
+		// Add -s film for testing
+		String command = "ffmpeg -i " + movieFilePath + " -r 16 -f image2 " + "\"" + framesPath + "\\%d.jpeg\"";
 		
 		try 
 		{	
@@ -53,7 +52,7 @@ public class FrameExtraction
 	 */
 	public void setupResultsFolder()
 	{
-		String movieFileParentDirectory = this.movieFile.getParent().replace("\\", "/");
+		String movieFileParentDirectory = this.movieFile.getParent().replace("\\", "/");		
 		String folderName = this.movieFile.getName().substring(0,this.movieFile.getName().lastIndexOf('.'));
 		
 		File resultsFolder = new File(movieFileParentDirectory + "/" + folderName);
@@ -77,8 +76,6 @@ public class FrameExtraction
 		File audialSegFolder = new File(resultsFolder.getAbsolutePath() + "/Audial Data/Segments");
 		setAudialSegPath(audialSegFolder.getAbsolutePath());
 		audialSegFolder.mkdir();
-		
-		
 	}
 	
 
@@ -141,6 +138,7 @@ public class FrameExtraction
 	{
 		this.audialSegPath = audialSegPath;
 	}
+
 	
 
 }
