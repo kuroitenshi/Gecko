@@ -1,7 +1,6 @@
 package model;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
 
@@ -10,24 +9,22 @@ public class Shot
 	private int key;
 	private ArrayList<Frame> frames;
 	private String shotRangePath;
+	private String framePath;
 	private int startingFrame;
 	private int endingFrame;
 	private double visualDisturbanceValue;
 	
-	public Shot(int key, String shotRangePath)
+	public Shot(int key, String shotRangePath, String framePath)
 	{
 		this.setKey(key);
 		startingFrame = 0;
 		endingFrame = 0;
 		this.shotRangePath = shotRangePath;
+		this.framePath = framePath;
 		frames = new ArrayList<Frame>();
 		getFrameRange();
 		getFrames();
 		setVisualDisturbanceValue(0);
-	}
-
-	public static void main(String[] args){
-		Shot shot = new Shot(1, "C:\\FFOutput\\Divergent Results1\\Video Data\\ShotRange.txt");
 	}
 	
 	private void getFrameRange() 
@@ -40,11 +37,11 @@ public class Shot
 		    String line;
 		    while ((line = bufferReader.readLine()) != null)
 		    {
-		    	String[] returnValue = line.split(" ", 5);
-		    	if(returnValue[1].equals(""+key))
+		    	String[] returnValue = line.split(" ", 7);
+		    	if(returnValue[2].equals(""+key))
 		    	{
-		    		startingFrame = Integer.parseInt(returnValue[3]);
-		    		endingFrame = Integer.parseInt(returnValue[4]);
+		    		startingFrame = Integer.parseInt(returnValue[4]);
+		    		endingFrame = Integer.parseInt(returnValue[6]);
 		    		break;
 		    	}
 		    }
@@ -58,11 +55,10 @@ public class Shot
 	
 	private void getFrames() 
 	{
-		String framesPath1 = "C:\\FFOutput\\Divergent Results1\\Frames";
 		for(int i = startingFrame; i <= endingFrame; i++)
 		{
-			Frame retrievedFrame = new Frame(i, framesPath1 + "\\" + i + ".jpg" );
-			System.out.println(retrievedFrame.getDirectory());
+			System.out.println(framePath + "\\" + i + ".jpeg" );
+			Frame retrievedFrame = new Frame(i, framePath + "\\" + i + ".jpeg" );
 			frames.add(retrievedFrame);			
 		}
 	}
@@ -109,6 +105,7 @@ public class Shot
 		
 		divisor = 9 * (frameInterval) / 2;
 		visualDisturbanceValue = (counter * 1.0 / divisor);
+		System.out.println(visualDisturbanceValue);
 	}	
 	
 	public int getKey() 

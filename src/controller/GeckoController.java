@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.swing.JFileChooser;
 
@@ -13,6 +14,7 @@ import model.AudialSegmentation;
 import model.AudioExtraction;
 import model.FrameExtraction;
 import model.Segmentation;
+import model.Shot;
 
 public class GeckoController 
 {
@@ -38,6 +40,7 @@ public class GeckoController
 					String filepath = fileFinder.getFilepath();
 					fileFinder.dispose();
 					File movieFileChosen = new File(filepath);
+					ArrayList<Shot> shots = new ArrayList<Shot>();
 										
 					extractionModel.setMovieFile(movieFileChosen);
 					extractionModel.extractImages();
@@ -46,6 +49,13 @@ public class GeckoController
 					System.out.println(extractionModel.getFramesPath());
 					Segmentation movieSegmentation = new Segmentation(extractionModel.getFramesPath(), extractionModel.getParentResultPath());
 					movieSegmentation.segmentMovie();
+					
+					for(int i = 1; i <= movieSegmentation.getShotNumber(); i++)
+					{
+						Shot shot = new Shot(i, extractionModel.getVisualDataPath() + "\\ShotRange.txt", extractionModel.getFramesPath());
+						System.out.println(shot.getKey());
+						shots.add(shot);
+					}
 					
 					AudioExtraction audioExtractor = new AudioExtraction(extractionModel.getParentResultPath());
 					audioExtractor.setFile(movieFileChosen);

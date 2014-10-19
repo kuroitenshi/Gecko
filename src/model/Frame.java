@@ -189,6 +189,7 @@ public class Frame
 		return directory;
 	}
 
+
 	public RGB getRgb(int index) 
 	{
 		return rgb.get(index);
