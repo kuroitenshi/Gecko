@@ -36,6 +36,7 @@ public class Frame
 	public BufferedImage getImage() 
 	{
 		return image;
+<<<<<<< HEAD
 	}
 
 	public void setImage(BufferedImage image) 
@@ -48,6 +49,20 @@ public class Frame
 		return key;
 	}
 
+=======
+	}
+
+	public void setImage(BufferedImage image) 
+	{
+		this.image = image;
+	}
+
+	public int getKey() 
+	{
+		return key;
+	}
+
+>>>>>>> 7a533b123d2164c5ad3e577bf1a2d76069b3b49b
 	public void setKey(int key) 
 	{
 		this.key = key;
@@ -71,7 +86,10 @@ public class Frame
 		int width = image.getWidth() * 3;
 		int height = image.getHeight();
 		
+<<<<<<< HEAD
 		
+=======
+>>>>>>> 7a533b123d2164c5ad3e577bf1a2d76069b3b49b
 		
 		int row1hs = 0;
 		int row1he = height / 3;

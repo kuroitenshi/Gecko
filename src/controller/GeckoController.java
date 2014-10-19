@@ -34,6 +34,9 @@ public class GeckoController
 			{
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 7a533b123d2164c5ad3e577bf1a2d76069b3b49b
 				
 				
 					File movieFileChosen = new File(geckoView.getFilepath());
@@ -54,8 +57,11 @@ public class GeckoController
 					AudialSegmentation audialSeg = new AudialSegmentation(frameExtractor.getAudialDataPath());
 					audialSeg.setFile(frameExtractor.getParentResultPath());
 =======
+<<<<<<< HEAD
 =======
 >>>>>>> parent of d96f079... Added skeleton for Luminance Computation
+=======
+>>>>>>> 7a533b123d2164c5ad3e577bf1a2d76069b3b49b
 								
 					FileFinderFrame fileFinder = new FileFinderFrame();
 					String filepath = fileFinder.getFilepath();
@@ -84,8 +90,11 @@ public class GeckoController
 					AudialSegmentation audialSeg = new AudialSegmentation(extractionModel.getAudialDataPath());
 					audialSeg.setFile(extractionModel.getParentResultPath());
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> parent of d96f079... Added skeleton for Luminance Computation
 =======
+=======
+>>>>>>> 7a533b123d2164c5ad3e577bf1a2d76069b3b49b
 >>>>>>> parent of d96f079... Added skeleton for Luminance Computation
 					try 
 					{
@@ -97,6 +106,9 @@ public class GeckoController
 					}
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 7a533b123d2164c5ad3e577bf1a2d76069b3b49b
 
 
 				
@@ -104,8 +116,11 @@ public class GeckoController
 						
 =======
 >>>>>>> parent of d96f079... Added skeleton for Luminance Computation
+<<<<<<< HEAD
 =======
 >>>>>>> parent of d96f079... Added skeleton for Luminance Computation
+=======
+>>>>>>> 7a533b123d2164c5ad3e577bf1a2d76069b3b49b
 			}
 		});
 	}

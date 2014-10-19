@@ -99,9 +99,13 @@ public class Shot
 	}	
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> parent of d96f079... Added skeleton for Luminance Computation
+=======
+=======
+>>>>>>> 7a533b123d2164c5ad3e577bf1a2d76069b3b49b
 	
 	public int getKey() 
 	{
