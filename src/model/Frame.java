@@ -44,7 +44,6 @@ public class Frame
 		int width = image.getWidth();
 		int height = image.getHeight();	
 		
-		
 		int row1hs = 0;
 		int row1he = height / 3;
 		int row2hs = height / 3;

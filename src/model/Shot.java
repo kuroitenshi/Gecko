@@ -31,6 +31,7 @@ public class Shot
 		Shot shot = new Shot(1, "C:\\FFOutput\\Divergent.2014.720p.BluRay.x264.YIFY 01_51_30-01_53_30\\Visual Data\\ShotRange.txt",
 				"C:\\FFOutput\\Divergent.2014.720p.BluRay.x264.YIFY 01_51_30-01_53_30\\Frames");
 		shot.computeVisualDisturbance();
+		shot.computeLuminance();
 	}
 	
 	private void getFrameRange() 
@@ -113,6 +114,45 @@ public class Shot
 		visualDisturbanceValue = (counter * 1.0 / divisor);
 		System.out.println(visualDisturbanceValue);
 	}	
+	
+	private void computeLuminance()
+	{
+		// Add code to compute for luminance here
+//		 StreamWriter SW;
+//         SW = File.CreateText(dirSave);
+//         string S;
+//       
+//         Bitmap pic;
+//         System.IO.DirectoryInfo d = new System.IO.DirectoryInfo(url);
+//         int imageCount = d.GetFiles().Length;//image count in the dir
+//
+//         String[] arrLine;
+//         StreamReader shot = File.OpenText(dirShot);
+//
+//         int start = 0, end = 0;
+//
+//         while ((S = shot.ReadLine()) != null)
+//         {
+//             arrLine = S.Split(' ');//index 3 and 4 are the shots range
+//             start = Convert.ToInt32(arrLine[3]);
+//             end = Convert.ToInt32(arrLine[4]);
+//             
+//             for (int counter = start; counter <= end; counter++)
+//             {
+//                 if (counter == start || counter == end || counter == (Decimal.Floor((end + start) / 2)))
+//                 {
+//                     pic = new Bitmap(url + "\\" + counter + ".jpg");
+//
+//                     SW.WriteLine("Image:" + counter + " Luminance: " + ProcessBitmap(pic));
+//                     pic.Dispose();
+//                 }
+//             }
+//
+//         }
+//
+//         //SW.WriteLine(timer.Elapsed);
+//         SW.Close();
+	}
 	
 	public int getKey() 
 	{

@@ -35,41 +35,39 @@ public class GeckoController
 			@Override
 			public void actionPerformed(ActionEvent arg0) 
 			{
-								
-					FileFinderFrame fileFinder = new FileFinderFrame();
-					String filepath = fileFinder.getFilepath();
-					fileFinder.dispose();
-					File movieFileChosen = new File(filepath);
-					ArrayList<Shot> shots = new ArrayList<Shot>();
+				FileFinderFrame fileFinder = new FileFinderFrame();
+				String filepath = fileFinder.getFilepath();
+				fileFinder.dispose();
+				File movieFileChosen = new File(filepath);
+				ArrayList<Shot> shots = new ArrayList<Shot>();
 										
-					extractionModel.setMovieFile(movieFileChosen);
-					extractionModel.extractImages();
+				extractionModel.setMovieFile(movieFileChosen);
+				extractionModel.extractImages();
 					
-					System.out.println(extractionModel.getParentResultPath());
-					System.out.println(extractionModel.getFramesPath());
-					Segmentation movieSegmentation = new Segmentation(extractionModel.getFramesPath(), extractionModel.getParentResultPath());
-					movieSegmentation.segmentMovie();
+				Segmentation movieSegmentation = new Segmentation(extractionModel.getFramesPath(), extractionModel.getParentResultPath());
+				movieSegmentation.segmentMovie();
 					
-					for(int i = 1; i <= movieSegmentation.getShotNumber(); i++)
-					{
-						Shot shot = new Shot(i, extractionModel.getVisualDataPath() + "\\ShotRange.txt", extractionModel.getFramesPath());
-						shots.add(shot);
-					}
+				for(int i = 1; i <= movieSegmentation.getShotNumber(); i++)
+				{
+					Shot shot = new Shot(i, extractionModel.getVisualDataPath() + "\\ShotRange.txt", extractionModel.getFramesPath());
+					shots.add(shot);
+				}
 					
-					AudioExtraction audioExtractor = new AudioExtraction(extractionModel.getParentResultPath());
-					audioExtractor.setFile(movieFileChosen);
-					audioExtractor.extractAudio();
+				AudioExtraction audioExtractor = new AudioExtraction(extractionModel.getParentResultPath());
+				audioExtractor.setFile(movieFileChosen);
+				audioExtractor.extractAudio();
 					
-					AudialSegmentation audialSeg = new AudialSegmentation(extractionModel.getAudialDataPath());
-					audialSeg.setFile(extractionModel.getParentResultPath());
-					try 
-					{
-						audialSeg.segmentAudio();
-					}
-					catch (IOException e) 
-					{
-						e.printStackTrace();
-					}
+				AudialSegmentation audialSeg = new AudialSegmentation(extractionModel.getAudialDataPath());
+				audialSeg.setFile(extractionModel.getParentResultPath());
+			
+				try 
+				{
+					audialSeg.segmentAudio();
+				}
+				catch (IOException e) 
+				{
+					e.printStackTrace();
+				}
 			}
 		});
 	}
