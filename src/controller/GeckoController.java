@@ -32,6 +32,7 @@ public class GeckoController
 			@Override
 			public void actionPerformed(ActionEvent arg0) 
 			{
+<<<<<<< HEAD
 				
 				
 					File movieFileChosen = new File(geckoView.getFilepath());
@@ -51,6 +52,35 @@ public class GeckoController
 					
 					AudialSegmentation audialSeg = new AudialSegmentation(frameExtractor.getAudialDataPath());
 					audialSeg.setFile(frameExtractor.getParentResultPath());
+=======
+								
+					FileFinderFrame fileFinder = new FileFinderFrame();
+					String filepath = fileFinder.getFilepath();
+					fileFinder.dispose();
+					File movieFileChosen = new File(filepath);
+					ArrayList<Shot> shots = new ArrayList<Shot>();
+										
+					extractionModel.setMovieFile(movieFileChosen);
+					extractionModel.extractImages();
+					
+					System.out.println(extractionModel.getParentResultPath());
+					System.out.println(extractionModel.getFramesPath());
+					Segmentation movieSegmentation = new Segmentation(extractionModel.getFramesPath(), extractionModel.getParentResultPath());
+					movieSegmentation.segmentMovie();
+					
+					for(int i = 1; i <= movieSegmentation.getShotNumber(); i++)
+					{
+						Shot shot = new Shot(i, extractionModel.getVisualDataPath() + "\\ShotRange.txt", extractionModel.getFramesPath());
+						shots.add(shot);
+					}
+					
+					AudioExtraction audioExtractor = new AudioExtraction(extractionModel.getParentResultPath());
+					audioExtractor.setFile(movieFileChosen);
+					audioExtractor.extractAudio();
+					
+					AudialSegmentation audialSeg = new AudialSegmentation(extractionModel.getAudialDataPath());
+					audialSeg.setFile(extractionModel.getParentResultPath());
+>>>>>>> parent of d96f079... Added skeleton for Luminance Computation
 					try 
 					{
 						audialSeg.segmentAudio();
@@ -59,11 +89,14 @@ public class GeckoController
 					{
 						e.printStackTrace();
 					}
+<<<<<<< HEAD
 
 
 				
 				
 						
+=======
+>>>>>>> parent of d96f079... Added skeleton for Luminance Computation
 			}
 		});
 	}

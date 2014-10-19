@@ -25,6 +25,15 @@ public class Shot
 		getFrames(key);
 		setVisualDisturbanceValue(0);
 	}
+<<<<<<< HEAD
+=======
+
+	public static void main(String[] args){
+		Shot shot = new Shot(1, "C:\\FFOutput\\Divergent.2014.720p.BluRay.x264.YIFY 01_51_30-01_53_30\\Visual Data\\ShotRange.txt",
+				"C:\\FFOutput\\Divergent.2014.720p.BluRay.x264.YIFY 01_51_30-01_53_30\\Frames");
+		shot.computeVisualDisturbance();
+	}
+>>>>>>> parent of d96f079... Added skeleton for Luminance Computation
 	
 	private void getFrames(int key) 
 	{
@@ -88,4 +97,27 @@ public class Shot
 		divisor = 9 * (frameInterval) / 2;
 		visualDisturbanceValue = (counter * 1.0 / divisor);
 	}	
+<<<<<<< HEAD
+=======
+	
+	public int getKey() 
+	{
+		return key;
+	}
+
+	public void setKey(int key) 
+	{
+		this.key = key;
+	}
+	
+	public double getVisualDisturbanceValue() 
+	{
+		return visualDisturbanceValue;
+	}
+
+	public void setVisualDisturbanceValue(double visualDisturbanceValue) 
+	{
+		this.visualDisturbanceValue = visualDisturbanceValue;
+	}
+>>>>>>> parent of d96f079... Added skeleton for Luminance Computation
 }
