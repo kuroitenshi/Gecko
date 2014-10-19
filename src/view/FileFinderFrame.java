@@ -1,10 +1,8 @@
 package view;
 
 import java.awt.CardLayout;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.dnd.DropTarget;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
@@ -28,7 +26,8 @@ public class FileFinderFrame extends JFrame{
 	JButton go_button = new JButton("Classify");
 
 	
-	public FileFinderFrame() {
+	public FileFinderFrame() 
+	{
 		
 		super("Genre Classifier - Movie Selection");	
 		cards.setPreferredSize(new Dimension(300, 300));
@@ -41,7 +40,8 @@ public class FileFinderFrame extends JFrame{
 
 	}
 	
-	public void findfile() {
+	public void findfile() 
+	{
 		
 		JPanel FindFileCard = new JPanel();
 		
