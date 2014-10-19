@@ -48,20 +48,16 @@ public class Segmentation
 		
 		int width = buffImage.getWidth();
 		int height = buffImage.getHeight();			
-				
+						
     	for(int y = 0; y < height; y++)
     	{
     		for(int x = 0; x < width; x++)
     		{
-    			int currentPixel = buffImage.getRGB(x, y);
-    			
-    			int red = (currentPixel >> 16) & 0xff;
-    			int green = (currentPixel >> 8) & 0xff;
-    			int blue = (currentPixel) & 0xff;
-    			
-                tempRed[red / BINS]++;             //gets red values
-                tempGreen[green / BINS]++;             //gets green values
-                tempBlue[blue / BINS]++;             //gets blue values
+    			int[] currentPixel = buffImage.getRaster().getPixel(x, y, new int[3]);
+    		    			
+                tempRed[currentPixel[0] / BINS]++;             //gets red values
+                tempGreen[currentPixel[1] / BINS]++;             //gets green values
+                tempBlue[currentPixel[2] / BINS]++;             //gets blue values
     			
                 currentHist.setRED(tempRed);
                 currentHist.setGREEN(tempGreen);
@@ -105,7 +101,8 @@ public class Segmentation
 		int shotRangeCounter = 1;
 		System.out.println(imageCount);
 		 
-		double distance_threshold = 89908.84; //experimental threshold
+		/*ATOMICA's Threshold for Action Movies*/
+		double distance_threshold = 89908.84; 
 		
 		Histogram histA;
 		Histogram histB;

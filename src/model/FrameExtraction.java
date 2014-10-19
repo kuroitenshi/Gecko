@@ -15,7 +15,7 @@ public class FrameExtraction
 	private String parentResultPath;
 	
 	/**
-	 * Extract 720p JPEG images from movie input
+	 * Extract JPEG images from movie input (16 fps)
 	 */
 	public void extractImages()
 	{

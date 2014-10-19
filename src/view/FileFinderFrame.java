@@ -8,7 +8,6 @@ import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -26,6 +25,7 @@ public class FileFinderFrame extends JFrame
 	private static String filepath = "";
 	JPanel cards = new JPanel(new CardLayout());
 	JButton go_button = new JButton("Classify");
+	JLabel fileLabel;
 
 	
 	public FileFinderFrame() 
@@ -42,6 +42,9 @@ public class FileFinderFrame extends JFrame
 
 	}
 	
+	/**
+	 * Opens up a filechooser for the selection of the Movie to analyze
+	 */
 	public void findfile() 
 	{
 		
@@ -61,21 +64,21 @@ public class FileFinderFrame extends JFrame
 			
 			
 			
-			select_button.addActionListener(new ActionListener() {
+			select_button.addActionListener(new ActionListener()
+			{
 			    public void actionPerformed(ActionEvent evt) {
 			    	JFileChooser fileChooser = new JFileChooser();
 			    	int result = fileChooser.showDialog(FileFinderFrame.this, "Go");
 			    	if (result == JFileChooser.APPROVE_OPTION) {
 			    	    File selectedFile = fileChooser.getSelectedFile();
 			    	    FileFinderFrame.setFilepath(selectedFile.getAbsolutePath());
-			    	    confirm();
+			    	    confirm(selectedFile.getName().substring(0, selectedFile.getName().lastIndexOf('.')));
 			    	}
 			    }
 			});
 			
 			
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -87,7 +90,12 @@ public class FileFinderFrame extends JFrame
 
 	}
 
-	public void confirm() {
+	/**
+	 * Movie confirmation layout change
+	 * @param filename
+	 */
+	public void confirm(String filename) 
+	{
 		
 		JPanel ConfirmCard = new JPanel();
 		
@@ -106,7 +114,7 @@ public class FileFinderFrame extends JFrame
 		ConfirmCard.add(picLabel);
 
 		
-		JLabel fileLabel = new JLabel("Toy Story 3");
+		fileLabel = new JLabel(filename);
 		fileLabel.setBounds(25, 210, 250, 30);
 		fileLabel.setFont(new Font("Roboto", Font.BOLD, 20));
 		fileLabel.setHorizontalAlignment(SwingConstants.CENTER);
@@ -132,11 +140,13 @@ public class FileFinderFrame extends JFrame
 		
 	}
 
-	public String getFilepath() {
+	public String getFilepath() 
+	{
 		return filepath;
 	}
 
-	public static void setFilepath(String filepath) {
+	public static void setFilepath(String filepath) 
+	{
 		FileFinderFrame.filepath = filepath;
 	}
 	
