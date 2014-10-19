@@ -1,40 +1,71 @@
 package model;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.util.ArrayList;
 
 public class Shot 
 {
 	private int key;
 	private ArrayList<Frame> frames;
-	private String framesPath;
+	private String shotRangePath;
+	private int startingFrame;
+	private int endingFrame;
 	private double visualDisturbanceValue;
 	
-	public Shot(String framesPath)
-	{
-		this.framesPath = framesPath;
-	} 	
-
-	public Shot(int key)
+	public Shot(int key, String shotRangePath)
 	{
 		this.setKey(key);
+		startingFrame = 0;
+		endingFrame = 0;
+		this.shotRangePath = shotRangePath;
 		frames = new ArrayList<Frame>();
-		getFrames(key);
+		getFrameRange();
+		getFrames();
 		setVisualDisturbanceValue(0);
 	}
+
+	public static void main(String[] args){
+		Shot shot = new Shot(1, "C:\\FFOutput\\Divergent Results1\\Video Data\\ShotRange.txt");
+	}
 	
-	private void getFrames(int key) 
+	private void getFrameRange() 
 	{		
-		File framesFile = new File(this.framesPath);
-		int framesFileSize = framesFile.listFiles().length;
-		for(int i = 1; i < framesFileSize-1; i++)
+		try
 		{
-			Frame retrievedFrame = new Frame(i, this.framesPath + "\\" + i + ".jpeg" );
-			this.frames.add(retrievedFrame);			
+			FileReader inputFile = new FileReader(shotRangePath);
+		    BufferedReader bufferReader = new BufferedReader(inputFile);
+		
+		    String line;
+		    while ((line = bufferReader.readLine()) != null)
+		    {
+		    	String[] returnValue = line.split(" ", 5);
+		    	if(returnValue[1].equals(""+key))
+		    	{
+		    		startingFrame = Integer.parseInt(returnValue[3]);
+		    		endingFrame = Integer.parseInt(returnValue[4]);
+		    		break;
+		    	}
+		    }
+		    bufferReader.close();
 		}
-				
+		catch(Exception e)
+		{
+			e.printStackTrace();                   
+	    }	
 	}	
 	
+	private void getFrames() 
+	{
+		String framesPath1 = "C:\\FFOutput\\Divergent Results1\\Frames";
+		for(int i = startingFrame; i <= endingFrame; i++)
+		{
+			Frame retrievedFrame = new Frame(i, framesPath1 + "\\" + i + ".jpg" );
+			System.out.println(retrievedFrame.getDirectory());
+			frames.add(retrievedFrame);			
+		}
+	}
 	
 	public void computeVisualDisturbance()
 	{
@@ -99,7 +130,4 @@ public class Shot
 	{
 		this.visualDisturbanceValue = visualDisturbanceValue;
 	}
-	
-	
-
 }

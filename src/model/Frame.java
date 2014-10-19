@@ -11,12 +11,12 @@ public class Frame
 	private BufferedImage image;
 	private int key;
 	private ArrayList<RGB> rgb;	
+	private String directory;
 	
 	public Frame(int key, String directory)
 	{
-		
-		File file = new File(directory);
-	
+		this.directory = directory;
+		File file = new File(this.directory);
 		try 
 		{
 			image = ImageIO.read(file);
@@ -26,7 +26,7 @@ public class Frame
 		
 		this.setKey(key);
 		rgb = new ArrayList<RGB>();
-		this.computeRGB();
+//		this.computeRGB();
 	}
 
 
@@ -34,11 +34,13 @@ public class Frame
 	{
 		//Divide the bitmap into 9 blocks, return each RGBTotal.. horizontal increment
 		//RASTERIZE first
+		
 //		BitmapData bmpData = a.LockBits(new Rectangle(0, 0, a.Width, a.Height), ImageLockMode.ReadOnly, PixelFormat.Format24bppRgb);
 //      IntPtr ptr = bmpData.Scan0;
 		
 		RGB rgb1, rgb2, rgb3, rgb4, rgb5, rgb6, rgb7, rgb8, rgb9;
 //		byte* p = (byte*)(void*)ptr;
+		byte[] p = null;
 //      int offset = bmpData.Stride - a.Width * 3;
 		int width = image.getWidth() * 3;
 		int height = image.getHeight();
@@ -81,74 +83,65 @@ public class Frame
 					// first block
 					if(row1hs <= i && i <= row1he && col1ws <= j && j <= col1we)
 					{						
-		    			rgb1.setR(red);
-						rgb1.setG(green);
-						rgb1.setB(blue);
-
+		    			rgb1.setR(rgb1.getR()+p[0]);
+						rgb1.setG(rgb1.getR()+p[1]);
+						rgb1.setB(rgb1.getR()+p[2]);
 					} 
 					// second block
 					else if(row1hs <= i && i <= row1he && col2ws <= j && j<= col2we)
 					{
-						rgb2.setR(red);
-						rgb2.setG(green);
-						rgb2.setB(blue);
-
+						rgb2.setR(rgb2.getR()+p[0]);
+						rgb2.setG(rgb2.getR()+p[1]);
+						rgb2.setB(rgb2.getR()+p[2]);
 					}
 					// third block
 					else if(row1hs <= i && i <= row1he && col3ws <= j && j<= col3we)
 					{
-						rgb3.setR(red);
-						rgb3.setG(green);
-						rgb3.setB(blue);
-
+						rgb3.setR(rgb3.getR()+p[0]);
+						rgb3.setG(rgb3.getR()+p[1]);
+						rgb3.setB(rgb3.getR()+p[2]);
 					}
 					// fourth block
 					else if(row2hs <= i && i <= row2he && col1ws <= j && j <= col1we)
 					{
-						rgb4.setR(red);
-						rgb4.setG(green);
-						rgb4.setB(blue);
-
+						rgb4.setR(rgb4.getR()+p[0]);
+						rgb4.setG(rgb4.getR()+p[1]);
+						rgb4.setB(rgb4.getR()+p[2]);
 					}
 					//5th block
 					else if (row2hs <= i && i <= row2he && col2ws <= j && j <= col2we)
 					{
-						rgb5.setR(red);
-						rgb5.setG(green);
-						rgb5.setB(blue);
-
+						rgb5.setR(rgb5.getR()+p[0]);
+						rgb5.setG(rgb5.getR()+p[1]);
+						rgb5.setB(rgb5.getR()+p[2]);
 					}
 					//6th block
 					else if (row2hs <= i && i <= row2he && col3ws <= j && j <= col3we)
 					{
-						rgb6.setR(red);
-						rgb6.setG(green);
-						rgb6.setB(blue);
-
+						rgb6.setR(rgb6.getR()+p[0]);
+						rgb6.setG(rgb6.getR()+p[1]);
+						rgb6.setB(rgb6.getR()+p[2]);
 					}
 					//7th block
 					else if (row3hs <= i && i <= row3he && col1ws <= j && j <= col1we)
 					{
-						rgb7.setR(red);
-						rgb7.setG(green);
-						rgb7.setB(blue);
-
+						rgb7.setR(rgb7.getR()+p[0]);
+						rgb7.setG(rgb7.getR()+p[1]);
+						rgb7.setB(rgb7.getR()+p[2]);
 	                }
 					//8th block
 					else if (row3hs <= i && i <= row3he && col2ws <= j && j <= col2we)
 					{
-						rgb8.setR(red);
-						rgb8.setG(green);
-						rgb8.setB(blue);
-
+						rgb8.setR(rgb8.getR()+p[0]);
+						rgb8.setG(rgb8.getR()+p[1]);
+						rgb8.setB(rgb8.getR()+p[2]);
 	                }
 					//9th block
 					else if (row3hs <= i && i <= row3he && col3ws <= j && j <= col3we)
 					{
-						rgb9.setR(red);
-						rgb9.setG(green);
-						rgb9.setB(blue);
-
+						rgb9.setR(rgb9.getR()+p[0]);
+						rgb9.setG(rgb9.getR()+p[1]);
+						rgb9.setB(rgb9.getR()+p[2]);
 	                }
 				}
 				catch(Exception ex)
@@ -171,7 +164,6 @@ public class Frame
 		rgb.add(rgb9);
 	}
 	
-
 	public BufferedImage getImage() 
 	{
 		return image;
@@ -190,6 +182,11 @@ public class Frame
 	public void setKey(int key) 
 	{
 		this.key = key;
+	}
+	
+	public String getDirectory() 
+	{
+		return directory;
 	}
 
 	public RGB getRgb(int index) 

@@ -61,11 +61,6 @@ public class GeckoController
 					{
 						e.printStackTrace();
 					}
-
-
-				
-				
-						
 			}
 		});
 	}
