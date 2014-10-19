@@ -26,6 +26,12 @@ public class Shot
 		getFrames();
 		setVisualDisturbanceValue(0);
 	}
+
+	public static void main(String[] args){
+		Shot shot = new Shot(1, "C:\\FFOutput\\Divergent.2014.720p.BluRay.x264.YIFY 01_51_30-01_53_30\\Visual Data\\ShotRange.txt",
+				"C:\\FFOutput\\Divergent.2014.720p.BluRay.x264.YIFY 01_51_30-01_53_30\\Frames");
+		shot.computeVisualDisturbance();
+	}
 	
 	private void getFrameRange() 
 	{		
@@ -57,7 +63,6 @@ public class Shot
 	{
 		for(int i = startingFrame; i <= endingFrame; i++)
 		{
-			System.out.println(framePath + "\\" + i + ".jpeg" );
 			Frame retrievedFrame = new Frame(i, framePath + "\\" + i + ".jpeg" );
 			frames.add(retrievedFrame);			
 		}
@@ -65,6 +70,7 @@ public class Shot
 	
 	public void computeVisualDisturbance()
 	{
+		// change threshold
 		double THRESHOLD = 0.35;
 		int counter = 0;
 		int temp = 0;

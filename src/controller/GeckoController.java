@@ -53,7 +53,6 @@ public class GeckoController
 					for(int i = 1; i <= movieSegmentation.getShotNumber(); i++)
 					{
 						Shot shot = new Shot(i, extractionModel.getVisualDataPath() + "\\ShotRange.txt", extractionModel.getFramesPath());
-						System.out.println(shot.getKey());
 						shots.add(shot);
 					}
 					
