@@ -11,6 +11,7 @@ public class FrameExtraction
 	private String audialDataPath;
 	private String audialSegPath;
 	
+
 	private String parentResultPath;
 	
 	/**
@@ -36,14 +37,16 @@ public class FrameExtraction
 	        outputGobbler.start();
 	        int exitVal = extractionProcess.waitFor();
             System.out.println("ExitValue: " + exitVal);   
-		} 
-		catch (Throwable e) 
+		} catch (Throwable e) 
 		{			
 			e.printStackTrace();
 		}
 		
+		
 		System.out.println("Extraction Completed");
+		
 	}
+	
 	
 	/**
 	 * Gets the path of the movie file to create the results folders
@@ -57,9 +60,11 @@ public class FrameExtraction
 		setParentResultPath(resultsFolder.getAbsolutePath());
 		resultsFolder.mkdir();
 		
+		
 		File framesFolder = new File(resultsFolder.getAbsolutePath() + "/Frames");
 		setFramesPath(framesFolder.getAbsolutePath());
 		framesFolder.mkdir();
+		
 		
 		File visualDataFolder = new File(resultsFolder.getAbsolutePath() + "/Visual Data");
 		setVisualDataPath(visualDataFolder.getAbsolutePath());
@@ -72,8 +77,11 @@ public class FrameExtraction
 		File audialSegFolder = new File(resultsFolder.getAbsolutePath() + "/Audial Data/Segments");
 		setAudialSegPath(audialSegFolder.getAbsolutePath());
 		audialSegFolder.mkdir();
+		
+		
 	}
 	
+
 	public File getMovieFile() 
 	{
 		return movieFile;
@@ -133,4 +141,6 @@ public class FrameExtraction
 	{
 		this.audialSegPath = audialSegPath;
 	}
+	
+
 }
