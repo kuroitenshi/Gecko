@@ -13,6 +13,7 @@ public class Frame
 	private ArrayList<RGB> rgb;	
 	private String directory;
 	
+	
 	public Frame(int key, String directory)
 	{
 		this.directory = directory;
@@ -65,75 +66,75 @@ public class Frame
 		{
 			for(int j = 0; j < width; j++)
 			{
-				int currentPixel = image.getRGB(j, i);
-				int red = (currentPixel >> 16) & 0xff;
-				int green = (currentPixel >> 8) & 0xff;
-    			int blue = (currentPixel) & 0xff;
+				int[] currentPixel = image.getRaster().getPixel(j, i, new int[3]);
+				int red = currentPixel[0];
+				int green = currentPixel[1];
+    			int blue = currentPixel[2];
 				
 				try
 				{
 					// first block
 					if(row1hs <= i && i <= row1he && col1ws <= j && j <= col1we)
 					{						
-		    			rgb1.setR(red);
-						rgb1.setG(green);
-						rgb1.setB(blue);
+		    			rgb1.setR(rgb1.getR() + red);
+		    			rgb1.setG(rgb1.getG() + green);
+		    			rgb1.setB(rgb1.getB() + blue);
 					} 
 					// second block
 					else if(row1hs <= i && i <= row1he && col2ws <= j && j<= col2we)
 					{
-						rgb2.setR(red);
-						rgb2.setG(green);
-						rgb2.setB(blue);
+						rgb2.setR(rgb2.getR() + red);
+		    			rgb2.setG(rgb2.getG() + green);
+		    			rgb2.setB(rgb2.getB() + blue);
 					}
 					// third block
 					else if(row1hs <= i && i <= row1he && col3ws <= j && j<= col3we)
 					{
-						rgb3.setR(red);
-						rgb3.setG(green);
-						rgb3.setB(blue);
+						rgb3.setR(rgb3.getR() + red);
+		    			rgb3.setG(rgb3.getG() + green);
+		    			rgb3.setB(rgb3.getB() + blue);
 					}
 					// fourth block
 					else if(row2hs <= i && i <= row2he && col1ws <= j && j <= col1we)
 					{
-						rgb4.setR(red);
-						rgb4.setG(green);
-						rgb4.setB(blue);
+						rgb4.setR(rgb4.getR() + red);
+		    			rgb4.setG(rgb4.getG() + green);
+		    			rgb4.setB(rgb4.getB() + blue);
 					}
 					//5th block
 					else if (row2hs <= i && i <= row2he && col2ws <= j && j <= col2we)
 					{
-						rgb5.setR(red);
-						rgb5.setG(green);
-						rgb5.setB(blue);
+						rgb5.setR(rgb5.getR() + red);
+		    			rgb5.setG(rgb5.getG() + green);
+		    			rgb5.setB(rgb5.getB() + blue);
 					}
 					//6th block
 					else if (row2hs <= i && i <= row2he && col3ws <= j && j <= col3we)
 					{
-						rgb6.setR(red);
-						rgb6.setG(green);
-						rgb6.setB(blue);
+						rgb6.setR(rgb6.getR() + red);
+		    			rgb6.setG(rgb6.getG() + green);
+		    			rgb6.setB(rgb6.getB() + blue);
 					}
 					//7th block
 					else if (row3hs <= i && i <= row3he && col1ws <= j && j <= col1we)
 					{
-						rgb7.setR(red);
-						rgb7.setG(green);
-						rgb7.setB(blue);
+						rgb7.setR(rgb7.getR() + red);
+		    			rgb7.setG(rgb7.getG() + green);
+		    			rgb7.setB(rgb7.getB() + blue);
 	                }
 					//8th block
 					else if (row3hs <= i && i <= row3he && col2ws <= j && j <= col2we)
 					{
-						rgb8.setR(red);
-						rgb8.setG(green);
-						rgb8.setB(blue);
+						rgb8.setR(rgb8.getR() + red);
+		    			rgb8.setG(rgb8.getG() + green);
+		    			rgb8.setB(rgb8.getB() + blue);
 	                }
 					//9th block
 					else if (row3hs <= i && i <= row3he && col3ws <= j && j <= col3we)
 					{
-						rgb9.setR(red);
-						rgb9.setG(green);
-						rgb9.setB(blue);
+						rgb9.setR(rgb9.getR() + red);
+		    			rgb9.setG(rgb9.getG() + green);
+		    			rgb9.setB(rgb9.getB() + blue);
 	                }
 				}
 				catch(Exception ex)

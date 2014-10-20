@@ -22,7 +22,7 @@ public class FrameExtraction
 		String movieFilePath = "\"" + this.movieFile.getAbsolutePath() + "\"";			
 		setupResultsFolder();
 		// Add -s film for testing
-		String command = "ffmpeg -i " + movieFilePath + " -r 16 -f image2 " + "\"" + framesPath + "\\%d.jpeg\"";
+		String command = "ffmpeg -i " + movieFilePath + " -r 7 -f image2 " + "\"" + framesPath + "\\%d.jpeg\"";
 		
 		try 
 		{	

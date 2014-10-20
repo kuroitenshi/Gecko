@@ -13,7 +13,8 @@ public class Shot
 	private int startingFrame;
 	private int endingFrame;
 	private double visualDisturbanceValue;
-	
+	private double luminanceValue;
+
 	public Shot(int key, String shotRangePath, String framePath)
 	{
 		this.setKey(key);
@@ -33,10 +34,10 @@ public class Shot
 		Shot shot = null;
 		for(int i=1; i < 72; i++)
 		{
-			shot = new Shot(i, "C:\\Users\\Pheebz\\Desktop\\Thesis Test File2\\Visual Data\\ShotRange.txt",
-					"C:\\Users\\Pheebz\\Desktop\\Thesis Test File2\\Frames");
-			System.out.println(shot.computeVisualDisturbance());
-			shot.computeLuminance();	
+			shot = new Shot(i, "C:\\Users\\Pheebz\\Desktop\\Thesis Test File\\Visual Data\\ShotRange.txt",
+					"C:\\Users\\Pheebz\\Desktop\\Thesis Test File\\Frames");
+			//System.out.println(shot.computeVisualDisturbance());
+			System.out.println(shot.computeLuminance());	
 		}
 		
 	}
@@ -78,17 +79,16 @@ public class Shot
 	
 	public Double computeVisualDisturbance()
 	{
-		// change threshold
 		double THRESHOLD = 0.35;
 		int counter = 0;
 		int temp = 0;
 		int divisor = 0;
 		int frameInterval = this.frames.get(frames.size()-1).getKey() - this.frames.get(0).getKey();
 		
-		for(int i = 1; i < this.frames.size(); i++)
+		for(int i = 1; i < this.frames.size(); i+=2)
 		{
 			for (int j = 0; j < 9; j++)
-			{
+			{				
 				double r1 = this.frames.get(i).getRgb(j).getR();
 				double g1 = this.frames.get(i).getRgb(j).getG();
 				double b1 = this.frames.get(i).getRgb(j).getB();
@@ -97,9 +97,10 @@ public class Shot
 				double g2 = this.frames.get(i-1).getRgb(j).getG();
 				double b2 = this.frames.get(i-1).getRgb(j).getB();
 				
-				double distance = Math.abs(r1 - r2) + Math.abs(g1 - g2) + Math.abs(b1 - b2);
+				double distance = Math.abs(r1 - r2) + Math.abs(g1 - g2) + Math.abs(b1 - b2);				
 				double max = Math.max(r1, r2) + Math.max(g1, g2) + Math.max(b1, b2);
 				double difference = distance/max;
+							
 				
 				if(difference > THRESHOLD)
 				{
@@ -124,44 +125,59 @@ public class Shot
 		
 	}	
 	
-	private void computeLuminance()
+	public double computeLuminance()
 	{
-		// Add code to compute for luminance here
-//		 StreamWriter SW;
-//         SW = File.CreateText(dirSave);
-//         string S;
-//       
-//         Bitmap pic;
-//         System.IO.DirectoryInfo d = new System.IO.DirectoryInfo(url);
-//         int imageCount = d.GetFiles().Length;//image count in the dir
-//
-//         String[] arrLine;
-//         StreamReader shot = File.OpenText(dirShot);
-//
-//         int start = 0, end = 0;
-//
-//         while ((S = shot.ReadLine()) != null)
-//         {
-//             arrLine = S.Split(' ');//index 3 and 4 are the shots range
-//             start = Convert.ToInt32(arrLine[3]);
-//             end = Convert.ToInt32(arrLine[4]);
-//             
-//             for (int counter = start; counter <= end; counter++)
-//             {
-//                 if (counter == start || counter == end || counter == (Decimal.Floor((end + start) / 2)))
-//                 {
-//                     pic = new Bitmap(url + "\\" + counter + ".jpg");
-//
-//                     SW.WriteLine("Image:" + counter + " Luminance: " + ProcessBitmap(pic));
-//                     pic.Dispose();
-//                 }
-//             }
-//
-//         }
-//
-//         //SW.WriteLine(timer.Elapsed);
-//         SW.Close();
+				
+		int lastFrame = this.frames.size();
+		double luminanceAVG = 0.0;
+		
+		for(int i = 0; i < lastFrame; i++)
+		{			
+			if(i == 0 || i  == lastFrame || i == Math.floor((0 + lastFrame) /2 ))
+			{				
+				luminanceAVG += getFrameLuminance(frames.get(i));
+			}
+		}
+		
+		luminanceAVG = luminanceAVG/lastFrame;
+		
+		
+		return luminanceAVG;
+		
 	}
+	
+	public double getFrameLuminance(Frame frame)
+	{
+		double pixelSum  = 0;
+		double luminanceValue = 0;
+		RGB rgb = new RGB();
+		
+		
+		int width = frame.getImage().getWidth();
+		int height = frame.getImage().getHeight();
+		
+		for (int i =0; i < height; i++)
+		{
+			for(int j =0; j < width; j++)
+			{
+				int[] currentPixel = frame.getImage().getRaster().getPixel(j, i, new int[3]);
+				
+				rgb.setR(rgb.getR()+ currentPixel[0]);
+				rgb.setG(rgb.getG()+ currentPixel[1]);
+				rgb.setB(rgb.getB()+ currentPixel[2]);
+				
+			}
+		}
+		
+		luminanceValue = 0.2126 * rgb.getR() + 0.7152 * rgb.getG() + 0.0722 * rgb.getB();
+		pixelSum = luminanceValue / (height * width);	
+		
+		return pixelSum;
+		
+		
+	}
+	
+	
 	
 	public int getKey() 
 	{
@@ -181,5 +197,15 @@ public class Shot
 	public void setVisualDisturbanceValue(double visualDisturbanceValue) 
 	{
 		this.visualDisturbanceValue = visualDisturbanceValue;
+	}
+	
+	public double getLuminanceValue() 
+	{
+		return luminanceValue;
+	}
+
+	public void setLuminanceValue(double luminanceValue) 
+	{
+		this.luminanceValue = luminanceValue;
 	}
 }

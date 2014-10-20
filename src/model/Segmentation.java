@@ -54,7 +54,7 @@ public class Segmentation
     		for(int x = 0; x < width; x++)
     		{
     			int[] currentPixel = buffImage.getRaster().getPixel(x, y, new int[3]);
-    		    			
+    	    			    		
                 tempRed[currentPixel[0] / BINS]++;             //gets red values
                 tempGreen[currentPixel[1] / BINS]++;             //gets green values
                 tempBlue[currentPixel[2] / BINS]++;             //gets blue values
