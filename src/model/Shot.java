@@ -34,8 +34,8 @@ public class Shot
 		Shot shot = null;
 		for(int i=1; i < 72; i++)
 		{
-			shot = new Shot(i, "C:\\Users\\Pheebz\\Desktop\\Thesis Test File\\Visual Data\\ShotRange.txt",
-					"C:\\Users\\Pheebz\\Desktop\\Thesis Test File\\Frames");
+			shot = new Shot(i, "C:\\FFOutput\\Divergent.2014.720p.BluRay.x264.YIFY 01_51_30-01_53_30\\Visual Data\\ShotRange.txt",
+					"C:\\FFOutput\\Divergent.2014.720p.BluRay.x264.YIFY 01_51_30-01_53_30\\Frames");
 			//System.out.println(shot.computeVisualDisturbance());
 			System.out.println(shot.computeLuminance());	
 		}
@@ -127,23 +127,22 @@ public class Shot
 	
 	public double computeLuminance()
 	{
-				
 		int lastFrame = this.frames.size();
 		double luminanceAVG = 0.0;
+		int counter = 0;
 		
-		for(int i = 0; i < lastFrame; i++)
+		for(int i = startingFrame; i <= endingFrame; i++)
 		{			
-			if(i == 0 || i  == lastFrame || i == Math.floor((0 + lastFrame) /2 ))
+			if(i == startingFrame || i  == endingFrame || i == Math.floor((startingFrame + endingFrame) /2 ))
 			{				
-				luminanceAVG += getFrameLuminance(frames.get(i));
+				luminanceAVG += getFrameLuminance(frames.get(counter));
 			}
+			counter++;
 		}
 		
 		luminanceAVG = luminanceAVG/lastFrame;
 		
-		
 		return luminanceAVG;
-		
 	}
 	
 	public double getFrameLuminance(Frame frame)
@@ -165,7 +164,6 @@ public class Shot
 				rgb.setR(rgb.getR()+ currentPixel[0]);
 				rgb.setG(rgb.getG()+ currentPixel[1]);
 				rgb.setB(rgb.getB()+ currentPixel[2]);
-				
 			}
 		}
 		
@@ -173,11 +171,7 @@ public class Shot
 		pixelSum = luminanceValue / (height * width);	
 		
 		return pixelSum;
-		
-		
 	}
-	
-	
 	
 	public int getKey() 
 	{
