@@ -1,5 +1,6 @@
 package model;
 
+import java.awt.Color;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.ArrayList;
@@ -14,12 +15,20 @@ public class Shot
 	private int endingFrame;
 	private double visualDisturbanceValue;
 	private double luminanceValue;
+	private double flamePercentageValue;
+	private double VD_THRESHOLD;
+	private double FLAME_THRESHOLD;
 
 	public Shot(int key, String shotRangePath, String framePath)
 	{
 		this.setKey(key);
 		startingFrame = 0;
 		endingFrame = 0;
+		visualDisturbanceValue = 0;
+		luminanceValue = 0;
+		setFlamePercentageValue(0);
+		VD_THRESHOLD = 0.35;
+		FLAME_THRESHOLD = 0.10; // CHANGE FLAME_THRESHOLD VALUE
 		this.shotRangePath = shotRangePath;
 		this.framePath = framePath;
 		frames = new ArrayList<Frame>();
@@ -34,12 +43,12 @@ public class Shot
 		Shot shot = null;
 		for(int i=1; i < 72; i++)
 		{
-			shot = new Shot(i, "C:\\FFOutput\\Divergent.2014.720p.BluRay.x264.YIFY 01_51_30-01_53_30\\Visual Data\\ShotRange.txt",
-					"C:\\FFOutput\\Divergent.2014.720p.BluRay.x264.YIFY 01_51_30-01_53_30\\Frames");
-			//System.out.println(shot.computeVisualDisturbance());
-			System.out.println(shot.computeLuminance());	
+			shot = new Shot(i, "C:\\FFOutput\\22.Jump.Street.2014.1080p.WEB-DL.AAC2.0.H264-RARBG 01_26_10-01_28_10\\Visual Data\\ShotRange.txt",
+					"C:\\FFOutput\\22.Jump.Street.2014.1080p.WEB-DL.AAC2.0.H264-RARBG 01_26_10-01_28_10\\Frames");
+//			System.out.println(shot.computeVisualDisturbance());
+//			System.out.println(shot.computeLuminance());	
+			System.out.println(shot.computeFlamePercentage());
 		}
-		
 	}
 	
 	private void getFrameRange() 
@@ -79,7 +88,6 @@ public class Shot
 	
 	public double computeVisualDisturbance()
 	{
-		double THRESHOLD = 0.35;
 		int counter = 0;
 		int temp = 0;
 		int divisor = 0;
@@ -102,7 +110,7 @@ public class Shot
 				double difference = distance/max;
 							
 				
-				if(difference > THRESHOLD)
+				if(difference > VD_THRESHOLD)
 				{
 					temp++;
 				}
@@ -172,6 +180,81 @@ public class Shot
 		return pixelSum;
 	}
 	
+	public double computeFlamePercentage()
+	{
+		double flamePercentage = 0;
+		double flamePercentageAVG = 0;
+		int counter = 0;
+		
+		for(int i = startingFrame; i <= endingFrame; i++)
+		{
+			flamePercentage = detectFlamePixels(frames.get(counter));
+			if(flamePercentage >= FLAME_THRESHOLD)
+			{
+				flamePercentageAVG += flamePercentage;
+			}
+		}
+		
+		flamePercentageAVG /= endingFrame - startingFrame;
+		System.out.println(flamePercentageAVG);
+		return flamePercentageAVG;
+	}
+	
+	public double detectFlamePixels(Frame frame) 
+	{
+		int flamePixels = 0;
+		double flamePercentage = 0;
+		float saturation = 0;
+		RGB rgb = new RGB();
+		RGB tempRGB = new RGB();
+		int height = frame.getImage().getHeight();
+		int width = frame.getImage().getWidth();
+		int resolution = height * width;
+		double redTreshold = 169; // VALUE NOT YET FINAL
+		double saturationThreshold = 0.7; // VALUE NOT YET FINAL
+		
+		for (int i = 0; i < height; i++)
+		{
+			for(int j = 0; j < width; j++)
+			{
+				int[] currentPixel = frame.getImage().getRaster().getPixel(j, i, new int[3]);
+				
+				tempRGB.setR(tempRGB.getR()+ currentPixel[0]);
+				tempRGB.setG(tempRGB.getG()+ currentPixel[1]);
+				tempRGB.setB(tempRGB.getB()+ currentPixel[2]);
+				
+				// normalize RGB Values
+				double RGBSum = tempRGB.getR() + tempRGB.getG() + tempRGB.getB();
+				
+				rgb.setR(tempRGB.getR()/RGBSum);
+				rgb.setG(tempRGB.getG()/RGBSum);
+				rgb.setB(tempRGB.getB()/RGBSum);
+				
+				if(tempRGB.getR() > redTreshold)
+				{
+					if(rgb.getR() > rgb.getG() && rgb.getG() > rgb.getB())
+					{
+						saturation = calculateSaturation(tempRGB);
+						double value = ((255 - tempRGB.getR()*saturationThreshold)/redTreshold);
+						if(saturation>value)
+						{
+							flamePixels++;
+						}
+					}
+				}
+			}
+		}
+		flamePercentage = (flamePixels)/resolution;
+		return flamePercentage;
+	}
+
+	public float calculateSaturation(RGB rgb) {
+		float saturation = 0;
+		float af[] = Color.RGBtoHSB((int)rgb.getR(), (int)rgb.getG(), (int)rgb.getB(), null);
+		saturation = af[1];
+		return saturation;
+	}
+
 	public int getKey() 
 	{
 		return key;
@@ -200,5 +283,15 @@ public class Shot
 	public void setLuminanceValue(double luminanceValue) 
 	{
 		this.luminanceValue = luminanceValue;
+	}
+
+	public double getFlamePercentageValue() 
+	{
+		return flamePercentageValue;
+	}
+
+	public void setFlamePercentageValue(double flamePercentageValue) 
+	{
+		this.flamePercentageValue = flamePercentageValue;
 	}
 }
