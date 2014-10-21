@@ -127,13 +127,12 @@ public class Shot
 	
 	public double computeLuminance()
 	{
-		int lastFrame = this.frames.size();
 		double luminanceAVG = 0.0;
 		int counter = 0;
 		
-		for(int i = 0; i < lastFrame; i++)
+		for(int i = startingFrame; i <= endingFrame; i++)
 		{			
-			if(i == 0 || i  == lastFrame || i == Math.floor((0 + lastFrame) /2 ))
+			if(i == startingFrame || i  == endingFrame || i == Math.floor((startingFrame + endingFrame) /2 ))
 			{				
 				luminanceAVG += getFrameLuminance(frames.get(counter));
 			}
