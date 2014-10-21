@@ -193,6 +193,7 @@ public class Shot
 			{
 				flamePercentageAVG += flamePercentage;
 			}
+			counter++;
 		}
 		
 		flamePercentageAVG /= endingFrame - startingFrame;
