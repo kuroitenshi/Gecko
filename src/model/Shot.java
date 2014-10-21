@@ -77,7 +77,7 @@ public class Shot
 		}
 	}
 	
-	public Double computeVisualDisturbance()
+	public double computeVisualDisturbance()
 	{
 		double THRESHOLD = 0.35;
 		int counter = 0;
@@ -131,16 +131,16 @@ public class Shot
 		double luminanceAVG = 0.0;
 		int counter = 0;
 		
-		for(int i = startingFrame; i <= endingFrame; i++)
+		for(int i = 0; i < lastFrame; i++)
 		{			
-			if(i == startingFrame || i  == endingFrame || i == Math.floor((startingFrame + endingFrame) /2 ))
+			if(i == 0 || i  == lastFrame || i == Math.floor((0 + lastFrame) /2 ))
 			{				
 				luminanceAVG += getFrameLuminance(frames.get(counter));
 			}
 			counter++;
 		}
 		
-		luminanceAVG = luminanceAVG/lastFrame;
+		luminanceAVG = luminanceAVG/3;
 		
 		return luminanceAVG;
 	}
