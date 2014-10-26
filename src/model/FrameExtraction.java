@@ -22,7 +22,21 @@ public class FrameExtraction
 		String movieFilePath = "\"" + this.movieFile.getAbsolutePath() + "\"";			
 		setupResultsFolder();
 		// Add -s film for testing
-		String command = "ffmpeg -i " + movieFilePath + " -r 7 -f image2 " + "\"" + framesPath + "\\%d.jpeg\"";
+		
+		String command = "";
+		String OS = System.getProperty("os.name").toLowerCase();
+
+		if (OS.indexOf("win") >= 0){
+			System.out.println("OS: Windows");
+			command = "ffmpeg -i " + movieFilePath + " -r 7 -f image2 " + "\"" + framesPath + "\\%d.jpeg\"";
+		}
+		else if (OS.indexOf("mac") >= 0) {
+			System.out.println("OS: Mac");
+			command = "ffmpeg -i " + movieFilePath + " -r 7 -f image2 \"" + framesPath + "/%d.jpeg\"";
+			System.out.println(command);
+
+		}
+		
 		
 		try 
 		{	
