@@ -56,8 +56,15 @@ public class GeckoController
 				StringBuilder visualLuminanceValues = new StringBuilder();
 				for(int i = 1; i <= movieSegmentation.getShotRangeNumber(); i++)						
 				{						
-					
-					Shot shot = new Shot(i, extractionModel.getVisualDataPath() + "\\ShotRange.txt", extractionModel.getFramesPath());
+					String OS = System.getProperty("os.name").toLowerCase();
+
+					Shot shot = null;					
+					if (OS.indexOf("win") >= 0){
+						shot = new Shot(i, extractionModel.getVisualDataPath() + "\\ShotRange.txt", extractionModel.getFramesPath());
+					}
+					else if (OS.indexOf("mac") >= 0) {
+						shot = new Shot(i, extractionModel.getVisualDataPath() + "/ShotRange.txt", extractionModel.getFramesPath());
+					}
 					shotVisualDisturbance.add(shot.computeVisualDisturbance());
 					shotLuminance.add(shot.computeLuminance());
 					visualDisturbanceValues = visualDisturbanceValues.append("SHOT " + i + " VALUE " + shotVisualDisturbance.get(i-1) + System.lineSeparator());
