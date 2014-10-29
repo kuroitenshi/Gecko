@@ -81,7 +81,18 @@ public class Shot
 	{
 		for(int i = startingFrame; i <= endingFrame; i++)
 		{
-			Frame retrievedFrame = new Frame(i, framePath + "\\" + i + ".jpeg" );
+			
+			String OS = System.getProperty("os.name").toLowerCase();
+
+			Frame retrievedFrame = null;
+			
+			if (OS.indexOf("win") >= 0){
+				retrievedFrame = new Frame(i, framePath + "\\" + i + ".jpeg" );
+			}
+			else if (OS.indexOf("mac") >= 0) {
+				retrievedFrame = new Frame(i, framePath + "/" + i + ".jpeg" );
+			}
+			
 			frames.add(retrievedFrame);			
 		}
 	}

@@ -19,7 +19,8 @@ public class FrameExtraction
 	 */
 	public void extractImages()
 	{
-		String movieFilePath = "\"" + this.movieFile.getAbsolutePath() + "\"";			
+		String movieFilePath = "\"" + this.movieFile.getAbsolutePath() + "\"";	
+		String movieFilePathMac = this.movieFile.getAbsolutePath();
 		setupResultsFolder();
 		// Add -s film for testing
 		
@@ -32,9 +33,8 @@ public class FrameExtraction
 		}
 		else if (OS.indexOf("mac") >= 0) {
 			System.out.println("OS: Mac");
-			command = "ffmpeg -i " + movieFilePath + " -r 7 -f image2 \"" + framesPath + "/%d.jpeg\"";
+			command = "/usr/local/Cellar/ffmpeg/2.4.2/bin/ffmpeg -i " + movieFilePathMac + " -r 7 -f image2 " + framesPath + "/%d.jpeg";
 			System.out.println(command);
-
 		}
 		
 		

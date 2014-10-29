@@ -58,8 +58,15 @@ public class GeckoController
 				StringBuilder visualFlamePercentageValues = new StringBuilder();
 				for(int i = 1; i <= movieSegmentation.getShotRangeNumber(); i++)						
 				{						
-					
-					Shot shot = new Shot(i, extractionModel.getVisualDataPath() + "\\ShotRange.txt", extractionModel.getFramesPath());
+					String OS = System.getProperty("os.name").toLowerCase();
+
+					Shot shot = null;					
+					if (OS.indexOf("win") >= 0){
+						shot = new Shot(i, extractionModel.getVisualDataPath() + "\\ShotRange.txt", extractionModel.getFramesPath());
+					}
+					else if (OS.indexOf("mac") >= 0) {
+						shot = new Shot(i, extractionModel.getVisualDataPath() + "/ShotRange.txt", extractionModel.getFramesPath());
+					}
 					shotVisualDisturbance.add(shot.computeVisualDisturbance());
 					shotLuminance.add(shot.computeLuminance());
 					shotFlamePercentage.add(shot.computeFlamePercentage());
