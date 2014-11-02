@@ -2,17 +2,18 @@ package view;
 
 import java.awt.CardLayout;
 import java.awt.Dimension;
+import java.awt.FileDialog;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -33,11 +34,11 @@ public class FileFinderFrame extends JFrame
 		
 		super("Genre Classifier - Movie Selection");	
 		cards.setPreferredSize(new Dimension(300, 300));
-		add(cards);
-		setLocationRelativeTo(null);
+		add(cards);		
 		findfile();
 		pack();
 		setVisible(true);
+		setLocationRelativeTo(null);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 	}
@@ -50,8 +51,7 @@ public class FileFinderFrame extends JFrame
 		
 		JPanel FindFileCard = new JPanel();
 		
-		FindFileCard.setPreferredSize(new Dimension(300, 300));
-		FindFileCard.setLayout(null);
+		FindFileCard.setPreferredSize(new Dimension(300, 300));		
 		
 		BufferedImage buttonIcon;
 		try {
@@ -67,13 +67,11 @@ public class FileFinderFrame extends JFrame
 			select_button.addActionListener(new ActionListener()
 			{
 			    public void actionPerformed(ActionEvent evt) {
-			    	JFileChooser fileChooser = new JFileChooser();
-			    	int result = fileChooser.showDialog(FileFinderFrame.this, "Go");
-			    	if (result == JFileChooser.APPROVE_OPTION) {
-			    	    File selectedFile = fileChooser.getSelectedFile();
+			    	
+			    	    File selectedFile = new File(openVideoFile());
 			    	    FileFinderFrame.setFilepath(selectedFile.getAbsolutePath());
 			    	    confirm(selectedFile.getName().substring(0, selectedFile.getName().lastIndexOf('.')));
-			    	}
+			    	
 			    }
 			});
 			
@@ -88,6 +86,24 @@ public class FileFinderFrame extends JFrame
 	    
 
 
+	}
+	
+	/**
+	 * Returns the filepath from the Filedialog chooser
+	 * @return filepath
+	 */
+	public String openVideoFile()
+	{
+		FileDialog fileDialog = new FileDialog(this, "Choose a video", FileDialog.LOAD);
+		fileDialog.setDirectory("C:\\");
+		fileDialog.setFile("*.mkv;*.avi;*.mp4");
+		fileDialog.setVisible(true);
+		String filePath = fileDialog.getDirectory() + 
+		           System.getProperty("file.separator") + fileDialog.getFile();
+		if (fileDialog.getFile() == null)
+		  return "Please choose a file"; //Add proper error checking later
+		else
+		  return filePath;
 	}
 
 	/**

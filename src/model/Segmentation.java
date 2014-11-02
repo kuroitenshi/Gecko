@@ -5,7 +5,6 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-
 import javax.imageio.ImageIO;
 
 import model.Objects.Histogram;
@@ -103,7 +102,7 @@ public class Segmentation
 		System.out.println(imageCount);
 		 
 		/*ATOMICA's Threshold for Action Movies*/
-		double distance_threshold = 89908.84; 
+		double distance_threshold = 364832.02; 
 		
 		Histogram histA;
 		Histogram histB;
@@ -116,21 +115,8 @@ public class Segmentation
 		{
 			double imageDiff = 0;
 			
-			String OS = System.getProperty("os.name").toLowerCase();
-
-			String imagePath1 = "";
-			String imagePath2 = "";
-			
-			if (OS.indexOf("win") >= 0){
-				imagePath1 = framesPath + "\\" + i + ".jpeg";			
-				imagePath2 = framesPath + "\\" + (i+1) + ".jpeg";
-			}
-			else if (OS.indexOf("mac") >= 0) {
-				imagePath1 = framesPath + "/" + i + ".jpeg";			
-				imagePath2 = framesPath + "/" + (i+1) + ".jpeg";
-			}
-			
-			
+			String imagePath1 = framesPath + "\\" + i + ".jpeg";			
+			String imagePath2 = framesPath + "\\" + (i+1) + ".jpeg";
 			
 			File image1 = new File(imagePath1);
 			File image2 = new File(imagePath2);
@@ -153,16 +139,7 @@ public class Segmentation
                 //Image A and B are not the same; Compare Image A and Image Check
                 try
                 {
-
-        			String imagePath3 = "";
-        			
-        			if (OS.indexOf("win") >= 0){
-                    	imagePath3 = framesPath + "\\" + (i+2) + ".jpeg";
-        			}
-        			else if (OS.indexOf("mac") >= 0) {
-                    	imagePath3 = framesPath + "/" + (i+2) + ".jpeg";
-        			}
-                	
+                	String imagePath3 = framesPath + "\\" + (i+2) + ".jpeg";
                 	File image3 = new File(imagePath3);
                 	histCheck = findHistogram(image3);                
                     imageDiff = euclideanDist(histA, histCheck);                    
@@ -178,40 +155,21 @@ public class Segmentation
                 }
                 else
                 {
-                    if (counterImage > 4)
-                    {
-                    	shotNumbersString = shotNumbersString.append("Shot No: " + getShotRangeNumber() + " Frame " + i + " to " + (i+1)  + " Difference " + imageDiff + "\r\n");
-                    	if(getShotRangeNumber() != 1)
-                    	{
-                    		shotRangeString = shotRangeString.append("Shot No: " + (getShotRangeNumber()-1) + " Frames " + shotRangeCounter + " to " + i + "\r\n");
-                        	shotRangeCounter = (i+1);
-                        	
-                    	}
+                      	shotNumbersString = shotNumbersString.append("Shot No: " + getShotRangeNumber() + " Frame " + i + " to " + (i+1)  + " Difference " + imageDiff + "\r\n");
+                    	shotRangeString = shotRangeString.append("Shot No: " + getShotRangeNumber() + " Frames " + shotRangeCounter + " to " + i + "\r\n");
+                        shotRangeCounter = (i+1);
+           
                     	System.out.println(getShotRangeNumber());
                     	setShotRangeNumber(getShotRangeNumber() + 1);
-                        counterImage = 0;
-                    }
+                        counterImage = 0;  
                 }
             }
 		}
 				
-		shotRangeString = shotRangeString.append("Shot No: " + (getShotRangeNumber()-1) + " Frames " + shotRangeCounter + " to " + (imageCount-1) + "\r\n");
+		shotRangeString = shotRangeString.append("Shot No: " + getShotRangeNumber() + " Frames " + shotRangeCounter + " to " + imageCount + "\r\n");
 		this.setShotRangeNumber(getShotRangeNumber()-1);
-		
-		String OS = System.getProperty("os.name").toLowerCase();
-		
-		File resultShotFile = null;
-		File resultShotRangeFile = null;
-		
-		if (OS.indexOf("win") >= 0){
-			resultShotFile = new File(resultsPath.concat("\\Visual Data\\Shots.txt"));
-			resultShotRangeFile = new File(resultsPath.concat("\\Visual Data\\ShotRange.txt"));
-		}
-		else if (OS.indexOf("mac") >= 0) {
-			resultShotFile = new File(resultsPath.concat("/Visual Data/Shots.txt"));
-			resultShotRangeFile = new File(resultsPath.concat("/Visual Data/ShotRange.txt"));
-		}
-
+		File resultShotFile = new File(resultsPath.concat("\\Visual Data\\Shots.txt"));
+		File resultShotRangeFile = new File(resultsPath.concat("\\Visual Data\\ShotRange.txt"));
     	
 		FileWriter resultShotRangeWriter = null;
     	FileWriter resultWriter = null;
