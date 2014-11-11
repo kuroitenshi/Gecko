@@ -123,9 +123,9 @@ public class GeckoController
 						e.printStackTrace();
 					}
 					
-					AudialFeatures audialFeat = new AudialFeatures(extractionModel.getAudialSegPath(), extractionModel.getAudialFeatPath());
-					audialFeat.setFile(extractionModel.getParentResultPath());
-					audialFeat.producePraatFile();
+				AudialFeatures audialFeat = new AudialFeatures(extractionModel.getAudialSegPath(), extractionModel.getAudialDataPath());
+				audialFeat.setFile(extractionModel.getParentResultPath());
+				audialFeat.producePraatScripts();
 
 			}
 		});
