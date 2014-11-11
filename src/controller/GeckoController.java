@@ -10,6 +10,7 @@ import java.util.ArrayList;
 
 import view.FileFinderFrame;
 import view.GUI;
+import model.AudialFeatures;
 import model.AudialSegmentation;
 import model.AudioExtraction;
 import model.FrameExtraction;
@@ -32,7 +33,6 @@ public class GeckoController
 		geckoView.setClassifyButtonActionListener(new ActionListener() 
 		{
 			
-			@Override
 			public void actionPerformed(ActionEvent arg0) 
 			{	
 				
@@ -122,6 +122,10 @@ public class GeckoController
 					{
 						e.printStackTrace();
 					}
+					
+					AudialFeatures audialFeat = new AudialFeatures(extractionModel.getAudialSegPath(), extractionModel.getAudialFeatPath());
+					audialFeat.setFile(extractionModel.getParentResultPath());
+					audialFeat.producePraatFile();
 
 			}
 		});

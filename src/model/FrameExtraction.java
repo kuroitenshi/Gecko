@@ -10,8 +10,7 @@ public class FrameExtraction
 	private String visualDataPath;
 	private String audialDataPath;
 	private String audialSegPath;
-	
-
+	private String audialFeatPath;
 	private String parentResultPath;
 	
 	/**
@@ -90,6 +89,11 @@ public class FrameExtraction
 		File audialSegFolder = new File(resultsFolder.getAbsolutePath() + "/Audial Data/Segments");
 		setAudialSegPath(audialSegFolder.getAbsolutePath());
 		audialSegFolder.mkdir();
+		
+		File audialFeatFolder = new File(resultsFolder.getAbsolutePath() + "/Audial Data/Features");
+		setAudialFeatPath(audialFeatFolder.getAbsolutePath());
+		audialFeatFolder.mkdir();
+		
 	}
 	
 
@@ -151,6 +155,14 @@ public class FrameExtraction
 	public void setAudialSegPath(String audialSegPath)
 	{
 		this.audialSegPath = audialSegPath;
+	}
+
+	public String getAudialFeatPath() {
+		return audialFeatPath;
+	}
+
+	public void setAudialFeatPath(String audialFeatPath) {
+		this.audialFeatPath = audialFeatPath;
 	}
 
 	
