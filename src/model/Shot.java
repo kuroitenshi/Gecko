@@ -139,9 +139,11 @@ public class Shot
 		
 		divisor = 9 * (frameInterval) / 2;
 		visualDisturbanceValue = (counter * 1.0 / divisor);
-		
+		if(divisor == 0)
+		{
+			visualDisturbanceValue = 0;
+		}
 		return visualDisturbanceValue;
-		
 	}	
 	
 	public double computeLuminance()
@@ -208,6 +210,10 @@ public class Shot
 		}
 		
 		flamePercentageAVG /= endingFrame - startingFrame;
+		if(endingFrame-startingFrame == 0)
+		{
+			flamePercentageAVG = 0;
+		}
 		System.out.println(flamePercentageAVG);
 		return flamePercentageAVG;
 	}
@@ -223,7 +229,9 @@ public class Shot
 		int width = frame.getImage().getWidth();
 		int resolution = height * width;
 		double redTreshold = 169; // VALUE NOT YET FINAL
-		double saturationThreshold = 0.7; // VALUE NOT YET FINAL
+		// 40 to 70 normal threshold, BEAM has a 0.10 threshold
+		// play with the saturation threshold
+		double saturationThreshold = 0.7; 
 		
 		for (int i = 0; i < height; i++)
 		{

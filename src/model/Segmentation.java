@@ -102,7 +102,7 @@ public class Segmentation
 		System.out.println(imageCount);
 		 
 		/*ATOMICA's Threshold for Action Movies*/
-		double distance_threshold = 364832.02; 
+		double distance_threshold = 250567.66; 
 		
 		Histogram histA;
 		Histogram histB;

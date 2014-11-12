@@ -28,11 +28,11 @@ public class FrameExtraction
 
 		if (OS.indexOf("win") >= 0){
 			System.out.println("OS: Windows");
-			command = "ffmpeg -i " + movieFilePath + " -r 7 -f image2 " + "\"" + framesPath + "\\%d.jpeg\"";
+			command = "ffmpeg -i " + movieFilePath + " -r 16 -f image2 " + "\"" + framesPath + "\\%d.jpeg\"";
 		}
 		else if (OS.indexOf("mac") >= 0) {
 			System.out.println("OS: Mac");
-			command = "/usr/local/Cellar/ffmpeg/2.4.2/bin/ffmpeg -i " + movieFilePathMac + " -r 7 -f image2 " + framesPath + "/%d.jpeg";
+			command = "/usr/local/Cellar/ffmpeg/2.4.2/bin/ffmpeg -i " + movieFilePathMac + " -r 16 -f image2 " + framesPath + "/%d.jpeg";
 			System.out.println(command);
 		}
 		
