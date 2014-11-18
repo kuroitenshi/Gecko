@@ -214,7 +214,6 @@ public class Shot
 		{
 			flamePercentageAVG = 0;
 		}
-		System.out.println(flamePercentageAVG);
 		return flamePercentageAVG;
 	}
 	
@@ -231,7 +230,7 @@ public class Shot
 		double redTreshold = 169; // VALUE NOT YET FINAL
 		// 40 to 70 normal threshold, BEAM has a 0.10 threshold
 		// play with the saturation threshold
-		double saturationThreshold = 0.7; 
+		double saturationThreshold = 0.10; 
 		
 		for (int i = 0; i < height; i++)
 		{
