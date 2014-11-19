@@ -16,7 +16,7 @@ public class Segmentation
 	private String framesPath;
 	private String resultsPath;
 	private int shotNumber;
-	
+	private int totalPix = 0;
 	public Segmentation(String framesPath, String resultsPath) 
 	{
 		this.framesPath = framesPath;	
@@ -48,7 +48,7 @@ public class Segmentation
 		
 		int width = buffImage.getWidth();
 		int height = buffImage.getHeight();			
-						
+		totalPix = width * height;				
     	for(int y = 0; y < height; y++)
     	{
     		for(int x = 0; x < width; x++)
@@ -83,7 +83,7 @@ public class Segmentation
            eucDist += Math.sqrt(Math.pow(Ha.getRED()[i] - Hb.getRED()[i], 2) + Math.pow(Ha.getGREEN()[i] - Hb.getGREEN()[i], 2) + Math.pow(Ha.getBLUE()[i] - Hb.getBLUE()[i], 2));
         }
         
-        return eucDist;
+        return eucDist/totalPix;
     }
 	
 	/**
@@ -102,7 +102,7 @@ public class Segmentation
 		System.out.println(imageCount);
 		 
 		/*ATOMICA's Threshold for Action Movies*/
-		double distance_threshold = 250567.66; 
+		double distance_threshold = 0.491387; 
 		
 		Histogram histA;
 		Histogram histB;
@@ -123,7 +123,6 @@ public class Segmentation
 			
 			histA = findHistogram(image1);
 			histB = findHistogram(image2);
-		
 			imageDiff = euclideanDist(histA, histB);
 			
             if (imageDiff < distance_threshold)
