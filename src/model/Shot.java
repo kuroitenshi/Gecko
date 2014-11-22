@@ -16,6 +16,9 @@ public class Shot
 	private double visualDisturbanceValue;
 	private double luminanceValue;
 	private double flamePercentageValue;
+	private double audioPowerValue;
+	private double audioEnergyValue;
+	private double audioPaceValue;
 	private double VD_THRESHOLD;
 	private double FLAME_THRESHOLD;
 
@@ -190,6 +193,8 @@ public class Shot
 		luminanceValue = 0.2126 * rgb.getR() + 0.7152 * rgb.getG() + 0.0722 * rgb.getB();
 		pixelSum = luminanceValue / (height * width);	
 		
+		
+		
 		return pixelSum;
 	}
 	
@@ -214,6 +219,7 @@ public class Shot
 		{
 			flamePercentageAVG = 0;
 		}
+		System.out.println(flamePercentageAVG);
 		return flamePercentageAVG;
 	}
 	
@@ -230,7 +236,7 @@ public class Shot
 		double redTreshold = 169; // VALUE NOT YET FINAL
 		// 40 to 70 normal threshold, BEAM has a 0.10 threshold
 		// play with the saturation threshold
-		double saturationThreshold = 0.10; 
+		double saturationThreshold = 0.7; 
 		
 		for (int i = 0; i < height; i++)
 		{
@@ -312,5 +318,35 @@ public class Shot
 	public void setFlamePercentageValue(double flamePercentageValue) 
 	{
 		this.flamePercentageValue = flamePercentageValue;
+	}
+
+	public double getAudioPowerValue() 
+	{
+		return audioPowerValue;
+	}
+
+	public void setAudioPowerValue(double audioPowerValue)
+	{
+		this.audioPowerValue = audioPowerValue;
+	}
+
+	public double getAudioEnergyValue() 
+	{
+		return audioEnergyValue;
+	}
+
+	public void setAudioEnergyValue(double audioEnergyValue) 
+	{
+		this.audioEnergyValue = audioEnergyValue;
+	}
+
+	public double getAudioPaceValue() 
+	{
+		return audioPaceValue;
+	}
+
+	public void setAudioPaceValue(double audioPaceValue) 
+	{
+		this.audioPaceValue = audioPaceValue;
 	}
 }
