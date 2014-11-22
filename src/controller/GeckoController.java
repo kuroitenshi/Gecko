@@ -8,8 +8,10 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import javax.swing.JFrame;
+
 import view.FileFinderFrame;
-import view.GUI;
+import view.ProgressFrame;
 import model.AudialFeatures;
 import model.AudialSegmentation;
 import model.AudioExtraction;
@@ -19,32 +21,34 @@ import model.Shot;
 
 public class GeckoController 
 {
-	FrameExtraction extractionModel;
-	GUI geckoView;
+	FrameExtraction extractionModel = new FrameExtraction();
+	FileFinderFrame fileFinder;
 	
-	public GeckoController(FrameExtraction extractionModel, GUI geckoView)
+	public GeckoController()
 	{
-		this.extractionModel = extractionModel;
-		this.geckoView = geckoView;		
-		setActionListeners();
-	}
-	public void setActionListeners()
-	{
-		geckoView.setClassifyButtonActionListener(new ActionListener() 
+		
+		fileFinder = new FileFinderFrame();
+		
+		
+		fileFinder.go_button.addActionListener(new ActionListener() 
 		{
 			
 			public void actionPerformed(ActionEvent arg0) 
 			{	
 				
-				FileFinderFrame fileFinder = new FileFinderFrame();
 				String filepath = fileFinder.getFilepath();
-				fileFinder.dispose();
+				
+				ProgressFrame progressFrame = new ProgressFrame();
+				
+				
+				
 				File movieFileChosen = new File(filepath);
 				ArrayList<Double> shotVisualDisturbance = new ArrayList<Double>();
 				ArrayList<Double> shotLuminance = new ArrayList<Double>();
 				ArrayList<Double> shotFlamePercentage = new ArrayList<Double>();
 			
-					
+				
+				
 				extractionModel.setMovieFile(movieFileChosen);
 				extractionModel.extractImages();
 				
@@ -128,6 +132,7 @@ public class GeckoController
 				audialFeat.producePraatScripts();
 
 			}
-		});
+		});		
+		
 	}
 }

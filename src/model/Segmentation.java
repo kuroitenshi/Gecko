@@ -38,6 +38,9 @@ public class Segmentation
 		int[] tempGreen = new int[16];
 		int[] tempBlue = new int[16];
        
+	
+		System.out.println(image.getPath());
+		
 		try 
 		{
         	buffImage = ImageIO.read(image);
