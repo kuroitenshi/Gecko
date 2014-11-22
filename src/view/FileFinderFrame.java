@@ -25,7 +25,7 @@ public class FileFinderFrame extends JFrame
 	private static final long serialVersionUID = 1L;
 	private static String filepath = "";
 	JPanel cards = new JPanel(new CardLayout());
-	JButton go_button = new JButton("Classify");
+	public JButton go_button = new JButton("Classify");
 	JLabel fileLabel;
 
 	
