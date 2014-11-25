@@ -1,9 +1,15 @@
 package model;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedWriter;
+import java.io.DataInputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 
 import model.Objects.StreamConsumer;
@@ -47,13 +53,13 @@ public class AudialFeatures
 		File paceFile = new File(praatPath.concat("\\AudialPace.txt"));
 		for(int i = 1; i <= fileCount; i++)
 		{			
-			script = script.append("Read from file: "+"\""+segmentPath.concat("\\"+i+".wav")+"\"" + "\r\n");			
-			script = script.append("energy$ = Get energy: 0, 0" + "\r\n");
-			script = script.append("power$ = Get power: 0, 0" + "\r\n");			
-			script = script.append("writeInfoLine: "+ "\"" +"Audio Energy= "+"\""+", energy$" + "\r\n");
-			script = script.append("writeInfoLine: "+ "\""+"Audio Power= "+"\""+",power$" + "\r\n");			
-			script = script.append("appendFileLine: "+"\""+ energyFile.getAbsolutePath() +"\""+", " + "\"Shot " + i + " \"" + "+ energy$"+ "\r\n");			
-			script = script.append("appendFileLine: "+"\""+ powerFile.getAbsolutePath() +"\""+", " + "\"Shot " + i + " \"" + "+ power$"+ "\r\n");
+//			script = script.append("Read from file: "+"\""+segmentPath.concat("\\"+i+".wav")+"\"" + "\r\n");			
+//			script = script.append("energy$ = Get energy: 0, 0" + "\r\n");
+//			script = script.append("power$ = Get power: 0, 0" + "\r\n");			
+//			script = script.append("writeInfoLine: "+ "\"" +"Audio Energy= "+"\""+", energy$" + "\r\n");
+//			script = script.append("writeInfoLine: "+ "\""+"Audio Power= "+"\""+",power$" + "\r\n");			
+//			script = script.append("appendFileLine: "+"\""+ energyFile.getAbsolutePath() +"\""+", " + "\"Shot " + i + " \"" + "+ energy$"+ "\r\n");			
+//			script = script.append("appendFileLine: "+"\""+ powerFile.getAbsolutePath() +"\""+", " + "\"Shot " + i + " \"" + "+ power$"+ "\r\n");
 			findPeak(i, paceFile, segmentPath);
 		}
 		
@@ -81,18 +87,33 @@ public class AudialFeatures
 	 * @param segmentPath2 
 	 */
 	private void findPeak(int shotNumber, File paceFile, String segmentPath2) {
-		// TODO Auto-generated method stub
 		try 
 		{
 			WavFile wavFile = WavFile.openWavFile(new File(segmentPath2.concat("\\"+shotNumber+".wav")));
-			double samplesPerPixel = wavFile.getSampleRate()/576; // 576 is from visbounds.width
 			ArrayList<Double> distance = new ArrayList<Double>();
+			ArrayList<Short> maxVals = new ArrayList<Short>();
+			Path path = Paths.get((segmentPath2.concat("\\"+shotNumber+".wav")));
+			StringBuilder peakSB = new StringBuilder();
+			File peakPath = new File((praatPath.concat("\\Peaks.txt")));
+			StringBuilder peaks = new StringBuilder();
+			
+			
+			double samplesPerPixel = wavFile.getSampleRate()/576; // 576 is from visbounds.width
+			byte[] data = Files.readAllBytes(path);
+			wavFile.display();
 			int maxSampleRate = (int)(samplesPerPixel*576);
+			maxSampleRate = (int) Math.min(maxSampleRate, wavFile.getSampleRate());
 			int index = 0;
 			int previousX = 0;
 			int previousY = 0;
 			int i = 0;
 			
+			System.out.println("SHOT: " + shotNumber);
+			System.out.println("SAMPLE RATE: " + wavFile.getSampleRate());
+			System.out.println("SAMPLES PER PIXEL: " + samplesPerPixel);
+			System.out.println("Max Sample Rate: " + maxSampleRate);
+			
+			peakSB = peakSB.append("SHOT: " + shotNumber + "\r\n");
 			while(index < maxSampleRate)
 			{
 				short maxVal = -32767;
@@ -100,10 +121,14 @@ public class AudialFeatures
 				
 				for(int x = 0; x < samplesPerPixel; x++)
 				{
-//					maxVal = Math.Max(maxVal, m_Wavefile.Data[x + index]);
-//                    minVal = Math.Min(minVal, m_Wavefile.Data[x + index]);
+					System.out.println("DATA SIZE: " + data.length +", X+INDEX: " + x +" "+ index +", []: " +(x+index));
+					// IDK IF THIS IS CORRECT DATA ARRAY
+					maxVal = (short) Math.max(maxVal, data[x+index]);
+					minVal = (short) Math.max(minVal, data[x+index]);
 				}
 				
+				peaks = peaks.append(maxVal + "\r\n");
+				maxVals.add(maxVal);
 				int scaledMinVal = (int)(((minVal + 32768) * 376) / 65536);
 				int scaledMaxVal = (int)(((maxVal + 32768) * 376) / 65536);
 				
@@ -131,43 +156,61 @@ public class AudialFeatures
 			}
 			
 			int numPeaks = 0;
-//			string srB;//sr buffer
-//            List<int> rawList = new List<int>();
-//            int s1 = 0, s2 = 0, s3 = 0;
-//
-//            while ((srB = sr.ReadLine()) != null)
-//            {
-//                rawList.Add(Convert.ToInt32(srB));
-//            }
-//            sr.Close();
-//
-//            tw.WriteLine("0");
-//            int total = 0;
-//            for (int k = 0; k < rawList.Count; k++)
-//            {
-//                s1 = rawList[k];
-//                if (k + 1 < rawList.Count)
-//                    s2 = rawList[k + 1];
-//                if (k + 2 < rawList.Count)
-//                    s3 = rawList[k + 2];
-//                if (k + 2 > rawList.Count) break;
-//
-//                if (s1 < s2 && s2 > s3)
-//                {
-//                    tw.WriteLine(s2);
-//                    total++;
-//                }
-//                else
-//                    tw.WriteLine("0");
-//            }
-//            tw.WriteLine("PEAK: " + total + " TOTAL: " + rawList.Count);
-//            tw.Close();
 			
-			
+            int s1 = 0;
+            int s2 = 0;
+            int s3 = 0;
+            for (int k = 0; k < maxVals.size(); k++)
+            {
+                s1 = maxVals.get(k);
+                if (k + 1 < maxVals.size())
+                {
+                    s2 = maxVals.get(k+1);
+                }
+                if (k + 2 < maxVals.size())
+                {
+                    s3 = maxVals.get(k+2);
+                }
+                if (k + 2 > maxVals.size()) 
+                {
+                	break;
+                }
+
+                if (s1 < s2 && s2 > s3)
+                {
+                	peakSB = peakSB.append(s2 + "\r\n");
+                    numPeaks++;
+                }
+                else peakSB = peakSB.append(0 + "\r\n");
+            }
+            
+            peakSB = peakSB.append("NUMBER OF PEAKS: " + numPeaks + "TOTAL: " + maxVals.size() + "\r\n");
+            
+            FileWriter peakWriter = null;
+            FileWriter peaksWriter = null;
+        	try 
+    		{
+        		peakWriter = new FileWriter(paceFile.getAbsoluteFile());			
+    			
+    			BufferedWriter peakBW = new BufferedWriter(peakWriter);
+    	    	
+    			peakBW.write(peakSB.toString());
+    			peakBW.close();
+    			
+    			peaksWriter = new FileWriter(peakPath.getAbsoluteFile());			
+    			
+    			BufferedWriter peakBBBW = new BufferedWriter(peaksWriter);
+    	    	
+    			peakBBBW.write(peaks.toString());
+    			peakBBBW.close();
+    		} 
+        	catch (IOException e) 
+    		{
+    			e.printStackTrace();
+    		};
 		} 
 		catch (IOException | WavFileException e) 
 		{
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
