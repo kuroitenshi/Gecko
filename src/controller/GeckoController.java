@@ -35,7 +35,7 @@ public class GeckoController
 
 				String filepath = fileFinder.getFilepath();
 				fileFinder.dispose();
-
+				
 				ProgressFrame progressFrame = new ProgressFrame();
 
 				File movieFileChosen = new File(filepath);
@@ -103,15 +103,24 @@ public class GeckoController
 					shotList.add(shot);
 				}
 
-				File resultVisualDisturbanceFile = new File(extractionModel
-						.getParentResultPath().concat(
-								"\\Visual Data\\Visual Disturbance Values.txt"));
-				File resultLuminanceFile = new File(extractionModel
-						.getParentResultPath().concat(
-								"\\Visual Data\\Luminance Values.txt"));
-				File resultFlamePercentageFile = new File(extractionModel
-						.getParentResultPath().concat(
-								"\\Visual Data\\Flame Percentage Valuess.txt"));
+				// ADDED
+				String OS = System.getProperty("os.name").toLowerCase();
+
+				File resultVisualDisturbanceFile = null;
+				File resultLuminanceFile = null;
+				File resultFlamePercentageFile = null;
+				
+				if (OS.indexOf("win") >= 0){
+					resultVisualDisturbanceFile = new File(extractionModel.getParentResultPath().concat("\\Visual Data\\Visual Disturbance Values.txt"));
+					resultLuminanceFile = new File(extractionModel.getParentResultPath().concat("\\Visual Data\\Luminance Values.txt"));
+					resultFlamePercentageFile = new File(extractionModel.getParentResultPath().concat("\\Visual Data\\Flame Percentage Valuess.txt"));
+				}
+				else if (OS.indexOf("mac") >= 0) {
+					resultVisualDisturbanceFile = new File(extractionModel.getParentResultPath().concat("/Visual Data/Visual Disturbance Values.txt"));
+					resultLuminanceFile = new File(extractionModel.getParentResultPath().concat("/Visual Data/Luminance Values.txt"));
+					resultFlamePercentageFile = new File(extractionModel.getParentResultPath().concat("/Visual Data/Flame Percentage Valuess.txt"));
+				}
+				// END ADDED
 
 				FileWriter resultVisualDisturbanceWriter = null;
 				FileWriter resultLuminanceWriter = null;
