@@ -14,6 +14,7 @@ public class GenreClassifier
 	/*-------------ACTION CONSTANTS------------------*/
 	/*-----------------------------------------------*/
 	public final double ACTION_FLAME_PERCENTAGE = 0.0;
+	public final double ACTION_VISUAL_DISTURBANCE = 0.0;
 	public final double ACTION_AUDIO_ENERGY = 0.0;
 	public final double ACTION_AUDIO_PACE= 0.0;
 	
@@ -62,7 +63,7 @@ public class GenreClassifier
 									+ System.lineSeparator());
 				}
 				
-			}else if(shotList.get(i).getVisualDisturbanceValue() >= HORROR_VISUAL_DISTURBANCE)
+			}else if(shotList.get(i).getVisualDisturbanceValue() >= HORROR_VISUAL_DISTURBANCE || shotList.get(i).getVisualDisturbanceValue() >= ACTION_VISUAL_DISTURBANCE) 
 			{
 				if(shotList.get(i).getAudioEnergyValue() >= ACTION_AUDIO_ENERGY)
 				{
