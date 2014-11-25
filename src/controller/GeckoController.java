@@ -10,6 +10,7 @@ import java.util.ArrayList;
 
 import view.FileFinderFrame;
 import view.ProgressFrame;
+import view.ResultsFrame;
 import model.AudialFeatures;
 import model.AudialSegmentation;
 import model.AudioExtraction;
@@ -156,6 +157,10 @@ public class GeckoController
 				{
 					e.printStackTrace();
 				};
+				
+				progressFrame.dispose();
+				String movieName = movieFileChosen.getName().substring(0, movieFileChosen.getName().lastIndexOf('.'));
+				new ResultsFrame(movieName);
 
 				AudioExtraction audioExtractor = new AudioExtraction(
 						extractionModel.getParentResultPath());
@@ -189,6 +194,7 @@ public class GeckoController
 				
 				//GenreClassifier movieGenreClassifier = new GenreClassifier(shotList, extractionModel.getParentResultPath());
 				//movieGenreClassifier.classifyMovieGenre();
+				
 
 			}
 		});
