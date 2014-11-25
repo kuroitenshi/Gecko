@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -30,7 +32,7 @@ public class ResultsFrame extends JFrame {
 	
 	public ResultsFrame(String movieName) {
 		
-		super("Classifying \"" + movieName + "\"");
+		super("Gecko Movie Classifier");
 		this.movieName = movieName;
 		
 		actionPercent = 2;
@@ -51,6 +53,7 @@ public class ResultsFrame extends JFrame {
         
 		setup(chartPanel);		
 		
+		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		pack();
 		setVisible(true);
 	}
@@ -58,15 +61,15 @@ public class ResultsFrame extends JFrame {
 	public void setup(ChartPanel chartPanel) {
 		
 		JLabel movieLabel = new JLabel(movieName);
+		movieLabel.setFont(new Font("Sans Serif", Font.BOLD, 16));
 		movieLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-		movieLabel.setFont(new Font("Sans Serif", Font.PLAIN, 20));
 		
-		JLabel classificationLabel = new JLabel("We think this movie is " + getGenre() + ".");
+		JLabel classificationLabel = new JLabel("Classified as " + getGenre() + ".");
+		classificationLabel.setFont(new Font("Sans Serif", Font.PLAIN, 14));
 		classificationLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
 		getContentPane().add(Box.createRigidArea(new Dimension(0, 20)));
 		getContentPane().add(movieLabel);
-		getContentPane().add(Box.createRigidArea(new Dimension(0, 20)));
 		getContentPane().add(classificationLabel);
 		getContentPane().add(Box.createRigidArea(new Dimension(0, 20)));
 
@@ -100,6 +103,45 @@ public class ResultsFrame extends JFrame {
 		getContentPane().add(Box.createRigidArea(new Dimension(0, 20)));
 
 		
+		viewAllShotsBtn.addActionListener(new ActionListener() {
+			 
+            public void actionPerformed(ActionEvent e)
+            {
+            	new ShotFrame();
+            }
+        });
+		
+		viewActShotsBtn.addActionListener(new ActionListener() {
+			 
+            public void actionPerformed(ActionEvent e)
+            {
+                new ShotFrame();
+            }
+        });
+		
+		viewComShotsBtn.addActionListener(new ActionListener() {
+			 
+            public void actionPerformed(ActionEvent e)
+            {
+            	new ShotFrame();
+            }
+        });
+		
+		viewDrmShotsBtn.addActionListener(new ActionListener() {
+			 
+            public void actionPerformed(ActionEvent e)
+            {
+            	new ShotFrame();
+            }
+        });
+		
+		viewHorShotsBtn.addActionListener(new ActionListener() {
+			 
+            public void actionPerformed(ActionEvent e)
+            {
+            	new ShotFrame();
+            }
+        });
 		
 	}
 	
