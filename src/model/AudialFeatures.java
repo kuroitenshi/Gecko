@@ -1,10 +1,13 @@
 package model;
 
 import java.io.BufferedInputStream;
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -21,6 +24,12 @@ public class AudialFeatures
 	private String segmentPath;
 	private String directoryMain;
 	private String praatPath;
+	private String audioEnergyPath;
+	
+
+	private String audioPowerPath;
+	private String audioPacePath;
+	
 	
 	public void setFile(String resultPath)
 	{
@@ -49,8 +58,12 @@ public class AudialFeatures
 		
 		File praatFile = new File(praatPath.concat("\\Features.praat"));
 		File energyFile = new File (praatPath.concat("\\AudialEnergy.txt"));
+		setAudioEnergyPath(energyFile.getAbsolutePath());
 		File powerFile = new File (praatPath.concat("\\AudialPower.txt"));
+		setAudioPowerPath(powerFile.getAbsolutePath());
 		File paceFile = new File(praatPath.concat("\\AudialPace.txt"));
+		setAudioPacePath(paceFile.getAbsolutePath());
+		
 		for(int i = 1; i <= fileCount; i++)
 		{			
 //			script = script.append("Read from file: "+"\""+segmentPath.concat("\\"+i+".wav")+"\"" + "\r\n");			
@@ -80,6 +93,41 @@ public class AudialFeatures
 							
 		executePraatScript(praatFile.getAbsolutePath());
 	}
+	/*Set audio features for shots */
+	public void setAudioFeatures(ArrayList<Shot> shotList) throws IOException
+	{
+		FileReader audioPowerReader = new FileReader(getAudioPowerPath());
+		BufferedReader audioPowerBuffReader = new BufferedReader(audioPowerReader);
+		FileReader audioEnergyReader = new FileReader(getAudioEnergyPath());
+		BufferedReader audioEnergyBuffReader = new BufferedReader(audioEnergyReader);
+		//FileReader audioPaceReader = new FileReader(getAudioPacePath());
+		//BufferedReader audioPaceBuffReader = new BufferedReader(audioPaceReader);
+		
+		String audioPowerValue;
+		ArrayList<String> audioPowerStrings = new ArrayList<String>();
+		String audioEnergyValue;
+		ArrayList<String> audioEnergyStrings = new ArrayList<String>();
+		
+		while((audioPowerValue = audioPowerBuffReader.readLine()) != null)
+		{			
+			audioPowerStrings.add(audioPowerValue.split(" ")[2]);
+		}
+		
+		while((audioEnergyValue = audioEnergyBuffReader.readLine()) != null)
+		{		
+			audioEnergyStrings.add(audioEnergyValue.split(" ")[2]);
+		}
+		
+		for(int i=0; i < shotList.size(); i++)
+		{
+			shotList.get(i).setAudioEnergyValue(Double.parseDouble(audioEnergyStrings.get(i)));
+			shotList.get(i).setAudioPowerValue(Double.parseDouble(audioPowerStrings.get(i)));
+		}
+		
+	
+	}
+	
+	
 	/**
 	 * Finds the peak of an audio file
 	 * @param shotNumber
@@ -244,5 +292,35 @@ public class AudialFeatures
 		{			
 			e.printStackTrace();
 		}
+	}
+	
+	public String getAudioEnergyPath()
+	{
+		return audioEnergyPath;
+	}
+
+	public void setAudioEnergyPath(String audioEnergyPath) 
+	{
+		this.audioEnergyPath = audioEnergyPath;
+	}
+
+	public String getAudioPowerPath() 
+	{
+		return audioPowerPath;
+	}
+
+	public void setAudioPowerPath(String audioPowerPath)
+	{
+		this.audioPowerPath = audioPowerPath;
+	}
+
+	public String getAudioPacePath()
+	{
+		return audioPacePath;
+	}
+
+	public void setAudioPacePath(String audioPacePath) 
+	{
+		this.audioPacePath = audioPacePath;
 	}
 }
