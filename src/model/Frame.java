@@ -1,39 +1,26 @@
 package model;
 
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
-import javax.imageio.ImageIO;
 
 public class Frame
 {
-	private BufferedImage image;
 	private int key;
 	private ArrayList<RGB> rgb;	
+	
+
 	private String directory;
 	
 	
 	public Frame(int key, String directory)
 	{
-		this.directory = directory;
-		File file = new File(this.directory);
-		try 
-		{
-			image = ImageIO.read(file);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		this.directory = directory;				
+		this.setKey(key);		
 		
-		this.setKey(key);
-		rgb = new ArrayList<RGB>();
-		this.computeRGB();
 	}
-
-
-	private void computeRGB() 
+	public ArrayList<RGB> computeRGB(BufferedImage image) 
 	{
-	
+		ArrayList<RGB> rgb = new ArrayList<RGB>();
 		RGB rgb1, rgb2, rgb3, rgb4, rgb5, rgb6, rgb7, rgb8, rgb9;
 		int width = image.getWidth();
 		int height = image.getHeight();	
@@ -153,16 +140,8 @@ public class Frame
 		rgb.add(rgb7);
 		rgb.add(rgb8);
 		rgb.add(rgb9);
-	}
-	
-	public BufferedImage getImage() 
-	{
-		return image;
-	}
-
-	public void setImage(BufferedImage image) 
-	{
-		this.image = image;
+		
+		return rgb;
 	}
 
 	public int getKey() 
@@ -183,5 +162,10 @@ public class Frame
 	public RGB getRgb(int index) 
 	{
 		return rgb.get(index);
+	}
+	
+	public void setRgb(ArrayList<RGB> rgb)
+	{
+		this.rgb = rgb;
 	}
 }
