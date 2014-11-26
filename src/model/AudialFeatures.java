@@ -147,6 +147,7 @@ public class AudialFeatures
 			
 			
 			double samplesPerPixel = wavFile.getSampleRate()/576; // 576 is from visbounds.width
+			// EDIT THIS V
 			byte[] data = Files.readAllBytes(path);
 			wavFile.display();
 			int maxSampleRate = (int)(samplesPerPixel*576);
@@ -162,19 +163,19 @@ public class AudialFeatures
 			System.out.println("Max Sample Rate: " + maxSampleRate);
 			
 			peakSB = peakSB.append("SHOT: " + shotNumber + "\r\n");
-			while(index < maxSampleRate)
+			while(index < maxSampleRate && shotNumber < 5)
 			{
 				short maxVal = -32767;
 				short minVal = 32767;
-				
+				System.out.println("SHOT: " + shotNumber);
 				for(int x = 0; x < samplesPerPixel; x++)
 				{
-					System.out.println("DATA SIZE: " + data.length +", X+INDEX: " + x +" "+ index +", []: " +(x+index));
+					System.out.println("data[x+index] = " + data[x+index]);
 					// IDK IF THIS IS CORRECT DATA ARRAY
 					maxVal = (short) Math.max(maxVal, data[x+index]);
 					minVal = (short) Math.max(minVal, data[x+index]);
 				}
-				
+				System.out.println("PEAK = " + maxVal);
 				peaks = peaks.append(maxVal + "\r\n");
 				maxVals.add(maxVal);
 				int scaledMinVal = (int)(((minVal + 32768) * 376) / 65536);

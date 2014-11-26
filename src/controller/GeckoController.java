@@ -168,11 +168,11 @@ public class GeckoController
 					Segmentation movieSegmentation = new Segmentation(extractionModel.getFramesPath(), extractionModel.getParentResultPath());
 					movieSegmentation.segmentMovie();
 						
-					
-					System.out.println("VISUAL FEATURE VALUES");
-					StringBuilder visualDisturbanceValues = new StringBuilder();
-					StringBuilder visualLuminanceValues = new StringBuilder();
-					StringBuilder visualFlamePercentageValues = new StringBuilder();
+//					
+//					System.out.println("VISUAL FEATURE VALUES");
+//					StringBuilder visualDisturbanceValues = new StringBuilder();
+//					StringBuilder visualLuminanceValues = new StringBuilder();
+//					StringBuilder visualFlamePercentageValues = new StringBuilder();
 					ArrayList<Shot> shotList = new ArrayList<Shot>();
 					
 					for(int i = 1; i <= movieSegmentation.getShotRangeNumber(); i++)						
@@ -187,56 +187,56 @@ public class GeckoController
 							shot = new Shot(i, extractionModel.getVisualDataPath() + "/ShotRange.txt", extractionModel.getFramesPath());
 						}
 						
-						//SET VISUAL DISTURBANCE VALUE
-						shot.setVisualDisturbanceValue(shot.computeVisualDisturbance());
-						shotVisualDisturbance.add(shot.getVisualDisturbanceValue());
-						
-						//SET LUMINANCE VALUE3
-						shot.setLuminanceValue(shot.computeLuminance());
-						shotLuminance.add(shot.getLuminanceValue());
-						
-						//SET FLAME PERCENTAGE VALUE
-						shot.setFlamePercentageValue(shot.computeFlamePercentage());
-						shotFlamePercentage.add(shot.getFlamePercentageValue());
-						
-						visualDisturbanceValues = visualDisturbanceValues.append("SHOT " + i + " VALUE " + shotVisualDisturbance.get(i-1) + System.lineSeparator());
-						visualLuminanceValues = visualLuminanceValues.append("SHOT " + i + " VALUE " + shotLuminance.get(i-1) + System.lineSeparator());						
-						visualFlamePercentageValues = visualFlamePercentageValues.append("SHOT " + i + " VALUE " + shotFlamePercentage.get(i-1) + System.lineSeparator());
-						
+//						//SET VISUAL DISTURBANCE VALUE
+//						shot.setVisualDisturbanceValue(shot.computeVisualDisturbance());
+//						shotVisualDisturbance.add(shot.getVisualDisturbanceValue());
+//						
+//						//SET LUMINANCE VALUE3
+//						shot.setLuminanceValue(shot.computeLuminance());
+//						shotLuminance.add(shot.getLuminanceValue());
+//						
+//						//SET FLAME PERCENTAGE VALUE
+//						shot.setFlamePercentageValue(shot.computeFlamePercentage());
+//						shotFlamePercentage.add(shot.getFlamePercentageValue());
+//						
+//						visualDisturbanceValues = visualDisturbanceValues.append("SHOT " + i + " VALUE " + shotVisualDisturbance.get(i-1) + System.lineSeparator());
+//						visualLuminanceValues = visualLuminanceValues.append("SHOT " + i + " VALUE " + shotLuminance.get(i-1) + System.lineSeparator());						
+//						visualFlamePercentageValues = visualFlamePercentageValues.append("SHOT " + i + " VALUE " + shotFlamePercentage.get(i-1) + System.lineSeparator());
+//						
 						shotList.add(shot);
 					}
-						
-					File resultVisualDisturbanceFile = new File(extractionModel.getParentResultPath().concat("\\Visual Data\\Visual Disturbance Values.txt"));
-					File resultLuminanceFile = new File(extractionModel.getParentResultPath().concat("\\Visual Data\\Luminance Values.txt"));
-					File resultFlamePercentageFile = new File(extractionModel.getParentResultPath().concat("\\Visual Data\\Flame Percentage Valuess.txt"));
-				    
-					FileWriter resultVisualDisturbanceWriter = null;
-				    FileWriter resultLuminanceWriter = null;
-				    FileWriter resultFlamePercentageWriter = null;
-				    
-				    try 
-					{								
-						resultVisualDisturbanceWriter = new FileWriter(resultVisualDisturbanceFile.getAbsoluteFile());
-						resultLuminanceWriter = new FileWriter(resultLuminanceFile.getAbsoluteFile());
-						resultFlamePercentageWriter = new FileWriter(resultFlamePercentageFile.getAbsoluteFile());
-						
-					   	BufferedWriter visualDisturbanceBufferedWriter = new BufferedWriter(resultVisualDisturbanceWriter);
-						BufferedWriter luminanceBufferedWriter = new BufferedWriter(resultLuminanceWriter);				
-						BufferedWriter flamePercentageBufferedWriter = new BufferedWriter(resultFlamePercentageWriter);		
-							
-						visualDisturbanceBufferedWriter.write(visualDisturbanceValues.toString());
-				    	visualDisturbanceBufferedWriter.close();
-				    	
-					   	luminanceBufferedWriter.write(visualLuminanceValues.toString());
-						luminanceBufferedWriter.close();
-						
-						flamePercentageBufferedWriter.write(visualFlamePercentageValues.toString());
-						flamePercentageBufferedWriter.close();
-					} 
-				    catch (IOException e) 
-					{
-						e.printStackTrace();
-					};				
+//						
+//					File resultVisualDisturbanceFile = new File(extractionModel.getParentResultPath().concat("\\Visual Data\\Visual Disturbance Values.txt"));
+//					File resultLuminanceFile = new File(extractionModel.getParentResultPath().concat("\\Visual Data\\Luminance Values.txt"));
+//					File resultFlamePercentageFile = new File(extractionModel.getParentResultPath().concat("\\Visual Data\\Flame Percentage Valuess.txt"));
+//				    
+//					FileWriter resultVisualDisturbanceWriter = null;
+//				    FileWriter resultLuminanceWriter = null;
+//				    FileWriter resultFlamePercentageWriter = null;
+//				    
+//				    try 
+//					{								
+//						resultVisualDisturbanceWriter = new FileWriter(resultVisualDisturbanceFile.getAbsoluteFile());
+//						resultLuminanceWriter = new FileWriter(resultLuminanceFile.getAbsoluteFile());
+//						resultFlamePercentageWriter = new FileWriter(resultFlamePercentageFile.getAbsoluteFile());
+//						
+//					   	BufferedWriter visualDisturbanceBufferedWriter = new BufferedWriter(resultVisualDisturbanceWriter);
+//						BufferedWriter luminanceBufferedWriter = new BufferedWriter(resultLuminanceWriter);				
+//						BufferedWriter flamePercentageBufferedWriter = new BufferedWriter(resultFlamePercentageWriter);		
+//							
+//						visualDisturbanceBufferedWriter.write(visualDisturbanceValues.toString());
+//				    	visualDisturbanceBufferedWriter.close();
+//				    	
+//					   	luminanceBufferedWriter.write(visualLuminanceValues.toString());
+//						luminanceBufferedWriter.close();
+//						
+//						flamePercentageBufferedWriter.write(visualFlamePercentageValues.toString());
+//						flamePercentageBufferedWriter.close();
+//					} 
+//				    catch (IOException e) 
+//					{
+//						e.printStackTrace();
+//					};				
 						
 					AudioExtraction audioExtractor = new AudioExtraction(extractionModel.getParentResultPath());
 					audioExtractor.setFile(movieFileChosen);
