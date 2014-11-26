@@ -107,7 +107,7 @@ public class ResultsFrame extends JFrame {
 			 
             public void actionPerformed(ActionEvent e)
             {
-            	new ShotFrame();
+            	new ShotFrame("All");
             }
         });
 		
@@ -115,7 +115,7 @@ public class ResultsFrame extends JFrame {
 			 
             public void actionPerformed(ActionEvent e)
             {
-                new ShotFrame();
+                new ShotFrame("Action");
             }
         });
 		
@@ -123,7 +123,7 @@ public class ResultsFrame extends JFrame {
 			 
             public void actionPerformed(ActionEvent e)
             {
-            	new ShotFrame();
+            	new ShotFrame("Comedy");
             }
         });
 		
@@ -131,7 +131,7 @@ public class ResultsFrame extends JFrame {
 			 
             public void actionPerformed(ActionEvent e)
             {
-            	new ShotFrame();
+            	new ShotFrame("Drama");
             }
         });
 		
@@ -139,7 +139,7 @@ public class ResultsFrame extends JFrame {
 			 
             public void actionPerformed(ActionEvent e)
             {
-            	new ShotFrame();
+            	new ShotFrame("Horror");
             }
         });
 		
