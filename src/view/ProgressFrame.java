@@ -11,7 +11,7 @@ public class ProgressFrame extends JFrame {
 	
 	public ProgressFrame() {
 		
-		super("Processing...");
+		super("Gecko Movie Classifier");
 		getContentPane().setLayout(null);
 		getContentPane().setPreferredSize(new Dimension(300, 75));		
 		

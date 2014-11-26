@@ -32,7 +32,7 @@ public class FileFinderFrame extends JFrame
 	public FileFinderFrame() 
 	{
 		
-		super("Genre Classifier - Movie Selection");	
+		super("Gecko Movie Classifier");	
 		cards.setPreferredSize(new Dimension(300, 300));
 		add(cards);		
 		findfile();
