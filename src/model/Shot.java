@@ -1,14 +1,18 @@
 package model;
 
 import java.awt.Color;
+import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
+
+import javax.imageio.ImageIO;
 
 public class Shot 
 {
-	private int key;
-	private ArrayList<Frame> frames;
+	private int key;	
 	private String shotRangePath;
 	private String framePath;
 	private int startingFrame;
@@ -21,39 +25,32 @@ public class Shot
 	private double audioPaceValue;
 	private double VD_THRESHOLD;
 	private double FLAME_THRESHOLD;
+	private ArrayList<Frame> frameList = new ArrayList<Frame>();
 
 	public Shot(int key, String shotRangePath, String framePath)
 	{
+		this.shotRangePath = shotRangePath;
+		this.framePath = framePath;
 		this.setKey(key);
+		
 		startingFrame = 0;
 		endingFrame = 0;
 		visualDisturbanceValue = 0;
-		luminanceValue = 0;
-		setFlamePercentageValue(0);
+		luminanceValue = 0;				
 		VD_THRESHOLD = 0.35;
-		FLAME_THRESHOLD = 0.10; // CHANGE FLAME_THRESHOLD VALUE
-		this.shotRangePath = shotRangePath;
-		this.framePath = framePath;
-		frames = new ArrayList<Frame>();
+		FLAME_THRESHOLD = 0.10; // CHANGE FLAME_THRESHOLD VALUE				
+		
+		setFlamePercentageValue(0);
 		getFrameRange();
 		getFrames();
 		setVisualDisturbanceValue(0);
 	}
 
-	//Keep this Main for testing
-	public static void main(String[] args)
-	{
-		Shot shot = null;
-		for(int i=1; i < 72; i++)
-		{
-			shot = new Shot(i, "C:\\FFOutput\\22.Jump.Street.2014.1080p.WEB-DL.AAC2.0.H264-RARBG 01_26_10-01_28_10\\Visual Data\\ShotRange.txt",
-					"C:\\FFOutput\\22.Jump.Street.2014.1080p.WEB-DL.AAC2.0.H264-RARBG 01_26_10-01_28_10\\Frames");
-//			System.out.println(shot.computeVisualDisturbance());
-//			System.out.println(shot.computeLuminance());	
-			System.out.println(shot.computeFlamePercentage());
-		}
-	}
+
 	
+	/**
+	 * Get the range of the frames
+	 */
 	private void getFrameRange() 
 	{		
 		try
@@ -96,7 +93,8 @@ public class Shot
 				retrievedFrame = new Frame(i, framePath + "/" + i + ".jpeg" );
 			}
 			
-			frames.add(retrievedFrame);			
+			frameList.add(retrievedFrame);
+
 		}
 	}
 	
@@ -105,19 +103,37 @@ public class Shot
 		int counter = 0;
 		int temp = 0;
 		int divisor = 0;
-		int frameInterval = this.frames.get(frames.size()-1).getKey() - this.frames.get(0).getKey();
+		int frameInterval = this.frameList.get(frameList.size()-1).getKey() - this.frameList.get(0).getKey();
 		
-		for(int i = 1; i < this.frames.size(); i+=2)
+		for(int i = 1; i < this.frameList.size(); i+=2)
 		{
 			for (int j = 0; j < 9; j++)
 			{				
-				double r1 = this.frames.get(i).getRgb(j).getR();
-				double g1 = this.frames.get(i).getRgb(j).getG();
-				double b1 = this.frames.get(i).getRgb(j).getB();
+				File file1 = new File(this.frameList.get(i).getDirectory());
+				BufferedImage image1 = null;
+				try {
+					image1 = ImageIO.read(file1);
+				} catch (IOException e) {					
+					e.printStackTrace();
+				}
 				
-				double r2 = this.frames.get(i-1).getRgb(j).getR();
-				double g2 = this.frames.get(i-1).getRgb(j).getG();
-				double b2 = this.frames.get(i-1).getRgb(j).getB();
+				this.frameList.get(i).setRgb(this.frameList.get(i).computeRGB(image1));
+				double r1 = this.frameList.get(i).getRgb(j).getR();
+				double g1 = this.frameList.get(i).getRgb(j).getG();
+				double b1 = this.frameList.get(i).getRgb(j).getB();
+				
+				File file2 = new File(this.frameList.get(i-1).getDirectory());
+				BufferedImage image2 = null;
+				try {
+					image2 = ImageIO.read(file2);
+				} catch (IOException e) {					
+					e.printStackTrace();
+				}
+				
+				this.frameList.get(i-1).setRgb(this.frameList.get(i).computeRGB(image2));
+				double r2 = this.frameList.get(i-1).getRgb(j).getR();
+				double g2 = this.frameList.get(i-1).getRgb(j).getG();
+				double b2 = this.frameList.get(i-1).getRgb(j).getB();
 				
 				double distance = Math.abs(r1 - r2) + Math.abs(g1 - g2) + Math.abs(b1 - b2);				
 				double max = Math.max(r1, r2) + Math.max(g1, g2) + Math.max(b1, b2);
@@ -158,7 +174,7 @@ public class Shot
 		{			
 			if(i == startingFrame || i  == endingFrame || i == Math.floor((startingFrame + endingFrame) /2 ))
 			{				
-				luminanceAVG += getFrameLuminance(frames.get(counter));
+				luminanceAVG += getFrameLuminance(frameList.get(counter));
 			}
 			counter++;
 		}
@@ -174,15 +190,23 @@ public class Shot
 		double luminanceValue = 0;
 		RGB rgb = new RGB();
 		
+		File file = new File(frame.getDirectory());
+		BufferedImage image = null;
+		try {
+			image = ImageIO.read(file);
+		} catch (IOException e) {					
+			e.printStackTrace();
+		}
 		
-		int width = frame.getImage().getWidth();
-		int height = frame.getImage().getHeight();
+		
+		int width = image.getWidth();
+		int height = image.getHeight();
 		
 		for (int i =0; i < height; i++)
 		{
 			for(int j =0; j < width; j++)
 			{
-				int[] currentPixel = frame.getImage().getRaster().getPixel(j, i, new int[3]);
+				int[] currentPixel = image.getRaster().getPixel(j, i, new int[3]);
 				
 				rgb.setR(rgb.getR()+ currentPixel[0]);
 				rgb.setG(rgb.getG()+ currentPixel[1]);
@@ -206,7 +230,7 @@ public class Shot
 		
 		for(int i = startingFrame; i <= endingFrame; i++)
 		{
-			flamePercentage = detectFlamePixels(frames.get(counter));
+			flamePercentage = detectFlamePixels(frameList.get(counter));
 			if(flamePercentage >= FLAME_THRESHOLD)
 			{
 				flamePercentageAVG += flamePercentage;
@@ -214,12 +238,12 @@ public class Shot
 			counter++;
 		}
 		
-		flamePercentageAVG /= endingFrame - startingFrame;
+		flamePercentageAVG /= (endingFrame - startingFrame + 1.0); 
 		if(endingFrame-startingFrame == 0)
 		{
 			flamePercentageAVG = 0;
 		}
-		System.out.println(flamePercentageAVG);
+		System.out.println("FLAME PERCENTAGE " + flamePercentageAVG);
 		return flamePercentageAVG;
 	}
 	
@@ -228,10 +252,19 @@ public class Shot
 		int flamePixels = 0;
 		double flamePercentage = 0;
 		float saturation = 0;
+		
+		File file = new File(frame.getDirectory());
+		BufferedImage image = null;
+		try {
+			image = ImageIO.read(file);
+		} catch (IOException e) {					
+			e.printStackTrace();
+		}
+		
 		RGB rgb = new RGB();
 		RGB tempRGB = new RGB();
-		int height = frame.getImage().getHeight();
-		int width = frame.getImage().getWidth();
+		int height = image.getHeight();
+		int width = image.getWidth();
 		int resolution = height * width;
 		double redTreshold = 169; // VALUE NOT YET FINAL
 		// 40 to 70 normal threshold, BEAM has a 0.10 threshold
@@ -242,7 +275,7 @@ public class Shot
 		{
 			for(int j = 0; j < width; j++)
 			{
-				int[] currentPixel = frame.getImage().getRaster().getPixel(j, i, new int[3]);
+				int[] currentPixel = image.getRaster().getPixel(j, i, new int[3]);
 				
 				tempRGB.setR(tempRGB.getR()+ currentPixel[0]);
 				tempRGB.setG(tempRGB.getG()+ currentPixel[1]);
@@ -250,6 +283,7 @@ public class Shot
 				
 				// normalize RGB Values
 				double RGBSum = tempRGB.getR() + tempRGB.getG() + tempRGB.getB();
+				
 				
 				rgb.setR(tempRGB.getR()/RGBSum);
 				rgb.setG(tempRGB.getG()/RGBSum);
@@ -260,8 +294,8 @@ public class Shot
 					if(rgb.getR() > rgb.getG() && rgb.getG() > rgb.getB())
 					{
 						saturation = calculateSaturation(tempRGB);
-						double value = ((255 - tempRGB.getR()*saturationThreshold)/redTreshold);
-						if(saturation>value)
+						double value = ((255 - tempRGB.getR())*saturationThreshold)/redTreshold;
+						if(saturation > value)
 						{
 							flamePixels++;
 						}
@@ -269,11 +303,13 @@ public class Shot
 				}
 			}
 		}
-		flamePercentage = (flamePixels)/resolution;
+		System.out.println("FLAME PIXEL " + flamePixels);
+		flamePercentage = (flamePixels * 1.0)/resolution;
 		return flamePercentage;
 	}
 
-	public float calculateSaturation(RGB rgb) {
+	public float calculateSaturation(RGB rgb) 
+	{
 		float saturation = 0;
 		float af[] = Color.RGBtoHSB((int)rgb.getR(), (int)rgb.getG(), (int)rgb.getB(), null);
 		saturation = af[1];
