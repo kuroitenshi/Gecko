@@ -72,7 +72,7 @@ public class AudialSegmentation {
 				e.printStackTrace();
 			}
 			
-			currentSecond = (lastSecond+1);
+			currentSecond += lastSecond;
 			wavCount++;
 			
 		}
