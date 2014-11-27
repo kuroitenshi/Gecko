@@ -1,7 +1,6 @@
 package model;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
@@ -11,10 +10,10 @@ import model.Objects.StreamConsumer;
 public class AudialSegmentation {
 	private String audioPath;
 	private String directoryMain;
-	private String shotRangePath;
 	
 
-	public AudialSegmentation(String audialDataPath) {
+	public AudialSegmentation(String audialDataPath)
+	{
 		this.audioPath = audialDataPath;
 	}
 
@@ -49,12 +48,15 @@ public class AudialSegmentation {
 		while((perLine = reader.readLine()) != null)
 		{
 			lineArr = perLine.split(" ");
-			lastSecond = (Integer.parseInt(lineArr[6])/16);
+			int startingFrame = Integer.parseInt(lineArr[4]);
+			int lastFrame = Integer.parseInt(lineArr[6]);
+			int numberOfFramesInShot = (lastFrame - startingFrame) + 1;
+			lastSecond = (numberOfFramesInShot/16);
+			
 			String ffmpegCmd = "ffmpeg -ss "+currentSecond+" -t "+lastSecond+"  -i "+ filePath + " "+ outPath+ "\\"+wavCount+".wav\"";
 			System.out.println(ffmpegCmd);
 			try 
 			{
-				// Fix using Threads
 				Runtime runTime = Runtime.getRuntime();
 				Process extractionProcess = runTime.exec(ffmpegCmd);									
 				
