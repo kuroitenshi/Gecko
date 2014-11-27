@@ -93,7 +93,7 @@ public class Shot
 				retrievedFrame = new Frame(i, framePath + "/" + i + ".jpeg" );
 			}
 			
-			frameList.add(retrievedFrame);
+			getFrameList().add(retrievedFrame);
 
 		}
 	}
@@ -103,13 +103,13 @@ public class Shot
 		int counter = 0;
 		int temp = 0;
 		int divisor = 0;
-		int frameInterval = this.frameList.get(frameList.size()-1).getKey() - this.frameList.get(0).getKey();
+		int frameInterval = this.getFrameList().get(getFrameList().size()-1).getKey() - this.getFrameList().get(0).getKey();
 		
-		for(int i = 1; i < this.frameList.size(); i+=2)
+		for(int i = 1; i < this.getFrameList().size(); i+=2)
 		{
 			for (int j = 0; j < 9; j++)
 			{				
-				File file1 = new File(this.frameList.get(i).getDirectory());
+				File file1 = new File(this.getFrameList().get(i).getDirectory());
 				BufferedImage image1 = null;
 				try {
 					image1 = ImageIO.read(file1);
@@ -117,12 +117,12 @@ public class Shot
 					e.printStackTrace();
 				}
 				
-				this.frameList.get(i).setRgb(this.frameList.get(i).computeRGB(image1));
-				double r1 = this.frameList.get(i).getRgb(j).getR();
-				double g1 = this.frameList.get(i).getRgb(j).getG();
-				double b1 = this.frameList.get(i).getRgb(j).getB();
+				this.getFrameList().get(i).setRgb(this.getFrameList().get(i).computeRGB(image1));
+				double r1 = this.getFrameList().get(i).getRgb(j).getR();
+				double g1 = this.getFrameList().get(i).getRgb(j).getG();
+				double b1 = this.getFrameList().get(i).getRgb(j).getB();
 				
-				File file2 = new File(this.frameList.get(i-1).getDirectory());
+				File file2 = new File(this.getFrameList().get(i-1).getDirectory());
 				BufferedImage image2 = null;
 				try {
 					image2 = ImageIO.read(file2);
@@ -130,10 +130,10 @@ public class Shot
 					e.printStackTrace();
 				}
 				
-				this.frameList.get(i-1).setRgb(this.frameList.get(i).computeRGB(image2));
-				double r2 = this.frameList.get(i-1).getRgb(j).getR();
-				double g2 = this.frameList.get(i-1).getRgb(j).getG();
-				double b2 = this.frameList.get(i-1).getRgb(j).getB();
+				this.getFrameList().get(i-1).setRgb(this.getFrameList().get(i).computeRGB(image2));
+				double r2 = this.getFrameList().get(i-1).getRgb(j).getR();
+				double g2 = this.getFrameList().get(i-1).getRgb(j).getG();
+				double b2 = this.getFrameList().get(i-1).getRgb(j).getB();
 				
 				double distance = Math.abs(r1 - r2) + Math.abs(g1 - g2) + Math.abs(b1 - b2);				
 				double max = Math.max(r1, r2) + Math.max(g1, g2) + Math.max(b1, b2);
@@ -174,7 +174,7 @@ public class Shot
 		{			
 			if(i == startingFrame || i  == endingFrame || i == Math.floor((startingFrame + endingFrame) /2 ))
 			{				
-				luminanceAVG += getFrameLuminance(frameList.get(counter));
+				luminanceAVG += getFrameLuminance(getFrameList().get(counter));
 			}
 			counter++;
 		}
@@ -230,7 +230,7 @@ public class Shot
 		
 		for(int i = startingFrame; i <= endingFrame; i++)
 		{
-			flamePercentage = detectFlamePixels(frameList.get(counter));
+			flamePercentage = detectFlamePixels(getFrameList().get(counter));
 			if(flamePercentage >= FLAME_THRESHOLD)
 			{
 				flamePercentageAVG += flamePercentage;
@@ -384,5 +384,17 @@ public class Shot
 	public void setAudioPaceValue(double audioPaceValue) 
 	{
 		this.audioPaceValue = audioPaceValue;
+	}
+
+
+
+	public ArrayList<Frame> getFrameList() {
+		return frameList;
+	}
+
+
+
+	public void setFrameList(ArrayList<Frame> frameList) {
+		this.frameList = frameList;
 	}
 }

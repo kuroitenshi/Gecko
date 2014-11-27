@@ -3,6 +3,7 @@ package view;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -17,15 +18,15 @@ public class ShotFrame extends JFrame {
 	
 	public Shot selectedShot;
 	
-	public ShotFrame (String genre) {
+	public ShotFrame (String genre, ArrayList<Shot> shotList) {
 		
 		super("Gecko Movie Classifier");
 		getContentPane().setBackground(Color.white);
 		getContentPane().setPreferredSize(new Dimension(900, 500));
 		getContentPane().setLayout(new BoxLayout(getContentPane(), BoxLayout.X_AXIS));
 		
-		getContentPane().add(new ShotPanel());
-		getContentPane().add(new DetailPanel());
+		getContentPane().add(new ShotPanel(shotList));
+		getContentPane().add(new DetailPanel(shotList.get(0)));
 		
 		pack();
 		setVisible(true);

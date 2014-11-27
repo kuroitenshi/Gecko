@@ -11,6 +11,8 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import model.Shot;
+
 
 public class DetailPanel extends JPanel {
 	
@@ -22,7 +24,11 @@ public class DetailPanel extends JPanel {
 	double powr;
 	double pace;
 
-	public DetailPanel() {
+	public DetailPanel(Shot shot) {
+		
+		dist = shot.getVisualDisturbanceValue();
+		lumi = shot.getLuminanceValue();
+		flam = shot.getFlamePercentageValue();
 		
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		setPreferredSize(new Dimension(250, 500));
@@ -43,19 +49,19 @@ public class DetailPanel extends JPanel {
 		videoLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 		add(videoLabel);
 		
-		JLabel distLabel = new JLabel("Disturbance: " + dist);
+		JLabel distLabel = new JLabel("Disturbance: " + String.format( "%.5f", dist));
 		distLabel.setFont(new Font("Sans Serif", Font.PLAIN, 12));		
 		distLabel.setMaximumSize(new Dimension(200, 30));
 		distLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 		add(distLabel);
 		
-		JLabel lumiLabel = new JLabel("Luminance: 100" + lumi);
+		JLabel lumiLabel = new JLabel("Luminance: " + String.format( "%.5f", lumi));
 		lumiLabel.setFont(new Font("Sans Serif", Font.PLAIN, 12));		
 		lumiLabel.setMaximumSize(new Dimension(200, 30));
 		lumiLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 		add(lumiLabel);
 		
-		JLabel flamLabel = new JLabel("Flame: 100" + flam);
+		JLabel flamLabel = new JLabel("Flame: " + String.format( "%.5f", flam));
 		flamLabel.setFont(new Font("Sans Serif", Font.PLAIN, 12));		
 		flamLabel.setMaximumSize(new Dimension(200, 30));
 		flamLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -69,19 +75,19 @@ public class DetailPanel extends JPanel {
 		audioLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 		add(audioLabel);
 		
-		JLabel enrgLabel = new JLabel("Energy: 100" + enrg);
+		JLabel enrgLabel = new JLabel("Energy: " + String.format( "%.5f", enrg));
 		enrgLabel.setFont(new Font("Sans Serif", Font.PLAIN, 12));		
 		enrgLabel.setMaximumSize(new Dimension(200, 30));
 		enrgLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 		add(enrgLabel);
 		
-		JLabel powrLabel = new JLabel("Power: 100" + powr);
+		JLabel powrLabel = new JLabel("Power: " + String.format( "%.5f", powr));
 		powrLabel.setFont(new Font("Sans Serif", Font.PLAIN, 12));		
 		powrLabel.setMaximumSize(new Dimension(200, 30));
 		powrLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 		add(powrLabel);
 		
-		JLabel paceLabel = new JLabel("Pace: 100" + pace);
+		JLabel paceLabel = new JLabel("Pace: " + String.format( "%.5f", pace));
 		paceLabel.setFont(new Font("Sans Serif", Font.PLAIN, 12));		
 		paceLabel.setMaximumSize(new Dimension(200, 30));
 		paceLabel.setAlignmentX(Component.CENTER_ALIGNMENT);

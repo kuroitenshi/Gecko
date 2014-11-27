@@ -6,12 +6,15 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+
+import model.Shot;
 
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
@@ -29,11 +32,13 @@ public class ResultsFrame extends JFrame {
 	int comedyPercent;
 	int dramaPercent;
 	int horrorPercent;
+	ArrayList<Shot> shotList;
 	
-	public ResultsFrame(String movieName) {
+	public ResultsFrame(String movieName, ArrayList<Shot> shotList) {
 		
 		super("Gecko Movie Classifier");
 		this.movieName = movieName;
+		this.shotList = shotList;
 		
 		actionPercent = 2;
 		comedyPercent = 3;
@@ -107,7 +112,7 @@ public class ResultsFrame extends JFrame {
 			 
             public void actionPerformed(ActionEvent e)
             {
-            	new ShotFrame("All");
+            	new ShotFrame("All", shotList);
             }
         });
 		
@@ -115,7 +120,7 @@ public class ResultsFrame extends JFrame {
 			 
             public void actionPerformed(ActionEvent e)
             {
-                new ShotFrame("Action");
+                new ShotFrame("Action", shotList);
             }
         });
 		
@@ -123,7 +128,7 @@ public class ResultsFrame extends JFrame {
 			 
             public void actionPerformed(ActionEvent e)
             {
-            	new ShotFrame("Comedy");
+            	new ShotFrame("Comedy", shotList);
             }
         });
 		
@@ -131,7 +136,7 @@ public class ResultsFrame extends JFrame {
 			 
             public void actionPerformed(ActionEvent e)
             {
-            	new ShotFrame("Drama");
+            	new ShotFrame("Drama", shotList);
             }
         });
 		
@@ -139,7 +144,7 @@ public class ResultsFrame extends JFrame {
 			 
             public void actionPerformed(ActionEvent e)
             {
-            	new ShotFrame("Horror");
+            	new ShotFrame("Horror", shotList);
             }
         });
 		

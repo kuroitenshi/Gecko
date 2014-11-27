@@ -160,7 +160,7 @@ public class GeckoController
 				
 				progressFrame.dispose();
 				String movieName = movieFileChosen.getName().substring(0, movieFileChosen.getName().lastIndexOf('.'));
-				new ResultsFrame(movieName);
+				new ResultsFrame(movieName, shotList);
 
 				AudioExtraction audioExtractor = new AudioExtraction(
 						extractionModel.getParentResultPath());
