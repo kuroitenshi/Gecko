@@ -30,9 +30,17 @@ public class ShotPanel extends JPanel {
 	public ShotPanel(ArrayList<Shot> shotList) {
 		
 		howManyShots = shotList.size();
+		int rows = (int) Math.ceil((double)howManyShots/4.0);
+		System.out.println(rows);
+
 		
-		setPreferredSize(new Dimension(650, 500));
+		
+		setPreferredSize(new Dimension(640, 480));
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+		setBackground(Color.black);
+
+		
+		
 		
 		JScrollPane scroller = new JScrollPane();
 	    scroller.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
@@ -43,17 +51,16 @@ public class ShotPanel extends JPanel {
 	    scroller.getViewport().setBorder(null);
 	    scroller.setViewportBorder(null);
 	    scroller.setBorder(null);
+		scroller.setMaximumSize(new Dimension(640, rows*120));
 
 
 	    // Shots 
 	    // 4 columns
 	    
-		int rows = (int) Math.ceil((double)howManyShots/4.0);
 	    
 		JPanel inner = new JPanel();
-		inner.setBackground(Color.black);
-		inner.setPreferredSize(new Dimension(650, rows*120));
 		inner.setLayout(new GridLayout(0, 4));
+		inner.setBackground(Color.black);
 		
 		for (int i = 0; i < howManyShots; i++) {
 			BufferedImage img = null;

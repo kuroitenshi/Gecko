@@ -64,6 +64,19 @@ public class AudialFeatures
 		File paceFile = new File(praatPath.concat("\\AudialPace.txt"));
 		setAudioPacePath(paceFile.getAbsolutePath());
 		
+		String OS = System.getProperty("os.name").toLowerCase();
+					
+		 if (OS.indexOf("mac") >= 0) {
+			System.out.println("OS: Mac");
+			praatFile = new File(praatPath.concat("/Features.praat"));
+			energyFile = new File (praatPath.concat("/AudialEnergy.txt"));
+			setAudioEnergyPath(energyFile.getAbsolutePath());
+			powerFile = new File (praatPath.concat("/AudialPower.txt"));
+			setAudioPowerPath(powerFile.getAbsolutePath());
+			paceFile = new File(praatPath.concat("/AudialPace.txt"));
+			setAudioPacePath(paceFile.getAbsolutePath());		
+		}
+		
 		for(int i = 1; i <= fileCount; i++)
 		{			
 //			script = script.append("Read from file: "+"\""+segmentPath.concat("\\"+i+".wav")+"\"" + "\r\n");			
@@ -144,6 +157,18 @@ public class AudialFeatures
 			StringBuilder peakSB = new StringBuilder();
 			File peakPath = new File((praatPath.concat("\\Peaks.txt")));
 			StringBuilder peaks = new StringBuilder();
+			
+			String OS = System.getProperty("os.name").toLowerCase();
+
+			if (OS.indexOf("mac") >= 0) {
+				wavFile = WavFile.openWavFile(new File(segmentPath2.concat("/"+shotNumber+".wav")));
+				distance = new ArrayList<Double>();
+				maxVals = new ArrayList<Short>();
+				path = Paths.get((segmentPath2.concat("/"+shotNumber+".wav")));
+				peakSB = new StringBuilder();
+				peakPath = new File((praatPath.concat("/Peaks.txt")));
+				peaks = new StringBuilder();
+			}
 			
 			
 			double samplesPerPixel = wavFile.getSampleRate()/576; // 576 is from visbounds.width
@@ -270,8 +295,16 @@ public class AudialFeatures
 	 */
 	public void executePraatScript(String filepath)
 	{			
-		String[] praatScript = new String[] {"praatcon", filepath.replace("\\", "\\\\")};
-		  
+		String[] praatScript = null; 
+		String OS = System.getProperty("os.name").toLowerCase();
+
+		if (OS.indexOf("win") >= 0){
+			praatScript = new String[] {"praatcon", filepath.replace("\\", "\\\\")};
+		}
+		else if (OS.indexOf("mac") >= 0) {
+			praatScript = new String[] {"/Users/joshua/Documents/Praat.app/Contents/MacOS/Praat", filepath.replace("/", "//")};
+		}  
+		
 		try 
 		{	
 			Runtime runTime = Runtime.getRuntime();

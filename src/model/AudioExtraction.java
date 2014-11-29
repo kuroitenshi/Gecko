@@ -28,8 +28,21 @@ public class AudioExtraction {
 	{
 		//Extracting Audio
 		String filePath = "\"" + directoryMain  + "\"";	
-		String dirPath = "\"" + this.audioPath.concat("\\Audial Data");
-		String ffmpegCmd = "ffmpeg -i "+ filePath + " -ab 160k -ac 2 -ar 44100 -vn " +  dirPath+ "\\"+"output.wav\"";
+		
+		String ffmpegCmd = "";
+		String OS = System.getProperty("os.name").toLowerCase();
+
+		if (OS.indexOf("win") >= 0){
+			System.out.println("OS: Windows");
+			String dirPath = "\"" + this.audioPath.concat("\\Audial Data");
+			ffmpegCmd = "ffmpeg -i "+ filePath + " -ab 160k -ac 2 -ar 44100 -vn " +  dirPath+ "\\"+"output.wav\"";
+		}
+		else if (OS.indexOf("mac") >= 0) {
+			System.out.println("OS: Mac");
+			String dirPath = "\"" + this.audioPath.concat("/Audial Data");
+			ffmpegCmd = "/usr/local/Cellar/ffmpeg/2.4.2/bin/ffmpeg -i " + filePath + " -ab 160k -ac 2 -ar 44100 -vn " + dirPath + "/output.wav";
+		}
+		
 		
 		System.out.println("1st com: "+ ffmpegCmd);
 		

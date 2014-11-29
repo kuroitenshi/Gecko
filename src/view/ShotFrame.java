@@ -21,8 +21,8 @@ public class ShotFrame extends JFrame {
 	public ShotFrame (String genre, ArrayList<Shot> shotList) {
 		
 		super("Gecko Movie Classifier");
-		getContentPane().setBackground(Color.white);
-		getContentPane().setPreferredSize(new Dimension(900, 500));
+		getContentPane().setBackground(Color.black);
+		getContentPane().setPreferredSize(new Dimension(890, 480));
 		getContentPane().setLayout(new BoxLayout(getContentPane(), BoxLayout.X_AXIS));
 		
 		getContentPane().add(new ShotPanel(shotList));

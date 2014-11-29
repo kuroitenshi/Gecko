@@ -31,8 +31,7 @@ public class DetailPanel extends JPanel {
 		flam = shot.getFlamePercentageValue();
 		
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-		setPreferredSize(new Dimension(250, 500));
-		setMaximumSize(new Dimension(250, 500));
+		setMaximumSize(new Dimension(250, 480));
 		
 		add(Box.createRigidArea(new Dimension(0, 20)));
 		
