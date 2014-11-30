@@ -124,6 +124,15 @@ public class GenreClassifier
 	{
 		File resultGenreFile = new File(resultsDirectory.concat(
 						"\\GENRE RESULTS.txt"));
+		
+		String OS = System.getProperty("os.name").toLowerCase();
+		if (OS.indexOf("mac") >= 0)
+		{
+			resultGenreFile = new File(resultsDirectory.concat(
+					"/GENRE RESULTS.txt"));
+		}
+		
+		
 		FileWriter resultGenreFileWriter = null;
 		try {
 			resultGenreFileWriter = new FileWriter(resultGenreFile.getAbsoluteFile());

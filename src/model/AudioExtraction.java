@@ -40,7 +40,9 @@ public class AudioExtraction {
 		else if (OS.indexOf("mac") >= 0) {
 			System.out.println("OS: Mac");
 			String dirPath = "\"" + this.audioPath.concat("/Audial Data");
-			ffmpegCmd = "/usr/local/Cellar/ffmpeg/2.4.2/bin/ffmpeg -i " + filePath + " -ab 160k -ac 2 -ar 44100 -vn " + dirPath + "/output.wav";
+			filePath = filePath.replace("\"", "'");
+			dirPath = dirPath.replace("\"", "'");
+			ffmpegCmd = "/usr/local/Cellar/ffmpeg/2.4.2/bin/ffmpeg -i " + filePath + " -ab 160k -ac 2 -ar 44100 -vn " + dirPath + "/output.wav'";
 		}
 		
 		
