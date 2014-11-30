@@ -1,19 +1,19 @@
 package model;
 
-import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.file.Files;
+import java.io.InputStream;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+
+import javax.sound.sampled.UnsupportedAudioFileException;
 
 import model.Objects.StreamConsumer;
 import model.Objects.WavFile;
@@ -44,6 +44,7 @@ public class AudialFeatures
 	
 	/**
 	 * Create Praat Scripts for querying Audial energy and Power for all generate .wav files
+	 * @throws UnsupportedAudioFileException 
 	 */
 	public void producePraatScripts()
 	{
@@ -79,13 +80,13 @@ public class AudialFeatures
 		
 		for(int i = 1; i <= fileCount; i++)
 		{			
-//			script = script.append("Read from file: "+"\""+segmentPath.concat("\\"+i+".wav")+"\"" + "\r\n");			
-//			script = script.append("energy$ = Get energy: 0, 0" + "\r\n");
-//			script = script.append("power$ = Get power: 0, 0" + "\r\n");			
-//			script = script.append("writeInfoLine: "+ "\"" +"Audio Energy= "+"\""+", energy$" + "\r\n");
-//			script = script.append("writeInfoLine: "+ "\""+"Audio Power= "+"\""+",power$" + "\r\n");			
-//			script = script.append("appendFileLine: "+"\""+ energyFile.getAbsolutePath() +"\""+", " + "\"Shot " + i + " \"" + "+ energy$"+ "\r\n");			
-//			script = script.append("appendFileLine: "+"\""+ powerFile.getAbsolutePath() +"\""+", " + "\"Shot " + i + " \"" + "+ power$"+ "\r\n");
+			script = script.append("Read from file: "+"\""+segmentPath.concat("\\"+i+".wav")+"\"" + "\r\n");			
+			script = script.append("energy$ = Get energy: 0, 0" + "\r\n");
+			script = script.append("power$ = Get power: 0, 0" + "\r\n");			
+			script = script.append("writeInfoLine: "+ "\"" +"Audio Energy= "+"\""+", energy$" + "\r\n");
+			script = script.append("writeInfoLine: "+ "\""+"Audio Power= "+"\""+",power$" + "\r\n");			
+			script = script.append("appendFileLine: "+"\""+ energyFile.getAbsolutePath() +"\""+", " + "\"Shot " + i + " \"" + "+ energy$"+ "\r\n");			
+			script = script.append("appendFileLine: "+"\""+ powerFile.getAbsolutePath() +"\""+", " + "\"Shot " + i + " \"" + "+ power$"+ "\r\n");
 			findPeak(i, paceFile, segmentPath);
 		}
 		
@@ -146,8 +147,10 @@ public class AudialFeatures
 	 * @param shotNumber
 	 * @param paceFile
 	 * @param segmentPath2 
+	 * @throws UnsupportedAudioFileException 
 	 */
-	private void findPeak(int shotNumber, File paceFile, String segmentPath2) {
+	private void findPeak(int shotNumber, File paceFile, String segmentPath2) 
+	{
 		try 
 		{
 			WavFile wavFile = WavFile.openWavFile(new File(segmentPath2.concat("\\"+shotNumber+".wav")));
@@ -160,7 +163,8 @@ public class AudialFeatures
 			
 			String OS = System.getProperty("os.name").toLowerCase();
 
-			if (OS.indexOf("mac") >= 0) {
+			if (OS.indexOf("mac") >= 0) 
+			{
 				wavFile = WavFile.openWavFile(new File(segmentPath2.concat("/"+shotNumber+".wav")));
 				distance = new ArrayList<Double>();
 				maxVals = new ArrayList<Short>();
@@ -172,8 +176,45 @@ public class AudialFeatures
 			
 			
 			double samplesPerPixel = wavFile.getSampleRate()/576; // 576 is from visbounds.width
-			// EDIT THIS V
-			byte[] data = Files.readAllBytes(path);
+			/*Reading Unsigned Int from .wav files*/			
+			InputStream fileInputStream = new FileInputStream(new File(path.toString()));
+			DataInputStream dataStream = new DataInputStream(fileInputStream);
+			int streamLength = dataStream.available();			
+			byte[] byteBuffer = new byte[streamLength];					
+			dataStream.readFully(byteBuffer);
+			ArrayList<Short> waveData = new ArrayList<Short>();
+			
+			/*USING DATA INPUT STREAM*/
+			for(int i=0; i < byteBuffer.length; i++)
+			{
+				/*
+				long value = 0;
+				long unsigned = 0;
+				long value3 = 0;
+				long value4 = 0;
+				long value5 = 0;
+				
+				
+				value = (value << 8) + (byteBuffer[i] & 0xff);
+				unsigned = (unsigned << 8) + (byteBuffer[i] & 0xFFFFFFFFL);				
+				value3 = (byteBuffer[i] & 0xFFFFFFFFL);
+				value4 = (value4 << 4) + (byteBuffer[i] & 0xFFFFFFFFL);
+				value5 = (byteBuffer[i] & 0xff);
+
+				//System.out.println("RAW BYTE " + byteBuffer[i]);
+				//System.out.println("NUMERIC EQUIVALENT " + value); //Normal Reading for WAVES
+				//System.out.println("GOAL UNSIGNED LONG " + unsigned);
+				//System.out.println("RAW BYTE CONVERSION UNSIGNED LONG " + value3);
+				//System.out.println("BYTE 4 SHIFTS " + value4);
+				//System.out.println("BYTE NO SHIFTS  " + value5);
+				
+				*/
+				
+				short dataVal = (short) (byteBuffer[i]<<8); 			
+				waveData.add(dataVal);
+			}	
+			dataStream.close();
+		
 			wavFile.display();
 			int maxSampleRate = (int)(samplesPerPixel*576);
 			maxSampleRate = (int) Math.min(maxSampleRate, wavFile.getSampleRate());
@@ -188,17 +229,17 @@ public class AudialFeatures
 			System.out.println("Max Sample Rate: " + maxSampleRate);
 			
 			peakSB = peakSB.append("SHOT: " + shotNumber + "\r\n");
-			while(index < maxSampleRate && shotNumber < 5)
+			while(index < maxSampleRate)
 			{
 				short maxVal = -32767;
 				short minVal = 32767;
 				System.out.println("SHOT: " + shotNumber);
 				for(int x = 0; x < samplesPerPixel; x++)
 				{
-					System.out.println("data[x+index] = " + data[x+index]);
-					// IDK IF THIS IS CORRECT DATA ARRAY
-					maxVal = (short) Math.max(maxVal, data[x+index]);
-					minVal = (short) Math.max(minVal, data[x+index]);
+					// CORRECT THIS
+					maxVal = (short) Math.max(maxVal, waveData.get(x+index));
+					minVal = (short) Math.max(minVal, waveData.get(x+index));
+										
 				}
 				System.out.println("PEAK = " + maxVal);
 				peaks = peaks.append(maxVal + "\r\n");
