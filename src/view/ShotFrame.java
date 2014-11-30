@@ -16,22 +16,41 @@ import model.Shot;
 
 public class ShotFrame extends JFrame {
 	
+	private int selectedShotIndex;
 	public Shot selectedShot;
+	public ArrayList<Shot> shotList;
 	
 	public ShotFrame (String genre, ArrayList<Shot> shotList) {
 		
 		super("Gecko Movie Classifier");
+		this.shotList = shotList;
+		refresh(0);
+		setVisible(true);
+
+	}
+	
+	public void refresh(int selected) {	
+		getContentPane().removeAll();
+		
+		selectedShotIndex = selected;
+		selectedShot = shotList.get(selectedShotIndex);
+		
 		getContentPane().setBackground(Color.black);
 		getContentPane().setPreferredSize(new Dimension(890, 480));
 		getContentPane().setLayout(new BoxLayout(getContentPane(), BoxLayout.X_AXIS));
-		
-		getContentPane().add(new ShotPanel(shotList));
-		getContentPane().add(new DetailPanel(shotList.get(0)));
+			
+		getContentPane().add(new ShotPanel(selectedShotIndex, shotList, this));
+		getContentPane().add(new DetailPanel(selectedShot));
 		
 		pack();
-		setVisible(true);
+	}
 
-		
+	public int getSelectedShotIndex() {
+		return selectedShotIndex;
+	}
+
+	public void setSelectedShotIndex(int selectedShotIndex) {
+		this.selectedShotIndex = selectedShotIndex;
 	}
 	
 }

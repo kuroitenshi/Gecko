@@ -3,9 +3,12 @@ package view;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Frame;
+import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GridLayout;
 import java.awt.Image;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -26,8 +29,11 @@ import model.Shot;
 public class ShotPanel extends JPanel {
 
 	int howManyShots;
+	int selectedIndex;
 	
-	public ShotPanel(ArrayList<Shot> shotList) {
+	public ShotPanel(int selectedShotIndex, ArrayList<Shot> shotList, final ShotFrame shotFrame) {
+		
+		selectedIndex = selectedShotIndex;
 		
 		howManyShots = shotList.size();
 		int rows = (int) Math.ceil((double)howManyShots/4.0);
@@ -71,10 +77,34 @@ public class ShotPanel extends JPanel {
 				e.printStackTrace();
 			}
 			Image dimg = img.getScaledInstance(160, 120, Image.SCALE_SMOOTH);		
-			JLabel imgicon = new JLabel(new ImageIcon(toBufferedImage(dimg)));
+			BufferedImage bufimg = toBufferedImage(dimg);
+			
+			if (i == selectedIndex) {
+				Graphics g = bufimg.getGraphics();
+				float percentage = .3f; // 50% bright - change this (or set dynamically) as you feel fit
+				int brightness = (int)(256 - 256 * percentage);
+				g.setColor(new Color(0,0,0,brightness));
+				g.fillRect(0, 0, bufimg.getWidth(), bufimg.getHeight());
+			}
+			
+			JLabel imgicon = new JLabel(new ImageIcon(bufimg));
 			imgicon.setPreferredSize(new Dimension(160, 120));
+			
+			final int current = i;
+			imgicon.addMouseListener(new MouseAdapter(){
+				
+				public void mouseClicked(MouseEvent me) {	
+					shotFrame.refresh(current);
+			    }
+				
+			});
+			
 			inner.add(imgicon);
+			
 		}
+		
+		
+		
 		
 	    
 	    scroller.getViewport().add(inner);
