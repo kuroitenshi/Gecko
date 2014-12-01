@@ -13,28 +13,28 @@ public class GenreClassifier
 	/*-----------------------------------------------*/
 	/*-------------ACTION CONSTANTS------------------*/
 	/*-----------------------------------------------*/
-	public final double ACTION_FLAME_PERCENTAGE = 0.0;
-	public final double ACTION_VISUAL_DISTURBANCE = 0.0;
-	public final double ACTION_AUDIO_ENERGY = 0.0;
+	public final double ACTION_FLAME_PERCENTAGE = 0.694210387;
+	public final double ACTION_VISUAL_DISTURBANCE = 0.096804224;
+	public final double ACTION_AUDIO_ENERGY = 0.106805809;
 	public final double ACTION_AUDIO_PACE= 0.0;
 	
 
 	/*-----------------------------------------------*/
 	/*-------------HORROR CONSTANTS------------------*/
 	/*-----------------------------------------------*/
-	public final double HORROR_VISUAL_DISTURBANCE = 0.0;
-	public final double HORROR_AUDIO_ENERGY = 0.0;
+	public final double HORROR_VISUAL_DISTURBANCE =  0.096804224; //SUBJECT TO CHANGE (Not yet Computed)
+	public final double HORROR_AUDIO_ENERGY = 0.097566871;
 
 	/*-----------------------------------------------*/
 	/*-------------COMEDY CONSTANTS------------------*/
 	/*-----------------------------------------------*/
-	public final double COMEDY_LUMINANCE = 0.0;
-	public final double COMEDY_AUDIO_POWER = 0.0;
+	public final double COMEDY_LUMINANCE = 75.75177648;
+	public final double COMEDY_AUDIO_POWER = 0.004889318;
 	
 	/*-----------------------------------------------*/
 	/*-------------DRAMA CONSTANTS------------------*/
 	/*-----------------------------------------------*/
-	public final double DRAMA_AUDIO_POWER = 0.0;
+	public final double DRAMA_AUDIO_POWER = 0.002071157;
 	public final double DRAMA_AUDIO_PACE= 0.0;
 	
 	
