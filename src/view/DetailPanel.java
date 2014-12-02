@@ -16,7 +16,7 @@ import model.Shot;
 
 public class DetailPanel extends JPanel {
 	
-	int shotNumber = 1;
+	int shotNumber;
 	double dist;
 	double lumi;
 	double flam;
@@ -24,11 +24,16 @@ public class DetailPanel extends JPanel {
 	double powr;
 	double pace;
 
-	public DetailPanel(Shot shot) {
+	public DetailPanel(Shot shot, int selected) {
+		
+		shotNumber = selected + 1;
 		
 		dist = shot.getVisualDisturbanceValue();
 		lumi = shot.getLuminanceValue();
 		flam = shot.getFlamePercentageValue();
+		enrg = shot.getAudioEnergyValue();
+		powr = shot.getAudioPowerValue();
+		pace = shot.getAudioPaceValue();
 		
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		setMaximumSize(new Dimension(250, 480));

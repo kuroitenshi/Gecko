@@ -40,7 +40,7 @@ public class ShotFrame extends JFrame {
 		getContentPane().setLayout(new BoxLayout(getContentPane(), BoxLayout.X_AXIS));
 			
 		getContentPane().add(new ShotPanel(selectedShotIndex, shotList, this));
-		getContentPane().add(new DetailPanel(selectedShot));
+		getContentPane().add(new DetailPanel(selectedShot, selected));
 		
 		pack();
 	}

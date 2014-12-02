@@ -37,7 +37,7 @@ public class GeckoController
 				String filepath = fileFinder.getFilepath();
 				fileFinder.dispose();
 				
-				ProgressFrame progressFrame = new ProgressFrame();
+				//ProgressFrame progressFrame = new ProgressFrame();
 
 				File movieFileChosen = new File(filepath);
 				ArrayList<Double> shotVisualDisturbance = new ArrayList<Double>();
@@ -158,9 +158,7 @@ public class GeckoController
 					e.printStackTrace();
 				};
 				
-				progressFrame.dispose();
-				String movieName = movieFileChosen.getName().substring(0, movieFileChosen.getName().lastIndexOf('.'));
-				new ResultsFrame(movieName, shotList);
+				//progressFrame.dispose();
 
 				AudioExtraction audioExtractor = new AudioExtraction(
 						extractionModel.getParentResultPath());
@@ -191,6 +189,9 @@ public class GeckoController
 				{
 					e.printStackTrace();
 				}
+				
+				String movieName = movieFileChosen.getName().substring(0, movieFileChosen.getName().lastIndexOf('.'));
+				new ResultsFrame(movieName, shotList);
 				
 				//GenreClassifier movieGenreClassifier = new GenreClassifier(shotList, extractionModel.getParentResultPath());
 				//movieGenreClassifier.classifyMovieGenre();
