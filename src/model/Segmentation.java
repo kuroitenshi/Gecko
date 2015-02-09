@@ -184,6 +184,8 @@ public class Segmentation
                 }
                 else
                 {
+                	if(counterImage > 4)
+                	{
                       	shotNumbersString = shotNumbersString.append("Shot No: " + getShotRangeNumber() + " Frame " + i + " to " + (i+1)  + " Difference " + imageDiff + "\r\n");
                     	shotRangeString = shotRangeString.append("Shot No: " + getShotRangeNumber() + " Frames " + shotRangeCounter + " to " + i + "\r\n");
                         shotRangeCounter = (i+1);
@@ -191,6 +193,7 @@ public class Segmentation
                     	System.out.println(getShotRangeNumber());
                     	setShotRangeNumber(getShotRangeNumber() + 1);
                         counterImage = 0;  
+                	}
                 }
             }
 		}

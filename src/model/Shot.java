@@ -38,7 +38,7 @@ public class Shot
 		visualDisturbanceValue = 0;
 		luminanceValue = 0;				
 		VD_THRESHOLD = 0.35;
-		FLAME_THRESHOLD = 0.10; // CHANGE FLAME_THRESHOLD VALUE				
+		FLAME_THRESHOLD = 0.70; // CHANGE FLAME_THRESHOLD VALUE			josh edits	
 		
 		setFlamePercentageValue(0);
 		getFrameRange();
@@ -266,10 +266,10 @@ public class Shot
 		int height = image.getHeight();
 		int width = image.getWidth();
 		int resolution = height * width;
-		double redTreshold = 169; // VALUE NOT YET FINAL
+		double redTreshold = 40; // VALUE NOT YET FINAL
 		// 40 to 70 normal threshold, BEAM has a 0.10 threshold
 		// play with the saturation threshold
-		double saturationThreshold = 0.7; 
+		double saturationThreshold = 0.10; 
 		
 		for (int i = 0; i < height; i++)
 		{
@@ -294,8 +294,10 @@ public class Shot
 					if(rgb.getR() > rgb.getG() && rgb.getG() > rgb.getB())
 					{
 						saturation = calculateSaturation(tempRGB);
-						double value = ((255 - tempRGB.getR())*saturationThreshold)/redTreshold;
-						if(saturation > value)
+						double valueR = ((255 - tempRGB.getR())*saturationThreshold)/redTreshold;
+						double valueG = ((153 *saturationThreshold))/redTreshold;
+						double valueB = ((51 * saturationThreshold))/redTreshold;
+						if(saturation > valueR+valueG+valueB)
 						{
 							flamePixels++;
 						}
