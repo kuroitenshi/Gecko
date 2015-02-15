@@ -243,7 +243,7 @@ public class Shot
 		{
 			flamePercentageAVG = 0;
 		}
-		System.out.println("FLAME PERCENTAGE " + flamePercentageAVG);
+		
 		return flamePercentageAVG;
 	}
 	
@@ -305,7 +305,7 @@ public class Shot
 				}
 			}
 		}
-		System.out.println("FLAME PIXEL " + flamePixels);
+		
 		flamePercentage = (flamePixels * 1.0)/resolution;
 		return flamePercentage;
 	}

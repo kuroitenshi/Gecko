@@ -38,14 +38,14 @@ public class AudialSegmentation {
 		String OS = System.getProperty("os.name").toLowerCase();
 
 		if (OS.indexOf("win") >= 0){
-			filePath = "\""+this.audioPath.concat("\\output.wav") + "\"";
+			filePath = "\""+this.audioPath.concat("\\output.mp3") + "\"";
 			outPath = "\""+this.audioPath.concat("\\Segments");
 			fileRead = this.directoryMain.concat("\\Visual Data\\ShotRange.txt");
 		}
 		else if (OS.indexOf("mac") >= 0) {
 			filePath = "\""+this.audioPath.concat("/output.wav") + "\"";
 			outPath = "\""+this.audioPath.concat("/Segments");
-			fileRead = this.directoryMain.concat("/Visual Data/ShotRange.txt");
+			fileRead = this.directoryMain.concat("/Visual Data/ShotRange.mp3");
 		}
 		
 		try 
@@ -66,11 +66,11 @@ public class AudialSegmentation {
 			int numberOfFramesInShot = (lastFrame - startingFrame) + 1;
 			lastSecond = (numberOfFramesInShot/16);
 			
-			String ffmpegCmd = "ffmpeg -ss "+currentSecond+" -t "+lastSecond+"  -i "+ filePath + " "+ outPath+ "\\"+wavCount+".wav\"";
+			String ffmpegCmd = "ffmpeg -ss "+currentSecond+" -t "+lastSecond+"  -i "+ filePath + " "+ outPath+ "\\"+wavCount+".mp3\"";
 
 			if (OS.indexOf("mac") >= 0) {
 				System.out.println("OS: Mac");
-				ffmpegCmd = "/usr/local/Cellar/ffmpeg/2.4.2/bin/ffmpeg -ss "+currentSecond+" -t "+lastSecond+"  -i "+ filePath + " "+ outPath+ "/" +wavCount+".wav\"";
+				ffmpegCmd = "/usr/local/Cellar/ffmpeg/2.4.2/bin/ffmpeg -ss "+currentSecond+" -t "+lastSecond+"  -i "+ filePath + " "+ outPath+ "/" +wavCount+".mp3\"";
 				System.out.println(ffmpegCmd);
 			}
 

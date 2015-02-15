@@ -39,9 +39,6 @@ public class Segmentation
 		int[] tempGreen = new int[16];
 		int[] tempBlue = new int[16];
        
-	
-		System.out.println(image.getPath());
-		
 		try 
 		{
         	buffImage = ImageIO.read(image);
@@ -96,14 +93,12 @@ public class Segmentation
 	 */
 	public void segmentMovie()
 	{
-		System.out.println(this.framesPath);
 		
 		File f = new File(this.framesPath);				
 		int imageCount = f.listFiles().length;		
 		int fileEnd = imageCount;
 		int counterImage = 0;
 		int shotRangeCounter = 1;
-		System.out.println(imageCount);
 		 
 		/*ATOMICA's Threshold for Action Movies*/
 		double distance_threshold = 0.491387; 

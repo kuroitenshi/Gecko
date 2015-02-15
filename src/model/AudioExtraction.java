@@ -35,14 +35,14 @@ public class AudioExtraction {
 		if (OS.indexOf("win") >= 0){
 			System.out.println("OS: Windows");
 			String dirPath = "\"" + this.audioPath.concat("\\Audial Data");
-			ffmpegCmd = "ffmpeg -i "+ filePath + " -ab 160k -ac 2 -ar 44100 -vn " +  dirPath+ "\\"+"output.wav\"";
+			ffmpegCmd = "ffmpeg -i "+ filePath + " -ab 160k -ac 2 -ar 44100 -vn " +  dirPath+ "\\"+"output.mp3\"";
 		}
 		else if (OS.indexOf("mac") >= 0) {
 			System.out.println("OS: Mac");
 			String dirPath = "\"" + this.audioPath.concat("/Audial Data");
 			filePath = filePath.replace("\"", "'");
 			dirPath = dirPath.replace("\"", "'");
-			ffmpegCmd = "/usr/local/Cellar/ffmpeg/2.4.2/bin/ffmpeg -i " + filePath + " -ab 160k -ac 2 -ar 44100 -vn " + dirPath + "/output.wav'";
+			ffmpegCmd = "/usr/local/Cellar/ffmpeg/2.4.2/bin/ffmpeg -i " + filePath + " -ab 160k -ac 2 -ar 44100 -vn " + dirPath + "/output.mp3'";
 		}
 		
 		
@@ -50,7 +50,7 @@ public class AudioExtraction {
 		
 		try 
 		{
-			// Fix using Threads
+
 			Runtime runTime = Runtime.getRuntime();
 			Process extractionProcess = runTime.exec(ffmpegCmd);									
 			

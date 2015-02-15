@@ -1,10 +1,13 @@
 package model;
 
+
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -12,12 +15,17 @@ import java.io.InputStream;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.sound.sampled.UnsupportedAudioFileException;
 
+import javazoom.jl.decoder.JavaLayerException;
+import javazoom.jl.player.Player;
 import model.Objects.StreamConsumer;
 import model.Objects.WavFile;
 import model.Objects.WavFileException;
+import model.Tempo.*;
 
 public class AudialFeatures
 {
@@ -25,8 +33,6 @@ public class AudialFeatures
 	private String directoryMain;
 	private String praatPath;
 	private String audioEnergyPath;
-	
-
 	private String audioPowerPath;
 	private String audioPacePath;
 	
@@ -55,39 +61,37 @@ public class AudialFeatures
 		System.out.println("FILE COUNT: "+fileCount);
 		System.out.println("SEGMENT PATH: "+segmentPath);
 		System.out.println("PRAAT PATH: "+praatPath);
-		System.out.println("TEST ARGS: "+ segmentPath.concat("\\"+1+".wav"));
+		System.out.println("TEST ARGS: "+ segmentPath.concat("\\"+1+".mp3"));
 		
 		File praatFile = new File(praatPath.concat("\\Features.praat"));
 		File energyFile = new File (praatPath.concat("\\AudialEnergy.txt"));
 		setAudioEnergyPath(energyFile.getAbsolutePath());
 		File powerFile = new File (praatPath.concat("\\AudialPower.txt"));
 		setAudioPowerPath(powerFile.getAbsolutePath());
-		File paceFile = new File(praatPath.concat("\\AudialPace.txt"));
-		setAudioPacePath(paceFile.getAbsolutePath());
+		
 		
 		String OS = System.getProperty("os.name").toLowerCase();
 					
-		 if (OS.indexOf("mac") >= 0) {
+		 if (OS.indexOf("mac") >= 0)
+		 {
 			System.out.println("OS: Mac");
 			praatFile = new File(praatPath.concat("/Features.praat"));
 			energyFile = new File (praatPath.concat("/AudialEnergy.txt"));
 			setAudioEnergyPath(energyFile.getAbsolutePath());
 			powerFile = new File (praatPath.concat("/AudialPower.txt"));
 			setAudioPowerPath(powerFile.getAbsolutePath());
-			paceFile = new File(praatPath.concat("/AudialPace.txt"));
-			setAudioPacePath(paceFile.getAbsolutePath());		
-		}
+			
+		 }
 		
 		for(int i = 1; i <= fileCount; i++)
 		{			
-			script = script.append("Read from file: "+"\""+segmentPath.concat("\\"+i+".wav")+"\"" + "\r\n");			
+			script = script.append("Read from file: "+"\""+segmentPath.concat("\\"+i+".mp3")+"\"" + "\r\n");			
 			script = script.append("energy$ = Get energy: 0, 0" + "\r\n");
 			script = script.append("power$ = Get power: 0, 0" + "\r\n");			
 			script = script.append("writeInfoLine: "+ "\"" +"Audio Energy= "+"\""+", energy$" + "\r\n");
 			script = script.append("writeInfoLine: "+ "\""+"Audio Power= "+"\""+",power$" + "\r\n");			
 			script = script.append("appendFileLine: "+"\""+ energyFile.getAbsolutePath() +"\""+", " + "\"Shot " + i + " \"" + "+ energy$"+ "\r\n");			
 			script = script.append("appendFileLine: "+"\""+ powerFile.getAbsolutePath() +"\""+", " + "\"Shot " + i + " \"" + "+ power$"+ "\r\n");
-			findPeak(i, paceFile, segmentPath);
 		}
 		
 		FileWriter praatWriter = null;
@@ -110,17 +114,27 @@ public class AudialFeatures
 	/*Set audio features for shots */
 	public void setAudioFeatures(ArrayList<Shot> shotList) throws IOException
 	{
-		FileReader audioPowerReader = new FileReader(getAudioPowerPath());
-		BufferedReader audioPowerBuffReader = new BufferedReader(audioPowerReader);
-		FileReader audioEnergyReader = new FileReader(getAudioEnergyPath());
-		BufferedReader audioEnergyBuffReader = new BufferedReader(audioEnergyReader);
-		//FileReader audioPaceReader = new FileReader(getAudioPacePath());
-		//BufferedReader audioPaceBuffReader = new BufferedReader(audioPaceReader);
-		
 		String audioPowerValue;
 		ArrayList<String> audioPowerStrings = new ArrayList<String>();
 		String audioEnergyValue;
 		ArrayList<String> audioEnergyStrings = new ArrayList<String>();
+		String audioPaceValue;
+		try {
+			audioPaceValue = calculateBPM();
+		} catch (JavaLayerException e) 
+		{		
+			e.printStackTrace();
+		}		
+		ArrayList<String> audioPaceStrings = new ArrayList<String>();
+		
+		FileReader audioPowerReader = new FileReader(getAudioPowerPath());
+		BufferedReader audioPowerBuffReader = new BufferedReader(audioPowerReader);
+		FileReader audioEnergyReader = new FileReader(getAudioEnergyPath());
+		BufferedReader audioEnergyBuffReader = new BufferedReader(audioEnergyReader);
+		FileReader audioPaceReader = new FileReader(getAudioPacePath());
+		BufferedReader audioPaceBuffReader = new BufferedReader(audioPaceReader);
+		
+		
 		
 		while((audioPowerValue = audioPowerBuffReader.readLine()) != null)
 		{			
@@ -131,11 +145,15 @@ public class AudialFeatures
 		{		
 			audioEnergyStrings.add(audioEnergyValue.split(" ")[2]);
 		}
-		
+		while((audioPaceValue = audioPaceBuffReader.readLine()) != null)
+		{
+			audioPaceStrings.add(audioPaceValue);
+		}	
 		for(int i=0; i < shotList.size(); i++)
 		{
 			shotList.get(i).setAudioEnergyValue(Double.parseDouble(audioEnergyStrings.get(i)));
 			shotList.get(i).setAudioPowerValue(Double.parseDouble(audioPowerStrings.get(i)));
+			shotList.get(i).setAudioPaceValue(Double.parseDouble(audioPaceStrings.get(i)));
 		}
 		
 	
@@ -153,10 +171,10 @@ public class AudialFeatures
 	{
 		try 
 		{
-			WavFile wavFile = WavFile.openWavFile(new File(segmentPath2.concat("\\"+shotNumber+".wav")));
+			WavFile wavFile = WavFile.openWavFile(new File(segmentPath2.concat("\\"+shotNumber+".mp3")));
 			ArrayList<Double> distance = new ArrayList<Double>();
 			ArrayList<Short> maxVals = new ArrayList<Short>();
-			Path path = Paths.get((segmentPath2.concat("\\"+shotNumber+".wav")));
+			Path path = Paths.get((segmentPath2.concat("\\"+shotNumber+".mp3")));
 			StringBuilder peakSB = new StringBuilder();
 			File peakPath = new File((praatPath.concat("\\Peaks.txt")));
 			StringBuilder peaks = new StringBuilder();
@@ -165,7 +183,7 @@ public class AudialFeatures
 
 			if (OS.indexOf("mac") >= 0) 
 			{
-				wavFile = WavFile.openWavFile(new File(segmentPath2.concat("/"+shotNumber+".wav")));
+				wavFile = WavFile.openWavFile(new File(segmentPath2.concat("/"+shotNumber+".mp3")));
 				distance = new ArrayList<Double>();
 				maxVals = new ArrayList<Short>();
 				path = Paths.get((segmentPath2.concat("/"+shotNumber+".wav")));
@@ -367,6 +385,52 @@ public class AudialFeatures
 		{			
 			e.printStackTrace();
 		}
+	}
+	
+	/*For Audio Pace*/
+	public String calculateBPM() throws FileNotFoundException, JavaLayerException
+	{
+		
+		 Logger log = Logger.getLogger("Tempo");
+		
+		 File audialSeg = new File(segmentPath);
+		 int fileCount = audialSeg.listFiles().length;		 	
+		 StringBuilder paceResults = new StringBuilder();
+		 
+		 for(int i=1; i <= fileCount; i++)
+		 {
+		 
+			 BPM2SampleProcessor processor = new BPM2SampleProcessor();
+		     processor.setSampleSize(1024);
+		     EnergyOutputAudioDevice output = new EnergyOutputAudioDevice(processor);
+		     output.setAverageLength(1024);
+		        
+		     Player player = new Player(new FileInputStream(segmentPath.concat("\\"+i+".mp3")), output);
+		     System.out.println(segmentPath.concat("\\"+i+".mp3"));
+		     player.play();		    
+		     paceResults = paceResults.append(processor.getBPM() + System.lineSeparator());		     
+		 }
+		 
+		 File paceFile = new File (praatPath.concat("\\AudialPace.txt"));
+		 setAudioPacePath(paceFile.getAbsolutePath());
+			
+		 FileWriter paceWriter = null;
+	    	try 
+			{
+	    		paceWriter = new FileWriter(paceFile.getAbsoluteFile());			
+				
+				BufferedWriter paceBuffWrite = new BufferedWriter(paceWriter);
+		    	
+				paceBuffWrite.write(paceResults.toString());
+				paceBuffWrite.close();
+			} 
+	    	catch (IOException e) 
+			{
+				e.printStackTrace();
+			};
+				
+	     
+		 return paceResults.toString();
 	}
 	
 	public String getAudioEnergyPath()
