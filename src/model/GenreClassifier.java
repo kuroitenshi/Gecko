@@ -29,7 +29,9 @@ public class GenreClassifier
 	/*-------------COMEDY CONSTANTS------------------*/
 	/*-----------------------------------------------*/
 	public final double COMEDY_LUMINANCE = 75.75177648;
+	//FOR NEW SEG = 78.59996361
 	public final double COMEDY_AUDIO_POWER = 0.004889318;
+	//MP3 = 0.004016932
 	
 	/*-----------------------------------------------*/
 	/*-------------DRAMA CONSTANTS------------------*/

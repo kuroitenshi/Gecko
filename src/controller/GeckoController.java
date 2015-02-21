@@ -36,44 +36,8 @@ public class GeckoController
 
 				String filepath = fileFinder.getFilepath();
 				fileFinder.dispose();
+										
 				
-				/*
-				ArrayList<String> Clips = new ArrayList<String>();
-				Clips.add("C:\\Users\\Pheebz\\Desktop\\COMEDY Clips\\Comedy 1 (Accepted).avi");
-				Clips.add("C:\\Users\\Pheebz\\Desktop\\COMEDY Clips\\Comedy 2 (Accepted).avi");
-				Clips.add("C:\\Users\\Pheebz\\Desktop\\COMEDY Clips\\Comedy 3 (Accepted).avi");
-				Clips.add("C:\\Users\\Pheebz\\Desktop\\COMEDY Clips\\Comedy 4 (Accepted).avi");
-				Clips.add("C:\\Users\\Pheebz\\Desktop\\COMEDY Clips\\Comedy 5 (Accepted).avi");
-				Clips.add("C:\\Users\\Pheebz\\Desktop\\COMEDY Clips\\Comedy 6 (Accepted).avi");
-				Clips.add("C:\\Users\\Pheebz\\Desktop\\COMEDY Clips\\Comedy 7 (Accepted).avi");
-				Clips.add("C:\\Users\\Pheebz\\Desktop\\COMEDY Clips\\Comedy 8 (Accepted).avi");
-				Clips.add("C:\\Users\\Pheebz\\Desktop\\COMEDY Clips\\Comedy 9 (Accepted).avi");
-				Clips.add("C:\\Users\\Pheebz\\Desktop\\COMEDY Clips\\Comedy 10 (Accepted).avi");
-				Clips.add("C:\\Users\\Pheebz\\Desktop\\COMEDY Clips\\Comedy 11 (Superbad).avi");
-				Clips.add("C:\\Users\\Pheebz\\Desktop\\COMEDY Clips\\Comedy 12 (Superbad).avi");
-				Clips.add("C:\\Users\\Pheebz\\Desktop\\COMEDY Clips\\Comedy 13 (Superbad).avi");
-				Clips.add("C:\\Users\\Pheebz\\Desktop\\COMEDY Clips\\Comedy 14 (Superbad).avi");
-				Clips.add("C:\\Users\\Pheebz\\Desktop\\COMEDY Clips\\Comedy 15 (Superbad).avi");
-				Clips.add("C:\\Users\\Pheebz\\Desktop\\COMEDY Clips\\Comedy 16 (Superbad).avi");
-				Clips.add("C:\\Users\\Pheebz\\Desktop\\COMEDY Clips\\Comedy 17 (Superbad).avi");
-				Clips.add("C:\\Users\\Pheebz\\Desktop\\COMEDY Clips\\Comedy 18 (Superbad).avi");
-				Clips.add("C:\\Users\\Pheebz\\Desktop\\COMEDY Clips\\Comedy 19 (Superbad).avi");
-				Clips.add("C:\\Users\\Pheebz\\Desktop\\COMEDY Clips\\Comedy 20 (Superbad).avi");
-				Clips.add("C:\\Users\\Pheebz\\Desktop\\COMEDY Clips\\Comedy 21 (22 Jump Street).avi");
-				Clips.add("C:\\Users\\Pheebz\\Desktop\\COMEDY Clips\\Comedy 22 (22 Jump Street).avi");
-				Clips.add("C:\\Users\\Pheebz\\Desktop\\COMEDY Clips\\Comedy 23 (22 Jump Street).avi");
-				Clips.add("C:\\Users\\Pheebz\\Desktop\\COMEDY Clips\\Comedy 24 (22 Jump Street).avi");
-				Clips.add("C:\\Users\\Pheebz\\Desktop\\COMEDY Clips\\Comedy 25 (22 Jump Street).avi");
-				Clips.add("C:\\Users\\Pheebz\\Desktop\\COMEDY Clips\\Comedy 26 (22 Jump Street).avi");
-				Clips.add("C:\\Users\\Pheebz\\Desktop\\COMEDY Clips\\Comedy 27 (22 Jump Street).avi");
-				Clips.add("C:\\Users\\Pheebz\\Desktop\\COMEDY Clips\\Comedy 28 (22 Jump Street).avi");
-				Clips.add("C:\\Users\\Pheebz\\Desktop\\COMEDY Clips\\Comedy 29 (22 Jump Street).avi");
-				Clips.add("C:\\Users\\Pheebz\\Desktop\\COMEDY Clips\\Comedy 30 (22 Jump Street).avi");
-				
-				
-				for(int x=0; x < Clips.size(); x++)
-				{
-				*/
 				//ProgressFrame progressFrame = new ProgressFrame();
 
 				File movieFileChosen = new File(filepath);
@@ -228,14 +192,14 @@ public class GeckoController
 					e.printStackTrace();
 				}
 				
-				String movieName = movieFileChosen.getName().substring(0, movieFileChosen.getName().lastIndexOf('.'));
-				new ResultsFrame(movieName, shotList);
+				//String movieName = movieFileChosen.getName().substring(0, movieFileChosen.getName().lastIndexOf('.'));
+				//new ResultsFrame(movieName, shotList);
 				
 				//GenreClassifier movieGenreClassifier = new GenreClassifier(shotList, extractionModel.getParentResultPath());
 				//movieGenreClassifier.classifyMovieGenre();
 			}
 			
-			//}
+			
 		});
 	}
 }
