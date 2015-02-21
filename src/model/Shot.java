@@ -3,8 +3,10 @@ package model;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -26,6 +28,7 @@ public class Shot
 	private double VD_THRESHOLD;
 	private double FLAME_THRESHOLD;
 	private ArrayList<Frame> frameList = new ArrayList<Frame>();
+	StringBuilder hsbString = new StringBuilder();
 
 	public Shot(int key, String shotRangePath, String framePath)
 	{
@@ -243,7 +246,7 @@ public class Shot
 		{
 			flamePercentageAVG = 0;
 		}
-		
+	//	System.out.println("FLAME PERCENTAGE " + flamePercentageAVG);
 		return flamePercentageAVG;
 	}
 	
@@ -252,6 +255,8 @@ public class Shot
 		int flamePixels = 0;
 		double flamePercentage = 0;
 		float saturation = 0;
+		float hue = 0;
+		float brightness = 0;
 		
 		File file = new File(frame.getDirectory());
 		BufferedImage image = null;
@@ -263,10 +268,11 @@ public class Shot
 		
 		RGB rgb = new RGB();
 		RGB tempRGB = new RGB();
+		RGB truGB = new RGB();
 		int height = image.getHeight();
 		int width = image.getWidth();
 		int resolution = height * width;
-		double redTreshold = 40; // VALUE NOT YET FINAL
+		double redTreshold = 40; // ADJUST THRESHOLD ACCORDINGLY
 		// 40 to 70 normal threshold, BEAM has a 0.10 threshold
 		// play with the saturation threshold
 		double saturationThreshold = 0.10; 
@@ -277,9 +283,17 @@ public class Shot
 			{
 				int[] currentPixel = image.getRaster().getPixel(j, i, new int[3]);
 				
+//				tempRGB.setR(tempRGB.getR()+ currentPixel[0]);
+//				tempRGB.setG(tempRGB.getG()+ currentPixel[1]);
+//				tempRGB.setB(tempRGB.getB()+ currentPixel[2]);
+				
 				tempRGB.setR(tempRGB.getR()+ currentPixel[0]);
 				tempRGB.setG(tempRGB.getG()+ currentPixel[1]);
 				tempRGB.setB(tempRGB.getB()+ currentPixel[2]);
+				
+				truGB.setR(currentPixel[0]);
+				truGB.setG(currentPixel[1]);
+				truGB.setB(currentPixel[2]);
 				
 				// normalize RGB Values
 				double RGBSum = tempRGB.getR() + tempRGB.getG() + tempRGB.getB();
@@ -289,15 +303,24 @@ public class Shot
 				rgb.setG(tempRGB.getG()/RGBSum);
 				rgb.setB(tempRGB.getB()/RGBSum);
 				
-				if(tempRGB.getR() > redTreshold)
+//				System.out.println("PIXELS: "+rgb.getR()+" "+rgb.getG()+" "+rgb.getB());
+				
+				if(truGB.getR() > redTreshold)
 				{
-					if(rgb.getR() > rgb.getG() && rgb.getG() > rgb.getB())
+					if(rgb.getR() > rgb.getG() && rgb.getG() > rgb.getB()) // still in doubt
 					{
-						saturation = calculateSaturation(tempRGB);
-						double valueR = ((255 - tempRGB.getR())*saturationThreshold)/redTreshold;
-						double valueG = ((153 *saturationThreshold))/redTreshold;
-						double valueB = ((51 * saturationThreshold))/redTreshold;
-						if(saturation > valueR+valueG+valueB)
+						saturation = calculateSaturation(truGB);
+						//System.out.println("SATURATION TOTAL: "+saturation);
+						double valueR = ((255 - truGB.getR())*saturationThreshold)/redTreshold;
+						//double valueG = ((153 - tempRGB.getG())*saturationThreshold)/redTreshold;
+						//double valueB = ((51 - tempRGB.getB())* saturationThreshold)/redTreshold;
+						//System.out.println("RED: "+valueR+" GREEN: "+valueG+" BLUE: "+valueB);
+						//System.out.println("TOTAL PIX: "+(valueR+valueG+valueB));
+						//valueR = Math.abs(valueR);
+						//valueG = Math.abs(valueG);
+						//valueB = Math.abs(valueB);
+						//System.out.println(getHSB[0]+" | "+getHSB[1]+" | "+getHSB[2]);
+						if(saturation > valueR)
 						{
 							flamePixels++;
 						}
@@ -306,12 +329,33 @@ public class Shot
 			}
 		}
 		
+		System.out.println("FLAME PIXEL " + flamePixels);
+		
+//		File testFile = null;
+//		testFile = new File(TEST.concat("\\Test.txt"));
+//		FileWriter testWriter = null;
+//		
+//		try
+//		{
+//			testWriter = new FileWriter(testFile.getAbsoluteFile());
+//			BufferedWriter infoWriter = new BufferedWriter(testWriter);
+//			
+//    		testWriter.write(hsbString.toString());
+//    		testWriter.close();
+//		}
+//		catch (IOException e) 
+//		{
+//			e.printStackTrace();
+//		};
+		
 		flamePercentage = (flamePixels * 1.0)/resolution;
+		System.out.println("FLAME PERCENTAGE: "+flamePercentage);
 		return flamePercentage;
 	}
 
 	public float calculateSaturation(RGB rgb) 
 	{
+		
 		float saturation = 0;
 		float af[] = Color.RGBtoHSB((int)rgb.getR(), (int)rgb.getG(), (int)rgb.getB(), null);
 		saturation = af[1];
@@ -347,6 +391,7 @@ public class Shot
 	{
 		this.luminanceValue = luminanceValue;
 	}
+	
 
 	public double getFlamePercentageValue() 
 	{
