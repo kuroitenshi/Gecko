@@ -45,7 +45,7 @@ public class AudialSegmentation {
 		else if (OS.indexOf("mac") >= 0) {
 			filePath = "\""+this.audioPath.concat("/output.wav") + "\"";
 			outPath = "\""+this.audioPath.concat("/Segments");
-			fileRead = this.directoryMain.concat("/Visual Data/ShotRange.mp3");
+			fileRead = this.directoryMain.concat("/Visual Data/ShotRange.txt");
 		}
 		
 		try 

@@ -60,7 +60,7 @@ public class GeckoController
 				ArrayList<Shot> shotList = new ArrayList<Shot>();
 
 				
-				for (int i = 1; i <= movieSegmentation.getShotRangeNumber(); i++) 
+				for (int i = 1; i <= movieSegmentation.getShotRangeNumber()+1; i++) 
 				{
 					String OS = System.getProperty("os.name").toLowerCase();
 

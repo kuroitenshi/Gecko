@@ -191,10 +191,11 @@ public class Segmentation
                 	}
                 }
             }
-		}
-				
+		}		
+		
+		shotNumbersString = shotNumbersString.append("Shot No: " + getShotRangeNumber() + " Frame " + shotRangeCounter + " to " + imageCount  + " Difference " + 0.0 + "\r\n");
 		shotRangeString = shotRangeString.append("Shot No: " + getShotRangeNumber() + " Frames " + shotRangeCounter + " to " + imageCount + "\r\n");
-		this.setShotRangeNumber(getShotRangeNumber()-1);
+		this.setShotRangeNumber(getShotRangeNumber()- 1);
 
 		// ADDED
 		
