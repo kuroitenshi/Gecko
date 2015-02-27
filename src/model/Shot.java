@@ -329,7 +329,7 @@ public class Shot
 			}
 		}
 		
-		System.out.println("FLAME PIXEL " + flamePixels);
+//		System.out.println("FLAME PIXEL " + flamePixels);
 		
 //		File testFile = null;
 //		testFile = new File(TEST.concat("\\Test.txt"));
@@ -349,7 +349,7 @@ public class Shot
 //		};
 		
 		flamePercentage = (flamePixels * 1.0)/resolution;
-		System.out.println("FLAME PERCENTAGE: "+flamePercentage);
+//		System.out.println("FLAME PERCENTAGE: "+flamePercentage);
 		return flamePercentage;
 	}
 

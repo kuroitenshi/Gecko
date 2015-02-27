@@ -46,7 +46,7 @@ public class AudioExtraction {
 		}
 		
 		
-		System.out.println("1st com: "+ ffmpegCmd);
+//		System.out.println("1st com: "+ ffmpegCmd);
 		
 		try 
 		{
