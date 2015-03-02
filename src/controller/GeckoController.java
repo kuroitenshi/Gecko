@@ -32,8 +32,8 @@ public class GeckoController
 		{
 
 			public void actionPerformed(ActionEvent arg0) 
-			{
-
+			{		
+				
 				String filepath = fileFinder.getFilepath();
 				fileFinder.dispose();
 										
@@ -192,11 +192,11 @@ public class GeckoController
 					e.printStackTrace();
 				}
 				
-				//String movieName = movieFileChosen.getName().substring(0, movieFileChosen.getName().lastIndexOf('.'));
-				//new ResultsFrame(movieName, shotList);
+				String movieName = movieFileChosen.getName().substring(0, movieFileChosen.getName().lastIndexOf('.'));
+				new ResultsFrame(movieName, shotList);
 				
-				//GenreClassifier movieGenreClassifier = new GenreClassifier(shotList, extractionModel.getParentResultPath());
-				//movieGenreClassifier.classifyMovieGenre();
+				GenreClassifier movieGenreClassifier = new GenreClassifier(shotList, extractionModel.getParentResultPath());
+				movieGenreClassifier.classifyMovieGenre();
 			}
 			
 			
