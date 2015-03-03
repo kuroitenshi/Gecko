@@ -13,31 +13,30 @@ public class GenreClassifier
 	/*-----------------------------------------------*/
 	/*-------------ACTION CONSTANTS------------------*/
 	/*-----------------------------------------------*/
-	public final double ACTION_FLAME_PERCENTAGE = 0.694210387;
-	public final double ACTION_VISUAL_DISTURBANCE = 0.096804224;
-	public final double ACTION_AUDIO_ENERGY = 0.106805809;
-	public final double ACTION_AUDIO_PACE= 0.0;
+	public final double ACTION_FLAME_PERCENTAGE = 0.694210387; //OLD Not updated 
+	public final double ACTION_VISUAL_DISTURBANCE = 0.048394148; //LOWER
+	public final double ACTION_AUDIO_ENERGY = 0.002525;// ADJUSTED VARIANCE
+	public final double ACTION_AUDIO_PACE= 85; //UPPER 
 	
 
 	/*-----------------------------------------------*/
 	/*-------------HORROR CONSTANTS------------------*/
 	/*-----------------------------------------------*/
-	public final double HORROR_VISUAL_DISTURBANCE =  0.096804224; //SUBJECT TO CHANGE (Not yet Computed)
-	public final double HORROR_AUDIO_ENERGY = 0.097566871;
+	public final double HORROR_VISUAL_DISTURBANCE =  0.005668848; //VARIANCE 
+	public final double HORROR_AUDIO_ENERGY = 0.023435068; //VARIANCE
 
 	/*-----------------------------------------------*/
 	/*-------------COMEDY CONSTANTS------------------*/
 	/*-----------------------------------------------*/
-	public final double COMEDY_LUMINANCE = 75.75177648;
-	//FOR NEW SEG = 78.59996361
-	public final double COMEDY_AUDIO_POWER = 0.004889318;
-	//MP3 = 0.004016932
+	public final double COMEDY_LUMINANCE = 34.25424; //LOWER
+	public final double COMEDY_AUDIO_POWER = 0.014566544; //VARIANCE
 	
 	/*-----------------------------------------------*/
 	/*-------------DRAMA CONSTANTS------------------*/
 	/*-----------------------------------------------*/
-	public final double DRAMA_AUDIO_POWER = 0.002071157;
-	public final double DRAMA_AUDIO_PACE= 0.0;
+	public final double DRAMA_AUDIO_POWER = 0.000174; // LOWER
+	public final double DRAMA_AUDIO_PACE= 10; //LOWER
+
 	
 	
 	public GenreClassifier(ArrayList<Shot> shotList, String resultsDirectory)	
@@ -58,8 +57,7 @@ public class GenreClassifier
 			if(shotList.get(i).getFlamePercentageValue() >= ACTION_FLAME_PERCENTAGE && classified == false)
 			{
 				
-				//shotList.get(i).getAudioPaceValue() >= ACTION_AUDIO_PACE
-				if(shotList.get(i).getAudioEnergyValue() >= ACTION_AUDIO_ENERGY )
+				if(shotList.get(i).getAudioEnergyValue() >= ACTION_AUDIO_ENERGY  && shotList.get(i).getAudioPaceValue() >= ACTION_AUDIO_PACE)
 				{
 					/*SHOT IS ACTION*/
 					shotGenres = shotGenres.append("SHOT " + (i+1) 
@@ -73,7 +71,16 @@ public class GenreClassifier
 			if(shotList.get(i).getVisualDisturbanceValue() >= HORROR_VISUAL_DISTURBANCE || shotList.get(i).getVisualDisturbanceValue() >= ACTION_VISUAL_DISTURBANCE && classified == false ) 
 			{
 				
-				if(shotList.get(i).getAudioEnergyValue() >= ACTION_AUDIO_ENERGY)
+				if(shotList.get(i).getAudioEnergyValue() >= HORROR_AUDIO_ENERGY  && shotList.get(i).getAudioPaceValue() >= DRAMA_AUDIO_PACE)
+				{
+					/*SHOT IS HORROR*/
+					shotGenres = shotGenres.append("SHOT " + (i+1) 
+							+ " GENRE: "
+							+ "HORROR"
+							+ System.lineSeparator());
+					classified = true;
+				}
+				else if(shotList.get(i).getAudioEnergyValue() >= ACTION_AUDIO_ENERGY )
 				{
 					/*SHOT IS ACTION*/
 					shotGenres = shotGenres.append("SHOT " + (i+1) 
@@ -82,14 +89,6 @@ public class GenreClassifier
 							+ System.lineSeparator());
 					classified = true;
 					
-				}else if(shotList.get(i).getAudioEnergyValue() >= HORROR_AUDIO_ENERGY)
-				{
-					/*SHOT IS HORROR*/
-					shotGenres = shotGenres.append("SHOT " + (i+1) 
-							+ " GENRE: "
-							+ "HORROR"
-							+ System.lineSeparator());
-					classified = true;
 				}
 				
 			}
@@ -113,7 +112,7 @@ public class GenreClassifier
 							+ "HORROR"
 							+ System.lineSeparator());
 					classified = true;
-					//shotList.get(i).getAudioPaceValue() >= DRAMA_AUDIO_PACE
+					
 			}
 			
 			if(shotList.get(i).getAudioPowerValue() >= DRAMA_AUDIO_POWER && classified == false)
