@@ -19,23 +19,24 @@ public class GenreClassifier
 	public final double ACTION_AUDIO_PACE= 85; //UPPER 
 	
 
+	
 	/*-----------------------------------------------*/
 	/*-------------HORROR CONSTANTS------------------*/
 	/*-----------------------------------------------*/
 	public final double HORROR_VISUAL_DISTURBANCE =  0.005668848; //VARIANCE 
 	public final double HORROR_AUDIO_ENERGY = 0.023435068; //VARIANCE
+	public final double HORROR_LUMINANCE = 25; //ADJUSTED
 
 	/*-----------------------------------------------*/
 	/*-------------COMEDY CONSTANTS------------------*/
 	/*-----------------------------------------------*/
-	public final double COMEDY_LUMINANCE = 34.25424; //LOWER
-	public final double COMEDY_AUDIO_POWER = 0.014566544; //VARIANCE
+	public final double COMEDY_LUMINANCE = 42.33017011; //LOWER
+
 	
 	/*-----------------------------------------------*/
 	/*-------------DRAMA CONSTANTS------------------*/
 	/*-----------------------------------------------*/
-	public final double DRAMA_AUDIO_POWER = 0.000174; // LOWER
-	public final double DRAMA_AUDIO_PACE= 10; //LOWER
+	public final double DRAMA_AUDIO_POWER = 0.001650383; // UPPER
 
 	
 	
@@ -52,9 +53,14 @@ public class GenreClassifier
 	{
 		StringBuilder shotGenres = new StringBuilder();
 		boolean classified = false;
+		int HORROR_count = 0;
+		int COMEDY_count = 0;
+		int ACTION_count = 0;
+		int DRAMA_count = 0;
+		int NEUTRAL_count = 0;
 		for(int i=0; i < this.shotList.size(); i++)
 		{
-			if(shotList.get(i).getFlamePercentageValue() >= ACTION_FLAME_PERCENTAGE && classified == false)
+			if(shotList.get(i).getFlamePercentageValue() >= ACTION_FLAME_PERCENTAGE  || shotList.get(i).getVisualDisturbanceValue() >= ACTION_VISUAL_DISTURBANCE && classified == false)
 			{
 				
 				if(shotList.get(i).getAudioEnergyValue() >= ACTION_AUDIO_ENERGY  && shotList.get(i).getAudioPaceValue() >= ACTION_AUDIO_PACE)
@@ -64,20 +70,22 @@ public class GenreClassifier
 									+ " GENRE: "
 									+ "ACTION"
 									+ System.lineSeparator());
+					ACTION_count++;
 					classified = true;
 				}
 			}
 			
-			if(shotList.get(i).getVisualDisturbanceValue() >= HORROR_VISUAL_DISTURBANCE || shotList.get(i).getVisualDisturbanceValue() >= ACTION_VISUAL_DISTURBANCE && classified == false ) 
+			if(shotList.get(i).getVisualDisturbanceValue() >= HORROR_VISUAL_DISTURBANCE && classified == false ) 
 			{
 				
-				if(shotList.get(i).getAudioEnergyValue() >= HORROR_AUDIO_ENERGY  && shotList.get(i).getAudioPaceValue() >= DRAMA_AUDIO_PACE)
+				if(shotList.get(i).getAudioEnergyValue() >= HORROR_AUDIO_ENERGY)
 				{
 					/*SHOT IS HORROR*/
 					shotGenres = shotGenres.append("SHOT " + (i+1) 
 							+ " GENRE: "
 							+ "HORROR"
 							+ System.lineSeparator());
+					HORROR_count++;
 					classified = true;
 				}
 				else if(shotList.get(i).getAudioEnergyValue() >= ACTION_AUDIO_ENERGY )
@@ -87,56 +95,74 @@ public class GenreClassifier
 							+ " GENRE: "
 							+ "ACTION"
 							+ System.lineSeparator());
+					ACTION_count++;
 					classified = true;
 					
 				}
 				
 			}
 			
-			if(shotList.get(i).getLuminanceValue() >= COMEDY_LUMINANCE && shotList.get(i).getAudioPowerValue() >= COMEDY_AUDIO_POWER  && classified == false)
+			if(shotList.get(i).getLuminanceValue() >= COMEDY_LUMINANCE  && classified == false)
 			{
+				
+				if(shotList.get(i).getAudioPowerValue() > DRAMA_AUDIO_POWER )
+				{
 					/*SHOT IS COMEDY*/
 					shotGenres = shotGenres.append("SHOT " + (i+1) 
 							+ " GENRE: "
 							+ "COMEDY"
 							+ System.lineSeparator());
-					classified = true;
-								
+					COMEDY_count++;
+					classified = true;		
+				
+				}
+										
 			}
 			
-			if(shotList.get(i).getAudioEnergyValue() >= HORROR_AUDIO_ENERGY && classified == false)
+			if(shotList.get(i).getLuminanceValue() < HORROR_LUMINANCE && classified == false)
 			{
 					/*SHOT IS HORROR*/
 					shotGenres = shotGenres.append("SHOT " + (i+1) 
 							+ " GENRE: "
 							+ "HORROR"
 							+ System.lineSeparator());
+					HORROR_count++;
 					classified = true;
 					
-			}
-			
-			if(shotList.get(i).getAudioPowerValue() >= DRAMA_AUDIO_POWER && classified == false)
+			}	
+			if(shotList.get(i).getAudioPowerValue() >= 0.000174287 &&  shotList.get(i).getAudioPowerValue() < DRAMA_AUDIO_POWER && classified == false)
 			{
 					/*SHOT IS DRAMA*/
 					shotGenres = shotGenres.append("SHOT " + (i+1) 
 							+ " GENRE: "
 							+ "DRAMA"
 							+ System.lineSeparator());
+					DRAMA_count++;
 					classified = true;
 			}
+			
+			
+			
 			if(classified == false)
 			{
-					/*SHOT IS NEUTRAL - Gecko team Note: Leave blank first*/
+					/*SHOT IS NEUTRAL */
 					shotGenres = shotGenres.append("SHOT " + (i+1) 
 							+ " GENRE: "
-							+ " NEUTRAL"
+							+ "NEUTRAL"
 							+ System.lineSeparator());
+					NEUTRAL_count++;
 					classified = true;
 			}
 			
 			classified = false;
+			
 		}
-		
+		shotGenres = shotGenres.append("NEUTRAL=  " + NEUTRAL_count + System.lineSeparator() +
+									   "ACTION=  " + ACTION_count + System.lineSeparator() +
+									   "DRAMA=  " + DRAMA_count + System.lineSeparator() +
+									   "HORROR=  " + HORROR_count + System.lineSeparator() +
+									   "COMEDY=  " + COMEDY_count + System.lineSeparator() );
+								
 		this.classificationResultsWriter(shotGenres.toString());
 	}
 	
