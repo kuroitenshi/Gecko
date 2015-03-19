@@ -18,6 +18,7 @@ import model.FrameExtraction;
 import model.GenreClassifier;
 import model.Segmentation;
 import model.Shot;
+import model.Objects.ResultPercentages;
 
 public class GeckoController 
 {
@@ -190,10 +191,20 @@ public class GeckoController
 				}
 				
 				String movieName = movieFileChosen.getName().substring(0, movieFileChosen.getName().lastIndexOf('.'));
-				new ResultsFrame(movieName, shotList);
 				
 				GenreClassifier movieGenreClassifier = new GenreClassifier(shotList, extractionModel.getParentResultPath());
 				movieGenreClassifier.classifyMovieGenre();
+				
+				ResultPercentages results = new ResultPercentages();
+				
+				results.action = movieGenreClassifier.ACTION_count;
+				results.horror = movieGenreClassifier.HORROR_count;
+				results.comedy = movieGenreClassifier.COMEDY_count;
+				results.drama = movieGenreClassifier.DRAMA_count;
+				results.neutral = movieGenreClassifier.NEUTRAL_count;
+				
+				new ResultsFrame(movieName, shotList, results);
+
 				
 			}
 			

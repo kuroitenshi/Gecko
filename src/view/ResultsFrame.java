@@ -15,6 +15,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 
 import model.Shot;
+import model.Objects.ResultPercentages;
 
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
@@ -34,16 +35,16 @@ public class ResultsFrame extends JFrame {
 	int horrorPercent;
 	ArrayList<Shot> shotList;
 	
-	public ResultsFrame(String movieName, ArrayList<Shot> shotList) {
+	public ResultsFrame(String movieName, ArrayList<Shot> shotList, ResultPercentages results) {
 		
 		super("Gecko Movie Classifier");
 		this.movieName = movieName;
 		this.shotList = shotList;
 		
-		actionPercent = 2;
-		comedyPercent = 3;
-		dramaPercent = 5;
-		horrorPercent = 4;
+		actionPercent = results.action;
+		comedyPercent = results.comedy;
+		dramaPercent = results.drama;
+		horrorPercent = results.horror;
 		
 		getContentPane().setBackground(Color.white);
 		getContentPane().setPreferredSize(new Dimension(400, 600));

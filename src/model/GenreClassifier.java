@@ -8,6 +8,14 @@ import java.util.ArrayList;
 
 public class GenreClassifier 
 {
+	
+	public int HORROR_count = 0;
+	public int COMEDY_count = 0;
+	public int ACTION_count = 0;
+	public int DRAMA_count = 0;
+	public int NEUTRAL_count = 0;
+	
+	
 	private ArrayList<Shot> shotList;
 	private String resultsDirectory;
 	/*-----------------------------------------------*/
@@ -53,11 +61,7 @@ public class GenreClassifier
 	{
 		StringBuilder shotGenres = new StringBuilder();
 		boolean classified = false;
-		int HORROR_count = 0;
-		int COMEDY_count = 0;
-		int ACTION_count = 0;
-		int DRAMA_count = 0;
-		int NEUTRAL_count = 0;
+		
 		for(int i=0; i < this.shotList.size(); i++)
 		{
 			if(shotList.get(i).getFlamePercentageValue() >= ACTION_FLAME_PERCENTAGE  || shotList.get(i).getVisualDisturbanceValue() >= ACTION_VISUAL_DISTURBANCE && classified == false)
