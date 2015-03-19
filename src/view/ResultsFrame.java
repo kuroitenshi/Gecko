@@ -20,6 +20,7 @@ import model.Objects.ResultPercentages;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.PiePlot;
 import org.jfree.chart.plot.PiePlot3D;
 import org.jfree.data.general.DefaultPieDataset;
 import org.jfree.data.general.PieDataset;
@@ -33,6 +34,7 @@ public class ResultsFrame extends JFrame {
 	int comedyPercent;
 	int dramaPercent;
 	int horrorPercent;
+	int neutralPercent;
 	ArrayList<Shot> shotList;
 	
 	public ResultsFrame(String movieName, ArrayList<Shot> shotList, ResultPercentages results) {
@@ -45,6 +47,7 @@ public class ResultsFrame extends JFrame {
 		comedyPercent = results.comedy;
 		dramaPercent = results.drama;
 		horrorPercent = results.horror;
+		neutralPercent = results.neutral;
 		
 		getContentPane().setBackground(Color.white);
 		getContentPane().setPreferredSize(new Dimension(400, 400));
@@ -57,7 +60,7 @@ public class ResultsFrame extends JFrame {
 		
         
         
-		setup(chartPanel);		
+        setup(chartPanel);		
 		
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		pack();
@@ -104,15 +107,41 @@ public class ResultsFrame extends JFrame {
 	}
 	
 	private String getGenre() {
-		if (actionPercent > comedyPercent && actionPercent > dramaPercent && actionPercent > horrorPercent)
-			return "action";
-		if (comedyPercent > actionPercent && comedyPercent > dramaPercent && comedyPercent > horrorPercent)
-			return "comedy";
-		if (dramaPercent > actionPercent && dramaPercent > comedyPercent && dramaPercent > horrorPercent)
-			return "drama";
-		if (horrorPercent > actionPercent && horrorPercent > comedyPercent && horrorPercent > dramaPercent)
-			return "horror";
-		else return "neutral";
+		int maxvalue = 0;
+		String genre = "";
+		
+		if (actionPercent > maxvalue)
+			maxvalue = actionPercent;
+		if (horrorPercent > maxvalue)
+			maxvalue = horrorPercent;
+		if (dramaPercent > maxvalue)
+			maxvalue = dramaPercent;
+		if (comedyPercent > maxvalue)
+			maxvalue = comedyPercent;
+		if (neutralPercent > maxvalue)
+			maxvalue = neutralPercent;
+		
+		if (actionPercent == maxvalue)
+			genre += "action";
+		if (horrorPercent == maxvalue)
+			if (genre == "")
+				genre += "horror";
+			else genre += " & horror";
+		if (dramaPercent == maxvalue)
+			if (genre == "")
+				genre += "drama";
+			else genre += " & drama";
+		if (comedyPercent == maxvalue)
+			if (genre == "")
+				genre += "comedy";
+			else genre += " & comedy";
+		if (neutralPercent == maxvalue)
+			if (genre == "")
+				genre += "neutral";
+			else genre += " & neutral";
+		
+		return genre;
+		
 	}
 
 	private  PieDataset createDataset() {
@@ -121,23 +150,26 @@ public class ResultsFrame extends JFrame {
         result.setValue("Comedy", comedyPercent);
         result.setValue("Drama", dramaPercent);
         result.setValue("Horror", horrorPercent);
+        result.setValue("Neutral", neutralPercent);
         return result;
         
     }
 	
 	private JFreeChart createChart(PieDataset dataset, String title) {
         
-        JFreeChart chart = ChartFactory.createPieChart3D(title,          // chart title
+        JFreeChart chart = ChartFactory.createPieChart(title,          // chart title
             dataset,                // data
             true,                   // include legend
             true,
             false);
 
-        PiePlot3D plot = (PiePlot3D) chart.getPlot();
-        plot.setStartAngle(290);
-        plot.setDirection(Rotation.CLOCKWISE);
-        plot.setForegroundAlpha(0.5f);
+        
+        PiePlot plot = (PiePlot) chart.getPlot();
+        plot.setNoDataMessage("No data available");
+        plot.setExplodePercent("Action", 0.10);
+        plot.setLabelGap(0.02);
         return chart;
+      
         
     }
 	
