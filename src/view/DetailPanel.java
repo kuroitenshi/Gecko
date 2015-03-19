@@ -23,6 +23,7 @@ public class DetailPanel extends JPanel {
 	double enrg;
 	double powr;
 	double pace;
+	String classification;
 
 	public DetailPanel(Shot shot, int selected) {
 		
@@ -34,6 +35,7 @@ public class DetailPanel extends JPanel {
 		enrg = shot.getAudioEnergyValue();
 		powr = shot.getAudioPowerValue();
 		pace = shot.getAudioPaceValue();
+		classification = shot.classification;
 		
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		setMaximumSize(new Dimension(250, 480));
@@ -99,7 +101,7 @@ public class DetailPanel extends JPanel {
 		
 		add(Box.createRigidArea(new Dimension(0, 20)));
 		
-		JLabel classLabel = new JLabel("Shot classified as action.");
+		JLabel classLabel = new JLabel("Shot classified as " + classification + ".");
 		classLabel.setFont(new Font("Sans Serif", Font.PLAIN, 14));		
 		classLabel.setMaximumSize(new Dimension(200, 30));
 		classLabel.setAlignmentX(Component.CENTER_ALIGNMENT);

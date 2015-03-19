@@ -47,7 +47,7 @@ public class ResultsFrame extends JFrame {
 		horrorPercent = results.horror;
 		
 		getContentPane().setBackground(Color.white);
-		getContentPane().setPreferredSize(new Dimension(400, 600));
+		getContentPane().setPreferredSize(new Dimension(400, 400));
 		getContentPane().setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
 		
 		PieDataset dataset = createDataset();
@@ -83,69 +83,21 @@ public class ResultsFrame extends JFrame {
 		getContentPane().add(Box.createRigidArea(new Dimension(0, 20)));
 
 		
-		JButton viewAllShotsBtn = new JButton("View All Shots");
-		JButton viewActShotsBtn = new JButton("View Action Shots");
-		JButton viewComShotsBtn = new JButton("View Comedy Shots");
-		JButton viewDrmShotsBtn = new JButton("View Drama Shots");
-		JButton viewHorShotsBtn = new JButton("View Horror Shots");
+		JButton viewShotsButton = new JButton("View Shots");
 		
-		viewAllShotsBtn.setMaximumSize(new Dimension(200, 30));
-		viewActShotsBtn.setMaximumSize(new Dimension(200, 30));
-		viewComShotsBtn.setMaximumSize(new Dimension(200, 30));
-		viewDrmShotsBtn.setMaximumSize(new Dimension(200, 30));
-		viewHorShotsBtn.setMaximumSize(new Dimension(200, 30));
+		viewShotsButton.setMaximumSize(new Dimension(200, 30));
 		
-		viewAllShotsBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
-		viewActShotsBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
-		viewComShotsBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
-		viewDrmShotsBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
-		viewHorShotsBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
+		viewShotsButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 		
-		getContentPane().add(viewAllShotsBtn);
-		getContentPane().add(viewActShotsBtn);
-		getContentPane().add(viewComShotsBtn);
-		getContentPane().add(viewDrmShotsBtn);
-		getContentPane().add(viewHorShotsBtn);
+		getContentPane().add(viewShotsButton);
 		getContentPane().add(Box.createRigidArea(new Dimension(0, 20)));
 
 		
-		viewAllShotsBtn.addActionListener(new ActionListener() {
+		viewShotsButton.addActionListener(new ActionListener() {
 			 
             public void actionPerformed(ActionEvent e)
             {
             	new ShotFrame("All", shotList);
-            }
-        });
-		
-		viewActShotsBtn.addActionListener(new ActionListener() {
-			 
-            public void actionPerformed(ActionEvent e)
-            {
-                new ShotFrame("Action", shotList);
-            }
-        });
-		
-		viewComShotsBtn.addActionListener(new ActionListener() {
-			 
-            public void actionPerformed(ActionEvent e)
-            {
-            	new ShotFrame("Comedy", shotList);
-            }
-        });
-		
-		viewDrmShotsBtn.addActionListener(new ActionListener() {
-			 
-            public void actionPerformed(ActionEvent e)
-            {
-            	new ShotFrame("Drama", shotList);
-            }
-        });
-		
-		viewHorShotsBtn.addActionListener(new ActionListener() {
-			 
-            public void actionPerformed(ActionEvent e)
-            {
-            	new ShotFrame("Horror", shotList);
             }
         });
 		

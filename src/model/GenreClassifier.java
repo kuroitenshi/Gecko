@@ -75,6 +75,7 @@ public class GenreClassifier
 									+ "ACTION"
 									+ System.lineSeparator());
 					ACTION_count++;
+					shotList.get(i).classification = "Action";
 					classified = true;
 				}
 			}
@@ -90,6 +91,7 @@ public class GenreClassifier
 							+ "HORROR"
 							+ System.lineSeparator());
 					HORROR_count++;
+					shotList.get(i).classification = "Horror";
 					classified = true;
 				}
 				else if(shotList.get(i).getAudioEnergyValue() >= ACTION_AUDIO_ENERGY )
@@ -100,6 +102,7 @@ public class GenreClassifier
 							+ "ACTION"
 							+ System.lineSeparator());
 					ACTION_count++;
+					shotList.get(i).classification = "Action";
 					classified = true;
 					
 				}
@@ -117,6 +120,7 @@ public class GenreClassifier
 							+ "COMEDY"
 							+ System.lineSeparator());
 					COMEDY_count++;
+					shotList.get(i).classification = "Comedy";
 					classified = true;		
 				
 				}
@@ -131,6 +135,7 @@ public class GenreClassifier
 							+ "HORROR"
 							+ System.lineSeparator());
 					HORROR_count++;
+					shotList.get(i).classification = "Horror";
 					classified = true;
 					
 			}	
@@ -142,6 +147,7 @@ public class GenreClassifier
 							+ "DRAMA"
 							+ System.lineSeparator());
 					DRAMA_count++;
+					shotList.get(i).classification = "Drama";
 					classified = true;
 			}
 			
@@ -155,6 +161,7 @@ public class GenreClassifier
 							+ "NEUTRAL"
 							+ System.lineSeparator());
 					NEUTRAL_count++;
+					shotList.get(i).classification = "Neutral";
 					classified = true;
 			}
 			

@@ -29,6 +29,7 @@ public class Shot
 	private double FLAME_THRESHOLD;
 	private ArrayList<Frame> frameList = new ArrayList<Frame>();
 	StringBuilder hsbString = new StringBuilder();
+	public String classification;
 
 	public Shot(int key, String shotRangePath, String framePath)
 	{
