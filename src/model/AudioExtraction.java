@@ -1,18 +1,13 @@
 package model;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-
 import model.Objects.StreamConsumer;
 
 public class AudioExtraction {
 	
 	private String audioPath;
 	private File directoryMain;
-	private String shotRangePath;
+	
 	
 	public AudioExtraction(String resultsPath)
 	{

@@ -1,5 +1,6 @@
 package model;
 
+import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
@@ -8,22 +9,38 @@ public class Frame
 	private int key;
 	private ArrayList<RGB> rgb;	
 	
-
+	private int frame_width;
+	private int frame_height;		
 	private String directory;
-	
+	private int total_R;
+	private int total_G;
+	private int total_B;
+	private double luminance;
+	private double flamePercentage;
+
 	
 	public Frame(int key, String directory)
 	{
 		this.directory = directory;				
 		this.setKey(key);		
 		
+		
 	}
-	public ArrayList<RGB> computeRGB(BufferedImage image) 
+	/**
+	 * Computes the Total RGB values for the whole frame, its luminance value and flame % value
+	 * @param image
+	 * @return RGB 
+	 */
+	public ArrayList<RGB> computeFrameVisualComponents(BufferedImage image) 
 	{
 		ArrayList<RGB> rgb = new ArrayList<RGB>();
 		RGB rgb1, rgb2, rgb3, rgb4, rgb5, rgb6, rgb7, rgb8, rgb9;
 		int width = image.getWidth();
-		int height = image.getHeight();	
+		int height = image.getHeight();
+		
+		//Setting Frame Dimensions
+		this.setFrame_height(height);
+		this.setFrame_width(width);
 		
 		int row1hs = 0;
 		int row1he = height / 3;
@@ -39,6 +56,24 @@ public class Frame
 		int col3ws = width / 3 * 2;
 		int col3we = width;
 		
+		//Added for inner Flame pixel Detection
+		RGB rgb_flame = new RGB();
+		RGB tempRGB = new RGB();
+		RGB truGB = new RGB();
+		int resolution = height * width;
+		int flamePixels = 0;
+		
+		float saturation = 0;
+		
+		double saturationThreshold = 0.10; 
+		double flamePercentage = 0;
+		double redTreshold = 40; // ADJUST THRESHOLD ACCORDINGLY
+		
+		//Added for Luminance
+		double normalizedLuminance  = 0;
+		double luminanceValue = 0;
+		
+		
 		rgb1 = new RGB();
 		rgb2 = new RGB();
 		rgb3 = new RGB();
@@ -53,10 +88,51 @@ public class Frame
 		{
 			for(int j = 0; j < width; j++)
 			{
+				
 				int[] currentPixel = image.getRaster().getPixel(j, i, new int[3]);
 				int red = currentPixel[0];
 				int green = currentPixel[1];
     			int blue = currentPixel[2];
+    			    	
+    			//Added for Luminance Computation
+    			total_R+=red;
+    			total_G+=green;
+    			total_B+=blue;
+    			
+    			
+    			
+    			tempRGB.setR(tempRGB.getR()+ red);
+				tempRGB.setG(tempRGB.getG()+ green);
+				tempRGB.setB(tempRGB.getB()+ blue);
+				
+				truGB.setR(red);
+				truGB.setG(green);
+				truGB.setB(blue);
+				
+				// normalize RGB Values
+				double RGBSum = tempRGB.getR() + tempRGB.getG() + tempRGB.getB();
+				
+				
+				rgb_flame.setR(tempRGB.getR()/RGBSum);
+				rgb_flame.setG(tempRGB.getG()/RGBSum);
+				rgb_flame.setB(tempRGB.getB()/RGBSum);
+				
+				
+				/* FLAME COMPUTATIONS*/
+				if(truGB.getR() > redTreshold)
+				{
+					if(rgb_flame.getR() > rgb_flame.getG() && rgb_flame.getG() > rgb_flame.getB()) 
+					{
+						saturation = calculateSaturation(truGB);
+				
+						double valueR = ((255 - truGB.getR())*saturationThreshold)/redTreshold;
+						if(saturation > valueR)
+						{
+							flamePixels++;
+						}
+					}
+				}
+			
 				
 				try
 				{
@@ -141,9 +217,60 @@ public class Frame
 		rgb.add(rgb8);
 		rgb.add(rgb9);
 		
+		flamePercentage = (flamePixels * 1.0)/resolution;
+		luminanceValue = 0.2126 * total_R+ 0.7152 * total_G + 0.0722 * total_B;
+		normalizedLuminance = luminanceValue / resolution;	
+		
+		this.setFlamePercentage(flamePercentage);
+		this.setLuminance(normalizedLuminance);
+		
 		return rgb;
 	}
 
+
+	/**
+ 	* Computes the Saturation from RGB values
+ 	* @param rgb
+ 	* @return SaturationValue
+ 	*/
+	public float calculateSaturation(RGB rgb) 
+	{
+		
+		float saturation = 0;
+		float af[] = Color.RGBtoHSB((int)rgb.getR(), (int)rgb.getG(), (int)rgb.getB(), null);
+		saturation = af[1];
+		return saturation;
+	}
+	public double getLuminance() 
+	{
+		return luminance;
+	}
+	public void setLuminance(double luminance) 
+	{
+		this.luminance = luminance;
+	}
+	public double getFlamePercentage() 
+	{
+		return flamePercentage;
+	}
+	public void setFlamePercentage(double flamePercentage) 
+	{
+		this.flamePercentage = flamePercentage;
+		
+	}
+
+	public int getTotal_R()
+	{
+		return total_R;
+	}
+
+	public int getTotal_G() 
+	{
+		return total_G;
+	}
+	public int getTotal_B() {
+		return total_B;
+	}
 	public int getKey() 
 	{
 		return key;
@@ -162,10 +289,27 @@ public class Frame
 	public RGB getRgb(int index) 
 	{
 		return rgb.get(index);
-	}
+	}	
 	
 	public void setRgb(ArrayList<RGB> rgb)
 	{
 		this.rgb = rgb;
 	}
+	public int getFrame_width() 
+	{
+		return frame_width;
+	}
+	public void setFrame_width(int frame_width) 
+	{
+		this.frame_width = frame_width;
+	}
+	public int getFrame_height() 
+	{
+		return frame_height;
+	}
+	public void setFrame_height(int frame_height) 
+	{
+		this.frame_height = frame_height;
+	}
+
 }

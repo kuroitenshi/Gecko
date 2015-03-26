@@ -185,7 +185,7 @@ public class Segmentation
                     	shotRangeString = shotRangeString.append("Shot No: " + getShotRangeNumber() + " Frames " + shotRangeCounter + " to " + i + "\r\n");
                         shotRangeCounter = (i+1);
            
-                    	System.out.println(getShotRangeNumber());
+                    	System.out.println("Shot " + getShotRangeNumber());
                     	setShotRangeNumber(getShotRangeNumber() + 1);
                         counterImage = 0;  
                 	}

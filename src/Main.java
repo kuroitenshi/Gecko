@@ -1,4 +1,3 @@
-import model.FrameExtraction;
 import controller.GeckoController;
 
 

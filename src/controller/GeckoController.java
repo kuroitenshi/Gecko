@@ -9,7 +9,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import view.FileFinderFrame;
-import view.ProgressFrame;
 import view.ResultsFrame;
 import model.AudialFeatures;
 import model.AudialSegmentation;
@@ -34,7 +33,9 @@ public class GeckoController
 
 			public void actionPerformed(ActionEvent arg0) 
 			{		
-				
+
+					
+					
 				String filepath = fileFinder.getFilepath();
 				fileFinder.dispose();
 				
@@ -51,7 +52,7 @@ public class GeckoController
 								.getParentResultPath());
 				movieSegmentation.segmentMovie();
 
-				System.out.println("VISUAL FEATURE VALUES");
+				System.out.println("VISUAL FEATURE VALUE - EXTRACTION");
 				StringBuilder visualDisturbanceValues = new StringBuilder();
 				StringBuilder visualLuminanceValues = new StringBuilder();
 				StringBuilder visualFlamePercentageValues = new StringBuilder();
@@ -75,17 +76,16 @@ public class GeckoController
 								.getFramesPath());
 					}
 
+					//Extract Visual Feature Values
+					System.out.println("Extracting Visual Features for shot " + i);
+					shot.extractVisualFeatures();
 					// SET VISUAL DISTURBANCE VALUE
-					shot.setVisualDisturbanceValue(shot
-							.computeVisualDisturbance());
 					shotVisualDisturbance.add(shot.getVisualDisturbanceValue());
 
-					// SET LUMINANCE VALUE3
-					shot.setLuminanceValue(shot.computeLuminance());
+					// SET LUMINANCE VALUE			
 					shotLuminance.add(shot.getLuminanceValue());
 
 					// SET FLAME PERCENTAGE VALUE
-					shot.setFlamePercentageValue(shot.computeFlamePercentage());
 					shotFlamePercentage.add(shot.getFlamePercentageValue());
 
 					visualDisturbanceValues = visualDisturbanceValues
@@ -195,13 +195,7 @@ public class GeckoController
 				GenreClassifier movieGenreClassifier = new GenreClassifier(shotList, extractionModel.getParentResultPath());
 				movieGenreClassifier.classifyMovieGenre();
 				
-				ResultPercentages results = new ResultPercentages();
-				
-				results.action = movieGenreClassifier.ACTION_count;
-				results.horror = movieGenreClassifier.HORROR_count;
-				results.comedy = movieGenreClassifier.COMEDY_count;
-				results.drama = movieGenreClassifier.DRAMA_count;
-				results.neutral = movieGenreClassifier.NEUTRAL_count;
+				ResultPercentages results = new ResultPercentages();			
 				
 				new ResultsFrame(movieName, shotList, results);
 
