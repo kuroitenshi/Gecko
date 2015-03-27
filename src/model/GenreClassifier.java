@@ -31,8 +31,8 @@ public class GenreClassifier
 	/*-------------HORROR CONSTANTS------------------*/
 	/*-----------------------------------------------*/
 	
-	public final double HORROR_VISUAL_DISTURBANCE = 0.021292403; //
-	public final double HORROR_AUDIO_ENERGY = 0.004744383; //
+	public final double HORROR_VISUAL_DISTURBANCE = 0.1150001995; //
+	public final double HORROR_AUDIO_ENERGY = 0.0138572405; //
 	public final double HORROR_LUMINANCE = 50; //ADJUSTED
 	
 	
@@ -157,13 +157,16 @@ public class GenreClassifier
 			}
 			classified = false;
 			}
-			shotGenres = shotGenres.append("NEUTRAL= " + NEUTRAL_count + System.lineSeparator() +
+		
+			shotGenres = shotGenres.append("NUMBER OF SHOTS CLASSIFIED: " + System.lineSeparator() +
+					"NEUTRAL= " + NEUTRAL_count + System.lineSeparator() +
 					"ACTION= " + ACTION_count + System.lineSeparator() +
 					"DRAMA= " + DRAMA_count + System.lineSeparator() +
 					"HORROR= " + HORROR_count + System.lineSeparator() +
-					"COMEDY= " + COMEDY_count + System.lineSeparator() );
+					"COMEDY= " + COMEDY_count + System.lineSeparator() + System.lineSeparator());
 			
-			shotGenres = shotGenres.append("NEUTRAL= " + NEUTRAL_frames + System.lineSeparator() +
+			shotGenres = shotGenres.append("NUMBER OF FRAMES CLASSIFIED: "+ System.lineSeparator() + 
+					"NEUTRAL= " + NEUTRAL_frames + System.lineSeparator() +
 					"ACTION= " + ACTION_frames + System.lineSeparator() +
 					"DRAMA= " + DRAMA_frames + System.lineSeparator() +
 					"HORROR= " + HORROR_frames + System.lineSeparator() +

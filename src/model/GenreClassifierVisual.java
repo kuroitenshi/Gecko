@@ -116,11 +116,14 @@ public class GenreClassifierVisual
 			}
 			classified = false;
 			}
-			shotGenres = shotGenres.append("ACTION= " + ACTION_count + System.lineSeparator() +
+			shotGenres = shotGenres.append("NUMBER OF SHOTS CLASSIFIED: " + System.lineSeparator() +
+					"ACTION= " + ACTION_count + System.lineSeparator() +
 					"DRAMA= " + DRAMA_count + System.lineSeparator() +
 					"HORROR= " + HORROR_count + System.lineSeparator() +
-					"COMEDY= " + COMEDY_count + System.lineSeparator() );
-			shotGenres = shotGenres.append("ACTION= " + ACTION_frames + System.lineSeparator() +
+					"COMEDY= " + COMEDY_count + System.lineSeparator() + System.lineSeparator());
+			
+			shotGenres = shotGenres.append("NUMBER OF FRAMES CLASSIFIED: "+ System.lineSeparator() + 
+					"ACTION= " + ACTION_frames + System.lineSeparator() +
 					"DRAMA= " + DRAMA_frames + System.lineSeparator() +
 					"HORROR= " + HORROR_frames + System.lineSeparator() +
 					"COMEDY= " + COMEDY_frames + System.lineSeparator() );
