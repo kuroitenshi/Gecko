@@ -23,6 +23,32 @@ public class GeckoController
 {
 	FrameExtraction extractionModel = new FrameExtraction();
 	FileFinderFrame fileFinder;
+	
+	
+	/* Benchmark Purpose */	
+	long startTimeFrameEx;
+	long endTimeFrameEx;
+	long totTimeFrameEx;
+	long startTimeVisSeg;
+	long endTimeVisSeg;
+	long totTimeVisSeg;
+	long startTimeVisEx;
+	long endTimeVisEx;
+	long totTimeVisEx;
+	long startTimeAudialEx;
+	long endTimeAudialEx;
+	long totTimeAudialEx;
+	long startTimeAudialSeg;
+	long endTimeAudialSeg;
+	long totTimeAudialSeg;
+	long startTimeAudialFeat;
+	long endTimeAudialFeat;
+	long totTimeAudialFeat;
+	long startTimeClass;
+	long endTimeClass;
+	long totTimeClass;
+	
+	StringBuilder inTime = new StringBuilder();
 
 	public GeckoController() {
 
@@ -43,14 +69,24 @@ public class GeckoController
 				ArrayList<Double> shotVisualDisturbance = new ArrayList<Double>();
 				ArrayList<Double> shotLuminance = new ArrayList<Double>();
 				ArrayList<Double> shotFlamePercentage = new ArrayList<Double>();
+				
+				startTimeFrameEx = System.currentTimeMillis();
 
 				extractionModel.setMovieFile(movieFileChosen);
 				extractionModel.extractImages();
+				
+				endTimeFrameEx = System.currentTimeMillis();
+				totTimeFrameEx = ((endTimeFrameEx/1000) - (startTimeFrameEx/1000));
+				
+				startTimeVisSeg = System.currentTimeMillis();
 
 				Segmentation movieSegmentation = new Segmentation(
 						extractionModel.getFramesPath(), extractionModel
 								.getParentResultPath());
 				movieSegmentation.segmentMovie();
+				
+				endTimeVisSeg = System.currentTimeMillis();
+				totTimeVisSeg = ((endTimeVisSeg/1000) - (startTimeVisSeg/1000));
 
 				System.out.println("VISUAL FEATURE VALUE - EXTRACTION");
 				StringBuilder visualDisturbanceValues = new StringBuilder();
@@ -58,6 +94,7 @@ public class GeckoController
 				StringBuilder visualFlamePercentageValues = new StringBuilder();
 				ArrayList<Shot> shotList = new ArrayList<Shot>();
 
+				startTimeVisEx = System.currentTimeMillis();
 				
 				for (int i = 1; i <= movieSegmentation.getShotRangeNumber()+1; i++) 
 				{
@@ -158,13 +195,23 @@ public class GeckoController
 					e.printStackTrace();
 				};
 				
+				endTimeVisEx = System.currentTimeMillis();
+				totTimeVisEx = ((endTimeVisEx/1000) - (startTimeVisEx/1000));
+				
 				//progressFrame.dispose();
+				
+				startTimeAudialEx = System.currentTimeMillis();
 
 				AudioExtraction audioExtractor = new AudioExtraction(
 						extractionModel.getParentResultPath());
 				audioExtractor.setFile(movieFileChosen);
 				audioExtractor.extractAudio();
+				
+				endTimeAudialEx = System.currentTimeMillis();
+				totTimeAudialEx = ((endTimeAudialEx/1000) - (startTimeAudialEx/1000));
 
+				startTimeAudialSeg = System.currentTimeMillis();
+				
 				AudialSegmentation audialSeg = new AudialSegmentation(
 						extractionModel.getAudialDataPath());
 				audialSeg.setFile(extractionModel.getParentResultPath());
@@ -176,6 +223,11 @@ public class GeckoController
 				{
 					e.printStackTrace();
 				}
+				
+				endTimeAudialSeg = System.currentTimeMillis();
+				totTimeAudialSeg = ((endTimeAudialSeg/1000) - (startTimeAudialSeg/1000));
+				
+				startTimeAudialFeat = System.currentTimeMillis();
 
 				AudialFeatures audialFeatures = new AudialFeatures(
 						extractionModel.getAudialSegPath(), extractionModel
@@ -190,6 +242,11 @@ public class GeckoController
 					e.printStackTrace();
 				}
 				
+				endTimeAudialFeat = System.currentTimeMillis();
+				totTimeAudialFeat =  ((endTimeAudialFeat/1000) - (startTimeAudialFeat/1000));
+				
+				startTimeClass = System.currentTimeMillis();
+				
 				String movieName = movieFileChosen.getName().substring(0, movieFileChosen.getName().lastIndexOf('.'));
 				
 				GenreClassifier movieGenreClassifier = new GenreClassifier(shotList, extractionModel.getParentResultPath());
@@ -198,11 +255,50 @@ public class GeckoController
 				ResultPercentages results = new ResultPercentages();			
 				
 				new ResultsFrame(movieName, shotList, results);
+				
+				endTimeClass = System.currentTimeMillis();
+				totTimeClass =  ((endTimeClass/1000) - (startTimeClass/1000));
+							
+				inTime = inTime.append("Frame Extraction: "+ System.lineSeparator() + timeDivider(totTimeFrameEx) + System.lineSeparator() + System.lineSeparator()
+						+ "Frame Segmentation: "+ System.lineSeparator()+ timeDivider(totTimeVisSeg) + System.lineSeparator()+ System.lineSeparator()
+						+ "Visual Feature Extraction: "+ System.lineSeparator()+ timeDivider(totTimeVisEx) + System.lineSeparator()+ System.lineSeparator()
+						+"Audial Extraction: "+ System.lineSeparator()+ timeDivider(totTimeAudialEx) + System.lineSeparator()+ System.lineSeparator()
+						+"Audial Segmentation: "+ System.lineSeparator()+ timeDivider(totTimeAudialSeg) + System.lineSeparator()+ System.lineSeparator()
+						+"Audial Feature Extraction: "+ System.lineSeparator()+ timeDivider(totTimeAudialFeat) + System.lineSeparator()+ System.lineSeparator()
+						+"Genre Classification: "+ System.lineSeparator()+ timeDivider(totTimeClass) + System.lineSeparator());
+				
+				File benchMarkFile = new File (extractionModel
+						.getParentResultPath().concat("\\Runtime Values.txt"));
+		
+				FileWriter benchMarkFW = null;
+				
+				try {
+					benchMarkFW = new FileWriter( benchMarkFile.getAbsoluteFile());
+					BufferedWriter resultGenreFileBufferedWriter = new BufferedWriter(benchMarkFW);
+					resultGenreFileBufferedWriter.write(inTime.toString());
+					resultGenreFileBufferedWriter.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 
 				
 			}
 			
 			
 		});
+	}
+	
+	String timeDivider(long dur)
+	{
+		String lines = "";
+		int hours; int minutes; int excess; int seconds;
+		hours = (int)dur / 3600;
+		excess = (int)dur - (hours*3600);
+		minutes = excess / 60;
+		excess = excess - (minutes*60);
+		seconds = excess;
+		
+		lines = hours+" hours; "+minutes+" minutes; "+seconds+" seconds";
+		return lines;
 	}
 }
