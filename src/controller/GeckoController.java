@@ -78,10 +78,12 @@ public class GeckoController
 				
 				startTimeVisSeg = System.currentTimeMillis();
 
+				System.out.println("SHOT SEGMENTATION - START");
 				Segmentation movieSegmentation = new Segmentation(
 						extractionModel.getFramesPath(), extractionModel
 								.getParentResultPath());
 				movieSegmentation.segmentMovie();
+				System.out.println("SHOT SEGMENTATION - END");
 				
 				endTimeVisSeg = System.currentTimeMillis();
 				totTimeVisSeg = ((endTimeVisSeg/1000) - (startTimeVisSeg/1000));

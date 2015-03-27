@@ -54,7 +54,7 @@ public class FrameExtraction
 		}
 		
 		
-		System.out.println("Extraction Completed");
+		System.out.println("Frame Extraction Completed");
 		
 	}
 	

@@ -5,6 +5,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 
@@ -18,17 +19,41 @@ public class Segmentation
 	private String resultsPath;
 	private int shotNumber;
 	private int totalPix = 0;
+	private ArrayList<Histogram> imageHistograms;
+	private int imageCount;
 	public Segmentation(String framesPath, String resultsPath) 
 	{
+	
+		File frames = new File(framesPath);	
+		imageCount = frames.listFiles().length;
+		
 		this.framesPath = framesPath;	
 		this.resultsPath = resultsPath;
-		setShotRangeNumber(1);
+		this.imageHistograms = new ArrayList<Histogram>();
+		this.setShotRangeNumber(1);
+		this.initializeHistogramValues();
 	}
 	
 	/**
 	 * Returns computed Histogram of an Image
 	 * @param image
 	 * @return Histogram Object
+	 */
+	public void initializeHistogramValues()
+	{
+		
+		for(int i = 1; i <= imageCount; i++)
+		{
+			String imagePath = framesPath + "\\" + i + ".jpeg";
+			File image = new File(imagePath);
+			imageHistograms.add(findHistogram(image));
+			
+		}
+	}
+	/**
+	 * Computes the histogram values of an image
+	 * @param image
+	 * @return Histogram of an Image
 	 */
 	public Histogram findHistogram(File image)
 	{
@@ -89,54 +114,30 @@ public class Segmentation
 	
 	/**
 	 * Segments the whole movie into shots
-	 * Results will be outputted to the Visual Data folder 
+	 * Results will be placed to the Visual Data folder 
 	 */
 	public void segmentMovie()
 	{
-		
-		File f = new File(this.framesPath);				
-		int imageCount = f.listFiles().length;		
-		int fileEnd = imageCount;
+			
 		int counterImage = 0;
 		int shotRangeCounter = 1;
 		 
 		/*ATOMICA's Threshold for Action Movies*/
-		double distance_threshold = 0.491387; 
-		
-		Histogram histA;
-		Histogram histB;
-		Histogram histCheck;	
+		double distance_threshold = 0.491387; 				
 		
 		StringBuilder shotNumbersString = new StringBuilder();
 		StringBuilder shotRangeString = new StringBuilder();
 		
-		for(int i = 1; i < imageCount-1; i++)
+		for(int i = 0; i < imageHistograms.size(); i++)
 		{
+			
 			double imageDiff = 0;
 			
-			// ADDED
+			if(i+1 != imageCount-1)
+				imageDiff = euclideanDist(imageHistograms.get(i), imageHistograms.get(i+1));
+			else 
+				break;
 			
-			String OS = System.getProperty("os.name").toLowerCase();
-
-			String imagePath1 = "";		
-			String imagePath2 = "";
-						
-			if (OS.indexOf("win") >= 0){
-				imagePath1 = framesPath + "\\" + i + ".jpeg";			
-				imagePath2 = framesPath + "\\" + (i+1) + ".jpeg";
-			}
-			else if (OS.indexOf("mac") >= 0) {
-				imagePath1 = framesPath + "/" + i + ".jpeg";			
-				imagePath2 = framesPath + "/" + (i+1) + ".jpeg";
-			}
-			// END ADDED
-			
-			File image1 = new File(imagePath1);
-			File image2 = new File(imagePath2);
-			
-			histA = findHistogram(image1);
-			histB = findHistogram(image2);
-			imageDiff = euclideanDist(histA, histB);
 			
             if (imageDiff < distance_threshold)
             {
@@ -144,29 +145,14 @@ public class Segmentation
             }            
             else //not similar, second change
             {
-                if (i + 2 == fileEnd) 
+                if (i + 2 == imageCount) 
                 {
                 	break;
                 }
                 //Image A and B are not the same; Compare Image A and Image Check
                 try
                 {
-                	// ADDED
-                	
-        			String imagePath3 = "";		
-        			
-        			if (OS.indexOf("win") >= 0){
-                    	imagePath3 = framesPath + "\\" + (i+2) + ".jpeg";
-        			}
-        			else if (OS.indexOf("mac") >= 0) {
-                    	imagePath3 = framesPath + "/" + (i+2) + ".jpeg";
-        			}
-                	
-                	// END ADDED
-        			
-                	File image3 = new File(imagePath3);
-                	histCheck = findHistogram(image3);                
-                    imageDiff = euclideanDist(histA, histCheck);                    
+                     imageDiff = euclideanDist(imageHistograms.get(i), imageHistograms.get(i+2));                    
                 }
                 catch (Exception e2) 
                 {
@@ -181,11 +167,10 @@ public class Segmentation
                 {
                 	if(counterImage > 4)
                 	{
-                      	shotNumbersString = shotNumbersString.append("Shot No: " + getShotRangeNumber() + " Frame " + i + " to " + (i+1)  + " Difference " + imageDiff + "\r\n");
-                    	shotRangeString = shotRangeString.append("Shot No: " + getShotRangeNumber() + " Frames " + shotRangeCounter + " to " + i + "\r\n");
-                        shotRangeCounter = (i+1);
-           
-                    	System.out.println("Shot " + getShotRangeNumber());
+                      	shotNumbersString = shotNumbersString.append("Shot No: " + getShotRangeNumber() + " Frame " + (i+1) + " to " + (i+2)  + " Difference " + imageDiff + "\r\n");
+                    	shotRangeString = shotRangeString.append("Shot No: " + getShotRangeNumber() + " Frames " + shotRangeCounter + " to " + (i+1) + "\r\n");
+                        shotRangeCounter = (i+2);
+                        System.out.println(getShotRangeNumber());
                     	setShotRangeNumber(getShotRangeNumber() + 1);
                         counterImage = 0;  
                 	}
@@ -197,7 +182,7 @@ public class Segmentation
 		shotRangeString = shotRangeString.append("Shot No: " + getShotRangeNumber() + " Frames " + shotRangeCounter + " to " + imageCount + "\r\n");
 		this.setShotRangeNumber(getShotRangeNumber()- 1);
 
-		// ADDED
+		
 		
 			String OS = System.getProperty("os.name").toLowerCase();
 			
@@ -213,7 +198,6 @@ public class Segmentation
 				resultShotRangeFile = new File(resultsPath.concat("/Visual Data/ShotRange.txt"));
 			}
 	    	
-	    // END ADDED
 		
 		FileWriter resultShotRangeWriter = null;
     	FileWriter resultWriter = null;

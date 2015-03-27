@@ -21,7 +21,7 @@ public class StreamConsumer extends Thread
             BufferedReader br = new BufferedReader(isr);
             String line=null;
             while ( (line = br.readLine()) != null)
-                System.out.println(type + ">" + line);    
+                System.out.println(">" + line);    
             } catch (IOException ioe)
             {
                 ioe.printStackTrace();  
