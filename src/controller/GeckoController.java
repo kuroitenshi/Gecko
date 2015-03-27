@@ -15,6 +15,7 @@ import model.AudialSegmentation;
 import model.AudioExtraction;
 import model.FrameExtraction;
 import model.GenreClassifier;
+import model.GenreClassifierVisual;
 import model.Segmentation;
 import model.Shot;
 import model.Objects.ResultPercentages;
@@ -48,10 +49,10 @@ public class GeckoController
 	long endTimeClass;
 	long totTimeClass;
 	
-	StringBuilder inTime = new StringBuilder();
+	StringBuilder inTime;
 
 	public GeckoController() {
-
+		inTime = new StringBuilder();
 		fileFinder = new FileFinderFrame();
 
 		fileFinder.go_button.addActionListener(new ActionListener() 
@@ -59,12 +60,9 @@ public class GeckoController
 
 			public void actionPerformed(ActionEvent arg0) 
 			{		
-
-					
-					
 				String filepath = fileFinder.getFilepath();
 				fileFinder.dispose();
-				
+					
 				File movieFileChosen = new File(filepath);
 				ArrayList<Double> shotVisualDisturbance = new ArrayList<Double>();
 				ArrayList<Double> shotLuminance = new ArrayList<Double>();
@@ -250,7 +248,9 @@ public class GeckoController
 				String movieName = movieFileChosen.getName().substring(0, movieFileChosen.getName().lastIndexOf('.'));
 				
 				GenreClassifier movieGenreClassifier = new GenreClassifier(shotList, extractionModel.getParentResultPath());
+				GenreClassifierVisual movieGenreClassifierVisual = new GenreClassifierVisual(shotList, extractionModel.getParentResultPath());
 				movieGenreClassifier.classifyMovieGenre();
+				movieGenreClassifierVisual.classifyMovieGenre();
 				
 				ResultPercentages results = new ResultPercentages();			
 				
@@ -282,9 +282,7 @@ public class GeckoController
 				}
 
 				
-			}
-			
-			
+			}			
 		});
 	}
 	
