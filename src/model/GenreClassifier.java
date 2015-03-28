@@ -31,8 +31,8 @@ public class GenreClassifier
 	/*-------------HORROR CONSTANTS------------------*/
 	/*-----------------------------------------------*/
 	
-	public final double HORROR_VISUAL_DISTURBANCE = 0.1150001995; //
-	public final double HORROR_AUDIO_ENERGY = 0.0138572405; //
+	public final double HORROR_VISUAL_DISTURBANCE = 0.021292403; //
+	public final double HORROR_AUDIO_ENERGY = 0.004744383; //
 	public final double HORROR_LUMINANCE = 50; //ADJUSTED
 	
 	
