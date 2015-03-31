@@ -255,6 +255,15 @@ public class GeckoController
 				movieGenreClassifierVisual.classifyMovieGenre();
 				
 				ResultPercentages results = new ResultPercentages();			
+				results.action = movieGenreClassifier.ACTION_count;
+				results.comedy = movieGenreClassifier.COMEDY_count;
+				results.drama = movieGenreClassifier.DRAMA_count;
+				results.horror = movieGenreClassifier.HORROR_count;
+				
+				results.actionframes = movieGenreClassifier.ACTION_frames;
+				results.comedyframes = movieGenreClassifier.COMEDY_frames;
+				results.dramaframes = movieGenreClassifier.DRAMA_frames;
+				results.horrorframes = movieGenreClassifier.HORROR_frames;
 				
 				new ResultsFrame(movieName, shotList, results);
 				
