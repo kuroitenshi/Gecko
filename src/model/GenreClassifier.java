@@ -1,9 +1,12 @@
 package model;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Properties;
 
 public class GenreClassifier
 {
@@ -22,35 +25,78 @@ public class GenreClassifier
 	/*-----------------------------------------------*/
 	/*-------------ACTION CONSTANTS------------------*/
 	/*-----------------------------------------------*/
-	public final double ACTION_FLAME_PERCENTAGE = 0.694210387; //OLD Not updated
-	public final double ACTION_VISUAL_DISTURBANCE = 0.023431134; //LOWER
-	public final double ACTION_AUDIO_ENERGY = 0.00121;// ADJUSTED VARIANCE
-	public final double ACTION_AUDIO_PACE= 89.24806197; //UPPER
+	public double ACTION_FLAME_PERCENTAGE ;
+	public double ACTION_VISUAL_DISTURBANCE ;
+	public double ACTION_AUDIO_ENERGY ;
+	public double ACTION_AUDIO_PACE;
 	
 	/*-----------------------------------------------*/
 	/*-------------HORROR CONSTANTS------------------*/
 	/*-----------------------------------------------*/
 	
-	public final double HORROR_VISUAL_DISTURBANCE = 0.021292403; //
-	public final double HORROR_AUDIO_ENERGY = 0.004744383; //
-	public final double HORROR_LUMINANCE = 50; //ADJUSTED
+	public double HORROR_VISUAL_DISTURBANCE; 
+	public double HORROR_AUDIO_ENERGY ;
+	public double HORROR_LUMINANCE ;
 	
 	
 	/*-----------------------------------------------*/
 	/*-------------COMEDY CONSTANTS------------------*/
 	/*-----------------------------------------------*/
 	
-	public final double COMEDY_LUMINANCE = 84; //LOWER
+	public double COMEDY_LUMINANCE;
 	
 	/*-----------------------------------------------*/
 	/*-------------DRAMA CONSTANTS------------------*/
 	/*-----------------------------------------------*/
-	public final double DRAMA_AUDIO_POWER = 0.000587166; // UPPER
+	public double DRAMA_AUDIO_POWER;
+	public double DRAMA_AUDIO_POWER_END;
 	
 	public GenreClassifier(ArrayList<Shot> shotList, String resultsDirectory)
 	{
 		this.shotList = shotList;
 		this.resultsDirectory = resultsDirectory;
+		this.getThresholdFromResource();
+	}
+	
+	
+	/**
+	 * Initializes Threshold values from a properties file
+	 * @throws IOException
+	 */
+	public void getThresholdFromResource()
+	{
+		
+		Properties prop = new Properties();
+		String propertiesFileName = "config.properties";
+ 
+		InputStream inputStream = getClass().getClassLoader().getResourceAsStream(propertiesFileName);
+ 
+		if (inputStream != null) {
+			try {
+				prop.load(inputStream);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		} else {
+			try {
+				throw new FileNotFoundException("property file '" + propertiesFileName + "' not found in the classpath");
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+ 
+		this.ACTION_FLAME_PERCENTAGE = Double.parseDouble(prop.getProperty("ACTION_FLAME_PERCENTAGE"));
+		this.ACTION_VISUAL_DISTURBANCE = Double.parseDouble(prop.getProperty("ACTION_VISUAL_DISTURBANCE"));
+		this.ACTION_AUDIO_ENERGY = Double.parseDouble(prop.getProperty("ACTION_AUDIO_ENERGY"));
+		this.ACTION_AUDIO_PACE = Double.parseDouble(prop.getProperty("ACTION_AUDIO_PACE"));
+		this.HORROR_VISUAL_DISTURBANCE = Double.parseDouble(prop.getProperty("HORROR_VISUAL_DISTURBANCE"));
+		this.HORROR_AUDIO_ENERGY = Double.parseDouble(prop.getProperty("HORROR_AUDIO_ENERGY"));
+		this.HORROR_LUMINANCE = Double.parseDouble(prop.getProperty("HORROR_LUMINANCE"));
+		this.COMEDY_LUMINANCE = Double.parseDouble(prop.getProperty("COMEDY_LUMINANCE"));
+		this.DRAMA_AUDIO_POWER = Double.parseDouble(prop.getProperty("DRAMA_AUDIO_POWER"));
+		this.DRAMA_AUDIO_POWER_END = Double.parseDouble(prop.getProperty("DRAMA_AUDIO_POWER_END"));
 	}
 	
 	/**
@@ -131,7 +177,7 @@ public class GenreClassifier
 				//shotList.get(i).classification = "Horror";
 				classified = true;
 			}
-			if(shotList.get(i).getAudioPowerValue() < 0.00221 && classified == false)
+			if(shotList.get(i).getAudioPowerValue() < DRAMA_AUDIO_POWER_END && classified == false)
 			{
 				/*SHOT IS DRAMA*/
 				shotGenres = shotGenres.append("SHOT " + (i+1)

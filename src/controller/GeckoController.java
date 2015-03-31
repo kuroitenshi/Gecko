@@ -60,10 +60,27 @@ public class GeckoController
 
 			public void actionPerformed(ActionEvent arg0) 
 			{		
+				ArrayList<String> Clips = new ArrayList<String>();
+				Clips.add("C:\\Users\\Pheebz\\Desktop\\COMEDY Clips\\Clips(30mins)\\21 Jump Street.mp4");
+				Clips.add("C:\\Users\\Pheebz\\Desktop\\COMEDY Clips\\Clips(30mins)\\Chef.mp4");
+				Clips.add("C:\\Users\\Pheebz\\Desktop\\COMEDY Clips\\Clips(30mins)\\Grown Ups.mp4");
+				Clips.add("C:\\Users\\Pheebz\\Desktop\\COMEDY Clips\\Clips(30mins)\\Jackass Presents Bad Grandpa.mp4");
+				Clips.add("C:\\Users\\Pheebz\\Desktop\\COMEDY Clips\\Clips(30mins)\\Neighbors.mp4");
+				Clips.add("C:\\Users\\Pheebz\\Desktop\\COMEDY Clips\\Clips(30mins)\\Night at the Museum Secret of the Tomb.mp4");
+				Clips.add("C:\\Users\\Pheebz\\Desktop\\COMEDY Clips\\Clips(30mins)\\Pineapple Express.mp4");
+				Clips.add("C:\\Users\\Pheebz\\Desktop\\COMEDY Clips\\Clips(30mins)\\Scary Movie.mp4");
+				Clips.add("C:\\Users\\Pheebz\\Desktop\\COMEDY Clips\\Clips(30mins)\\Ted.mp4");
+				Clips.add("C:\\Users\\Pheebz\\Desktop\\COMEDY Clips\\Clips(30mins)\\Sex Tape.mp4");
+				Clips.add("C:\\Users\\Pheebz\\Desktop\\COMEDY Clips\\Clips(30mins)\\The Bachelor Weekend.mp4");
+				Clips.add("C:\\Users\\Pheebz\\Desktop\\COMEDY Clips\\Clips(30mins)\\The Sitter.mp4");
+				Clips.add("C:\\Users\\Pheebz\\Desktop\\COMEDY Clips\\Clips(30mins)\\The Watch.mp4");
+				
 				String filepath = fileFinder.getFilepath();
 				fileFinder.dispose();
-					
-				File movieFileChosen = new File(filepath);
+				
+				for(int x=0; x < Clips.size(); x++)
+				{
+				File movieFileChosen = new File(Clips.get(x));
 				ArrayList<Double> shotVisualDisturbance = new ArrayList<Double>();
 				ArrayList<Double> shotLuminance = new ArrayList<Double>();
 				ArrayList<Double> shotFlamePercentage = new ArrayList<Double>();
@@ -293,6 +310,7 @@ public class GeckoController
 				}
 
 				
+				}
 			}			
 		});
 	}
