@@ -3,6 +3,9 @@ package view;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import java.awt.Font;
 
 import javax.swing.Box;
@@ -118,6 +121,18 @@ public class DetailPanel extends JPanel {
 		hearAudioBtn.setMaximumSize(new Dimension(200, 30));
 		hearAudioBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
 		add(hearAudioBtn);
+		
+		viewFramesBtn.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e) {
+				
+			}
+		});
+		
+		viewFramesBtn.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e) {
+				
+			}
+		});
 		
 	}
 
