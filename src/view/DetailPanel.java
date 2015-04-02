@@ -2,11 +2,13 @@ package view;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 import java.awt.Font;
+import java.io.File;
+import java.io.IOException;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -15,11 +17,14 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import model.Shot;
+import model.Objects.StreamConsumer;
 
 
 public class DetailPanel extends JPanel {
 	
+	Shot shot;
 	int shotNumber;
+	String directory;
 	double dist;
 	double lumi;
 	double flam;
@@ -28,9 +33,14 @@ public class DetailPanel extends JPanel {
 	double pace;
 	String classification;
 
-	public DetailPanel(Shot shot, int selected) {
+	public DetailPanel(final Shot shot, int selected, String directory) {
 		
 		shotNumber = selected + 1;
+		this.shot = shot;
+		this.directory = directory;
+		final String thisAudio = directory + "/Audial Data/Segments/" + shotNumber + ".mp3";
+		thisAudio.replace('/', '\\');
+
 		
 		dist = shot.getVisualDisturbanceValue();
 		lumi = shot.getLuminanceValue();
@@ -123,14 +133,28 @@ public class DetailPanel extends JPanel {
 		add(hearAudioBtn);
 		
 		viewFramesBtn.addActionListener(new ActionListener(){
-			public void actionPerformed(ActionEvent e) {
-				
+			public void actionPerformed(ActionEvent evt) {
+				File file = new File(shot.getFrameList().get(0).getDirectory());
+				Desktop dt = Desktop.getDesktop();
+			    try {
+					dt.open(file);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 			}
 		});
 		
-		viewFramesBtn.addActionListener(new ActionListener(){
-			public void actionPerformed(ActionEvent e) {
+
+		hearAudioBtn.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent evt) {
 				
+				File file = new File(thisAudio);
+				Desktop dt = Desktop.getDesktop();
+			    try {
+					dt.open(file);
+				} catch (IOException e) {
+					e.printStackTrace();
+				} 
 			}
 		});
 		

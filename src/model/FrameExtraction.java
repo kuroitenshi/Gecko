@@ -18,6 +18,7 @@ public class FrameExtraction
 	public void extractImages()
 	{
 		String movieFilePath = "\"" + this.movieFile.getAbsolutePath() + "\"";	
+		
 		String movieFilePathMac = this.movieFile.getAbsolutePath();
 		setupResultsFolder();
 		// Add -s film for testing
