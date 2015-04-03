@@ -61,7 +61,7 @@ public class GeckoController
 			public void actionPerformed(ActionEvent arg0) 
 			{		
 				ArrayList<String> Clips = new ArrayList<String>();
-				Clips.add("C:\\Users\\Pheebz\\Desktop\\COMEDY Clips\\Clips(30mins)\\21 Jump Street.mp4");
+				
 				Clips.add("C:\\Users\\Pheebz\\Desktop\\COMEDY Clips\\Clips(30mins)\\Chef.mp4");
 				Clips.add("C:\\Users\\Pheebz\\Desktop\\COMEDY Clips\\Clips(30mins)\\Grown Ups.mp4");
 				Clips.add("C:\\Users\\Pheebz\\Desktop\\COMEDY Clips\\Clips(30mins)\\Jackass Presents Bad Grandpa.mp4");
