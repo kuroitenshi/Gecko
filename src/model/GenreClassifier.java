@@ -119,7 +119,7 @@ public class GenreClassifier
 							+ System.lineSeparator());
 					ACTION_count++;
 					ACTION_frames+= shotList.get(i).getFrameList().size();
-					//shotList.get(i).classification = "Action";
+					shotList.get(i).classification = "Action";
 					classified = true;
 				}
 			}
@@ -134,7 +134,7 @@ public class GenreClassifier
 							+ System.lineSeparator());
 					HORROR_count++;
 					HORROR_frames+= shotList.get(i).getFrameList().size();
-					//shotList.get(i).classification = "Horror";
+					shotList.get(i).classification = "Horror";
 					classified = true;
 				}
 				else if(shotList.get(i).getAudioEnergyValue() >= ACTION_AUDIO_ENERGY )
@@ -146,7 +146,7 @@ public class GenreClassifier
 							+ System.lineSeparator());
 					ACTION_count++;
 					ACTION_frames+= shotList.get(i).getFrameList().size();
-					//shotList.get(i).classification = "Action";
+					shotList.get(i).classification = "Action";
 					classified = true;
 				}
 			}
@@ -161,7 +161,7 @@ public class GenreClassifier
 							+ System.lineSeparator());
 					COMEDY_count++;
 					COMEDY_frames+= shotList.get(i).getFrameList().size();
-					//shotList.get(i).classification = "Comedy";
+					shotList.get(i).classification = "Comedy";
 					classified = true;
 				}
 			}
@@ -174,7 +174,7 @@ public class GenreClassifier
 						+ System.lineSeparator());
 				HORROR_count++;
 				HORROR_frames+= shotList.get(i).getFrameList().size();
-				//shotList.get(i).classification = "Horror";
+				shotList.get(i).classification = "Horror";
 				classified = true;
 			}
 			if(shotList.get(i).getAudioPowerValue() < DRAMA_AUDIO_POWER_END && classified == false)
@@ -186,7 +186,7 @@ public class GenreClassifier
 						+ System.lineSeparator());
 				DRAMA_count++;
 				DRAMA_frames+= shotList.get(i).getFrameList().size();
-				//shotList.get(i).classification = "Drama";
+				shotList.get(i).classification = "Drama";
 				classified = true;
 			}
 			if(classified == false)
@@ -198,7 +198,7 @@ public class GenreClassifier
 						+ System.lineSeparator());
 				NEUTRAL_count++;
 				NEUTRAL_frames+= shotList.get(i).getFrameList().size();
-				//shotList.get(i).classification = "Neutral";
+				shotList.get(i).classification = "Neutral";
 				classified = true;
 			}
 			classified = false;

@@ -19,11 +19,13 @@ public class ShotFrame extends JFrame {
 	private int selectedShotIndex;
 	public Shot selectedShot;
 	public ArrayList<Shot> shotList;
+	public String directory;
 	
-	public ShotFrame (String genre, ArrayList<Shot> shotList) {
+	public ShotFrame (String genre, ArrayList<Shot> shotList, String directory) {
 		
 		super("Gecko Movie Classifier");
 		this.shotList = shotList;
+		this.directory = directory;
 		refresh(0);
 		setVisible(true);
 
@@ -40,7 +42,7 @@ public class ShotFrame extends JFrame {
 		getContentPane().setLayout(new BoxLayout(getContentPane(), BoxLayout.X_AXIS));
 			
 		getContentPane().add(new ShotPanel(selectedShotIndex, shotList, this));
-		getContentPane().add(new DetailPanel(selectedShot, selected));
+		getContentPane().add(new DetailPanel(selectedShot, selected, directory));
 		
 		pack();
 	}

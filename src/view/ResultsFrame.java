@@ -30,6 +30,7 @@ import org.jfree.util.Rotation;
 public class ResultsFrame extends JFrame {
 
 	String movieName;
+	String directory;
 	int actionPercent;
 	int comedyPercent;
 	int dramaPercent;
@@ -37,11 +38,12 @@ public class ResultsFrame extends JFrame {
 	int neutralPercent;
 	ArrayList<Shot> shotList;
 	
-	public ResultsFrame(String movieName, ArrayList<Shot> shotList, ResultPercentages results) {
+	public ResultsFrame(String movieName, ArrayList<Shot> shotList, ResultPercentages results, String directory) {
 		
 		super("Gecko Movie Classifier");
 		this.movieName = movieName;
 		this.shotList = shotList;
+		this.directory = directory;
 		
 		actionPercent = results.action;
 		comedyPercent = results.comedy;
@@ -100,7 +102,7 @@ public class ResultsFrame extends JFrame {
 			 
             public void actionPerformed(ActionEvent e)
             {
-            	new ShotFrame("All", shotList);
+            	new ShotFrame("All", shotList, directory);
             }
         });
 		
