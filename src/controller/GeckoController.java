@@ -50,6 +50,8 @@ public class GeckoController
 	long totTimeClass;
 	
 	StringBuilder inTime;
+	
+	String directory;
 
 	public GeckoController() {
 		inTime = new StringBuilder();
@@ -62,18 +64,28 @@ public class GeckoController
 			{		
 				ArrayList<String> Clips = new ArrayList<String>();
 				
-				Clips.add("C:\\Users\\Pheebz\\Desktop\\COMEDY Clips\\Clips(30mins)\\Chef.mp4");
-				Clips.add("C:\\Users\\Pheebz\\Desktop\\COMEDY Clips\\Clips(30mins)\\Grown Ups.mp4");
-				Clips.add("C:\\Users\\Pheebz\\Desktop\\COMEDY Clips\\Clips(30mins)\\Jackass Presents Bad Grandpa.mp4");
-				Clips.add("C:\\Users\\Pheebz\\Desktop\\COMEDY Clips\\Clips(30mins)\\Neighbors.mp4");
-				Clips.add("C:\\Users\\Pheebz\\Desktop\\COMEDY Clips\\Clips(30mins)\\Night at the Museum Secret of the Tomb.mp4");
-				Clips.add("C:\\Users\\Pheebz\\Desktop\\COMEDY Clips\\Clips(30mins)\\Pineapple Express.mp4");
-				Clips.add("C:\\Users\\Pheebz\\Desktop\\COMEDY Clips\\Clips(30mins)\\Scary Movie.mp4");
-				Clips.add("C:\\Users\\Pheebz\\Desktop\\COMEDY Clips\\Clips(30mins)\\Ted.mp4");
-				Clips.add("C:\\Users\\Pheebz\\Desktop\\COMEDY Clips\\Clips(30mins)\\Sex Tape.mp4");
-				Clips.add("C:\\Users\\Pheebz\\Desktop\\COMEDY Clips\\Clips(30mins)\\The Bachelor Weekend.mp4");
-				Clips.add("C:\\Users\\Pheebz\\Desktop\\COMEDY Clips\\Clips(30mins)\\The Sitter.mp4");
-				Clips.add("C:\\Users\\Pheebz\\Desktop\\COMEDY Clips\\Clips(30mins)\\The Watch.mp4");
+				Clips.add("D:\\Drama-Short\\11.mp4");
+				Clips.add("D:\\Drama-Short\\12.mp4");
+				Clips.add("D:\\Drama-Short\\13.mp4");
+				Clips.add("D:\\Drama-Short\\14.mp4");
+				Clips.add("D:\\Drama-Short\\15.mp4");
+				Clips.add("D:\\Drama-Short\\16.mp4");
+				Clips.add("D:\\Drama-Short\\17.mp4");
+				Clips.add("D:\\Drama-Short\\18.mp4");
+				Clips.add("D:\\Drama-Short\\19.mp4");
+				Clips.add("D:\\Drama-Short\\20.mp4");
+				Clips.add("D:\\Drama-Short\\21.mp4");
+				Clips.add("D:\\Drama-Short\\22.mp4");
+				Clips.add("D:\\Drama-Short\\23.mp4");
+				Clips.add("D:\\Drama-Short\\24.mp4");
+				Clips.add("D:\\Drama-Short\\25.mp4");
+				Clips.add("D:\\Drama-Short\\26.mp4");
+				Clips.add("D:\\Drama-Short\\27.mp4");
+				Clips.add("D:\\Drama-Short\\28.mp4");
+				Clips.add("D:\\Drama-Short\\29.mp4");
+				Clips.add("D:\\Drama-Short\\30.mp4");
+
+
 				
 				String filepath = fileFinder.getFilepath();
 				fileFinder.dispose();
@@ -282,7 +294,11 @@ public class GeckoController
 				results.dramaframes = movieGenreClassifier.DRAMA_frames;
 				results.horrorframes = movieGenreClassifier.HORROR_frames;
 				
-				new ResultsFrame(movieName, shotList, results);
+				String directory = movieFileChosen.getParent().replace("\\", "/");		
+				String folderName = movieFileChosen.getName().substring(0,movieFileChosen.getName().lastIndexOf('.'));
+				directory = directory+folderName;
+				
+				new ResultsFrame(movieName, shotList, results, directory);
 				
 				endTimeClass = System.currentTimeMillis();
 				totTimeClass =  ((endTimeClass/1000) - (startTimeClass/1000));
