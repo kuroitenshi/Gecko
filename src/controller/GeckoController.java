@@ -1,14 +1,23 @@
 package controller;
 
+import java.awt.Cursor;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import javax.swing.JFrame;
+import javax.swing.JProgressBar;
+import javax.swing.SwingWorker;
+
 import view.FileFinderFrame;
+import view.ProgressFrame;
 import view.ResultsFrame;
 import model.AudialFeatures;
 import model.AudialSegmentation;
@@ -20,12 +29,75 @@ import model.Segmentation;
 import model.Shot;
 import model.Objects.ResultPercentages;
 
-public class GeckoController 
-{
-	FrameExtraction extractionModel = new FrameExtraction();
+public class GeckoController implements ActionListener, PropertyChangeListener {
+	
+	
+	FileFinderFrame fileFinderFrame;
+	private JProgressBar progressBar;
+	private Task task;
+	private JFrame frame;
+	
+	public GeckoController() {
+		javax.swing.SwingUtilities.invokeLater(new Runnable() {
+	        public void run() {
+	        	initialize();
+	        }
+	    });
+	}
+
+	public void initialize() {
+    	fileFinderFrame = new FileFinderFrame();
+    	fileFinderFrame.go_button.addActionListener(this);
+    	makeProgressFrame();
+	}
+	
+	public void makeProgressFrame() {
+		frame = new JFrame("Gecko Movie Classifier");
+		frame.getContentPane().setLayout(null);
+		frame.getContentPane().setPreferredSize(new Dimension(300, 75));		
+
+		progressBar = new JProgressBar(0, 100);
+		progressBar.setBounds(25, 25, 250, 25);
+		progressBar.setValue(0);
+		progressBar.setStringPainted(true);
+		frame.getContentPane().add(progressBar);
+		
+		frame.setLocationRelativeTo(null);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.pack();
+		frame.setVisible(false);
+	}
+	
+	@Override
+	public void actionPerformed(ActionEvent arg0) {
+		fileFinderFrame.setVisible(false);
+		frame.setVisible(true);
+		task = new Task(fileFinderFrame.getFilepath());
+        task.addPropertyChangeListener(this);
+        task.execute();
+        System.out.println("hello");
+	}
+
+
+	@Override
+	public void propertyChange(PropertyChangeEvent evt) {
+		if ("progress" == evt.getPropertyName()) {
+            int progress = (Integer) evt.getNewValue();
+            progressBar.setValue(progress);
+            if (progressBar.getValue() == 100)
+            	frame.setVisible(false);
+        } 		
+	}
+	
+	
+	
+}
+
+class Task extends SwingWorker{
 	FileFinderFrame fileFinder;
 	
-	
+	FrameExtraction extractionModel = new FrameExtraction();
+
 	/* Benchmark Purpose */	
 	long startTimeFrameEx;
 	long endTimeFrameEx;
@@ -52,60 +124,43 @@ public class GeckoController
 	StringBuilder inTime;
 	
 	String directory;
+	String filepath;
+	
+	public Task(String filepath) {
+		this.filepath = filepath;
+	}
 
-	public GeckoController() {
-		inTime = new StringBuilder();
-		fileFinder = new FileFinderFrame();
-
-		fileFinder.go_button.addActionListener(new ActionListener() 
-		{
-
-			public void actionPerformed(ActionEvent arg0) 
-			{		
-				ArrayList<String> Clips = new ArrayList<String>();
+	public Void doInBackground() {
+		
+		
+				inTime = new StringBuilder();
+				ArrayList<String> Clips = new ArrayList<String>();	
+				System.out.println("Process thread started!");		
 				
-				Clips.add("D:\\Drama-Short\\11.mp4");
-				Clips.add("D:\\Drama-Short\\12.mp4");
-				Clips.add("D:\\Drama-Short\\13.mp4");
-				Clips.add("D:\\Drama-Short\\14.mp4");
-				Clips.add("D:\\Drama-Short\\15.mp4");
-				Clips.add("D:\\Drama-Short\\16.mp4");
-				Clips.add("D:\\Drama-Short\\17.mp4");
-				Clips.add("D:\\Drama-Short\\18.mp4");
-				Clips.add("D:\\Drama-Short\\19.mp4");
-				Clips.add("D:\\Drama-Short\\20.mp4");
-				Clips.add("D:\\Drama-Short\\21.mp4");
-				Clips.add("D:\\Drama-Short\\22.mp4");
-				Clips.add("D:\\Drama-Short\\23.mp4");
-				Clips.add("D:\\Drama-Short\\24.mp4");
-				Clips.add("D:\\Drama-Short\\25.mp4");
-				Clips.add("D:\\Drama-Short\\26.mp4");
-				Clips.add("D:\\Drama-Short\\27.mp4");
-				Clips.add("D:\\Drama-Short\\28.mp4");
-				Clips.add("D:\\Drama-Short\\29.mp4");
-				Clips.add("D:\\Drama-Short\\30.mp4");
-
-
-				
-				String filepath = fileFinder.getFilepath();
-				fileFinder.dispose();
-				
-				for(int x=0; x < Clips.size(); x++)
-				{
-				File movieFileChosen = new File(Clips.get(x));
+				File movieFileChosen = new File(filepath);
 				ArrayList<Double> shotVisualDisturbance = new ArrayList<Double>();
 				ArrayList<Double> shotLuminance = new ArrayList<Double>();
 				ArrayList<Double> shotFlamePercentage = new ArrayList<Double>();
+
 				
+
 				startTimeFrameEx = System.currentTimeMillis();
 
 				extractionModel.setMovieFile(movieFileChosen);
+				
+				
 				extractionModel.extractImages();
+
 				
 				endTimeFrameEx = System.currentTimeMillis();
 				totTimeFrameEx = ((endTimeFrameEx/1000) - (startTimeFrameEx/1000));
 				
+				setProgress(15);
+
+				
 				startTimeVisSeg = System.currentTimeMillis();
+
+				
 
 				System.out.println("SHOT SEGMENTATION - START");
 				Segmentation movieSegmentation = new Segmentation(
@@ -114,9 +169,14 @@ public class GeckoController
 				movieSegmentation.segmentMovie();
 				System.out.println("SHOT SEGMENTATION - END");
 				
+
+				
 				endTimeVisSeg = System.currentTimeMillis();
 				totTimeVisSeg = ((endTimeVisSeg/1000) - (startTimeVisSeg/1000));
 
+				setProgress(30);
+
+				
 				System.out.println("VISUAL FEATURE VALUE - EXTRACTION");
 				StringBuilder visualDisturbanceValues = new StringBuilder();
 				StringBuilder visualLuminanceValues = new StringBuilder();
@@ -227,6 +287,8 @@ public class GeckoController
 				endTimeVisEx = System.currentTimeMillis();
 				totTimeVisEx = ((endTimeVisEx/1000) - (startTimeVisEx/1000));
 				
+				setProgress(45);
+
 				//progressFrame.dispose();
 				
 				startTimeAudialEx = System.currentTimeMillis();
@@ -239,6 +301,9 @@ public class GeckoController
 				endTimeAudialEx = System.currentTimeMillis();
 				totTimeAudialEx = ((endTimeAudialEx/1000) - (startTimeAudialEx/1000));
 
+				setProgress(60);
+
+				
 				startTimeAudialSeg = System.currentTimeMillis();
 				
 				AudialSegmentation audialSeg = new AudialSegmentation(
@@ -255,6 +320,9 @@ public class GeckoController
 				
 				endTimeAudialSeg = System.currentTimeMillis();
 				totTimeAudialSeg = ((endTimeAudialSeg/1000) - (startTimeAudialSeg/1000));
+				
+				setProgress(75);
+
 				
 				startTimeAudialFeat = System.currentTimeMillis();
 
@@ -273,6 +341,9 @@ public class GeckoController
 				
 				endTimeAudialFeat = System.currentTimeMillis();
 				totTimeAudialFeat =  ((endTimeAudialFeat/1000) - (startTimeAudialFeat/1000));
+				
+				setProgress(90);
+
 				
 				startTimeClass = System.currentTimeMillis();
 				
@@ -298,6 +369,8 @@ public class GeckoController
 				String folderName = movieFileChosen.getName().substring(0,movieFileChosen.getName().lastIndexOf('.'));
 				directory = directory+folderName;
 				
+				setProgress(100);
+
 				new ResultsFrame(movieName, shotList, results, directory);
 				
 				endTimeClass = System.currentTimeMillis();
@@ -324,11 +397,8 @@ public class GeckoController
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
-
+				return null;
 				
-				}
-			}			
-		});
 	}
 	
 	String timeDivider(long dur)
@@ -344,4 +414,6 @@ public class GeckoController
 		lines = hours+" hours; "+minutes+" minutes; "+seconds+" seconds";
 		return lines;
 	}
+	
+
 }

@@ -25,8 +25,9 @@ public class ProgressFrame extends JFrame {
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		pack();
-		setVisible(true);
+		setVisible(false);
 		
+		System.out.println("oiii");
 		
 		
 	}
