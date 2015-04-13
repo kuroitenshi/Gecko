@@ -23,8 +23,6 @@ public class Frame
 	{
 		this.directory = directory;				
 		this.setKey(key);		
-		
-		
 	}
 	/**
 	 * Computes the Total RGB values for the whole frame, its luminance value and flame % value
@@ -73,7 +71,6 @@ public class Frame
 		double normalizedLuminance  = 0;
 		double luminanceValue = 0;
 		
-		
 		rgb1 = new RGB();
 		rgb2 = new RGB();
 		rgb3 = new RGB();
@@ -99,8 +96,6 @@ public class Frame
     			total_G+=green;
     			total_B+=blue;
     			
-    			
-    			
     			tempRGB.setR(tempRGB.getR()+ red);
 				tempRGB.setG(tempRGB.getG()+ green);
 				tempRGB.setB(tempRGB.getB()+ blue);
@@ -112,11 +107,9 @@ public class Frame
 				// normalize RGB Values
 				double RGBSum = tempRGB.getR() + tempRGB.getG() + tempRGB.getB();
 				
-				
 				rgb_flame.setR(tempRGB.getR()/RGBSum);
 				rgb_flame.setG(tempRGB.getG()/RGBSum);
 				rgb_flame.setB(tempRGB.getB()/RGBSum);
-				
 				
 				/* FLAME COMPUTATIONS*/
 				if(truGB.getR() > redTreshold)
@@ -133,7 +126,6 @@ public class Frame
 					}
 				}
 			
-				
 				try
 				{
 					// first block
@@ -227,7 +219,6 @@ public class Frame
 		return rgb;
 	}
 
-
 	/**
  	* Computes the Saturation from RGB values
  	* @param rgb
@@ -235,7 +226,6 @@ public class Frame
  	*/
 	public float calculateSaturation(RGB rgb) 
 	{
-		
 		float saturation = 0;
 		float af[] = Color.RGBtoHSB((int)rgb.getR(), (int)rgb.getG(), (int)rgb.getB(), null);
 		saturation = af[1];

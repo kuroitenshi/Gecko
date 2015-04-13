@@ -13,7 +13,6 @@ import model.Objects.Histogram;
 
 public class Segmentation 
 {
-	
 	private int BINS = 16;
 	private String framesPath;
 	private String resultsPath;
@@ -23,7 +22,6 @@ public class Segmentation
 	private int imageCount;
 	public Segmentation(String framesPath, String resultsPath) 
 	{
-	
 		File frames = new File(framesPath);	
 		imageCount = frames.listFiles().length;
 		
@@ -34,6 +32,13 @@ public class Segmentation
 		this.initializeHistogramValues();
 	}
 	
+	public Segmentation(String framesPath)
+	{
+		System.out.println("SETTING NUMBER OF FRAMES: " + imageCount);
+		File frames = new File(framesPath);
+		imageCount = frames.listFiles().length;
+		System.out.println("NUMBER OF FRAMES: " + imageCount);
+	}
 	/**
 	 * Returns computed Histogram of an Image
 	 * @param image
@@ -41,13 +46,11 @@ public class Segmentation
 	 */
 	public void initializeHistogramValues()
 	{
-		
 		for(int i = 1; i <= imageCount; i++)
 		{
 			String imagePath = framesPath + "\\" + i + ".jpeg";
 			File image = new File(imagePath);
 			imageHistograms.add(findHistogram(image));
-			
 		}
 	}
 	/**
@@ -117,8 +120,7 @@ public class Segmentation
 	 * Results will be placed to the Visual Data folder 
 	 */
 	public void segmentMovie()
-	{
-			
+	{	
 		int counterImage = 0;
 		int shotRangeCounter = 1;
 		 
@@ -130,7 +132,6 @@ public class Segmentation
 		
 		for(int i = 0; i < imageHistograms.size(); i++)
 		{
-			
 			double imageDiff = 0;
 			
 			if(i+1 != imageCount-1)

@@ -125,8 +125,6 @@ public class AudialFeatures
 		FileReader audioPaceReader = new FileReader(getAudioPacePath());
 		BufferedReader audioPaceBuffReader = new BufferedReader(audioPaceReader);
 		
-		
-		
 		while((audioPowerValue = audioPowerBuffReader.readLine()) != null)
 		{			
 			audioPowerStrings.add(audioPowerValue.split(" ")[2]);
@@ -151,13 +149,8 @@ public class AudialFeatures
 				shotList.get(i).setAudioPowerValue(Double.parseDouble("0"));
 			}
 			shotList.get(i).setAudioPaceValue(Double.parseDouble(audioPaceStrings.get(i)));
-			
 		}
-		
-	
 	}
-	
-	
 
 	/**
 	 * Execute a command line script for praatcon

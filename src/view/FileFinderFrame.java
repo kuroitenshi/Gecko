@@ -3,12 +3,14 @@ package view;
 import java.awt.CardLayout;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.DisplayMode;
 import java.awt.FileDialog;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FilenameFilter;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
@@ -17,6 +19,7 @@ import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -24,17 +27,15 @@ import javax.swing.SwingConstants;
 
 public class FileFinderFrame extends JFrame
 {
-
 	private static final long serialVersionUID = 1L;
-	private static String filepath = "";
+	private String filepath = "";
 	JPanel cards = new JPanel(new CardLayout());
 	public JButton go_button = new JButton("Classify");
 	JLabel fileLabel;
-
+	private String mode = "";
 	
 	public FileFinderFrame() 
 	{
-		
 		super("Gecko Movie Classifier");	
 		cards.setPreferredSize(new Dimension(300, 300));
 		add(cards);		
@@ -43,7 +44,6 @@ public class FileFinderFrame extends JFrame
 		setVisible(true);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
 	}
 	
 	/**
@@ -51,7 +51,6 @@ public class FileFinderFrame extends JFrame
 	 */
 	public void findfile() 
 	{
-		
 		JPanel FindFileCard = new JPanel();
 		
 		FindFileCard.setPreferredSize(new Dimension(300, 300));		
@@ -70,67 +69,80 @@ public class FileFinderFrame extends JFrame
 		hi2.setAlignmentX(Component.CENTER_ALIGNMENT);
 		FindFileCard.add(hi2);	
 		
-		JLabel hi3 = new JLabel("You give it a movie file, and it gives you its genre.");
+		JLabel hi3 = new JLabel("You can give it a movie file or give it the feature values.");
 		hi3.setAlignmentX(Component.CENTER_ALIGNMENT);
 		FindFileCard.add(hi3);	
 		
-		JLabel hi4 = new JLabel("Classification takes a while,");
+		JLabel hi4 = new JLabel("After that, it gives you its genre.");
 		hi4.setAlignmentX(Component.CENTER_ALIGNMENT);
 		FindFileCard.add(hi4);	
 		
-		JLabel hi5 = new JLabel("so sit back, and maybe watch your movie.");
-		hi5.setAlignmentX(Component.CENTER_ALIGNMENT);
+		JLabel hi5 = new JLabel("Classification takes a while,");
+		hi4.setAlignmentX(Component.CENTER_ALIGNMENT);
 		FindFileCard.add(hi5);	
 		
-		JLabel hi6 = new JLabel(":)");
-		hi6.setAlignmentX(Component.CENTER_ALIGNMENT);
+		JLabel hi6 = new JLabel("so sit back, and maybe watch your movie.");
+		hi5.setAlignmentX(Component.CENTER_ALIGNMENT);
 		FindFileCard.add(hi6);	
 		
+		JLabel hi7 = new JLabel(":)");
+		hi6.setAlignmentX(Component.CENTER_ALIGNMENT);
+		FindFileCard.add(hi7);	
 		
 		FindFileCard.add(Box.createRigidArea(new Dimension(0, 10)));
 		JButton select_button = new JButton("Select Movie");
+		JButton input_button = new JButton("Select Parent Directory");
 		select_button.setAlignmentX(Component.CENTER_ALIGNMENT);
+		input_button.setAlignmentX(Component.CENTER_ALIGNMENT);
 		FindFileCard.add(select_button);
+		FindFileCard.add(input_button);
 		FindFileCard.add(Box.createRigidArea(new Dimension(0, 10)));
 
-		
-		JLabel hi7 = new JLabel("Made with <3 by the Gecko Team");
+		JLabel hi8 = new JLabel("Made with <3 by the Gecko Team");
 		hi7.setAlignmentX(Component.CENTER_ALIGNMENT);
-		FindFileCard.add(hi7);	
+		FindFileCard.add(hi8);	
 		
-		JLabel hi8 = new JLabel("Josh C");
+		JLabel hi9 = new JLabel("Josh C");
 		hi8.setAlignmentX(Component.CENTER_ALIGNMENT);
-		FindFileCard.add(hi8);
-		
-		JLabel hi9 = new JLabel("Josh G");
-		hi9.setAlignmentX(Component.CENTER_ALIGNMENT);
 		FindFileCard.add(hi9);
 		
-		JLabel hi10 = new JLabel("Aldrich G");
-		hi10.setAlignmentX(Component.CENTER_ALIGNMENT);
+		JLabel hi10 = new JLabel("Josh G");
+		hi9.setAlignmentX(Component.CENTER_ALIGNMENT);
 		FindFileCard.add(hi10);
 		
-		JLabel hi11 = new JLabel("Tim R");
-		hi11.setAlignmentX(Component.CENTER_ALIGNMENT);
+		JLabel hi11 = new JLabel("Aldrich G");
+		hi10.setAlignmentX(Component.CENTER_ALIGNMENT);
 		FindFileCard.add(hi11);
+		
+		JLabel hi12 = new JLabel("Tim R");
+		hi11.setAlignmentX(Component.CENTER_ALIGNMENT);
+		FindFileCard.add(hi12);
 		
 		select_button.addActionListener(new ActionListener()
 		{
-		    public void actionPerformed(ActionEvent evt) {
-		    	
-		    	    File selectedFile = new File(openVideoFile());
-		    	    FileFinderFrame.setFilepath(selectedFile.getAbsolutePath());
-		    	    confirm(selectedFile.getName().substring(0, selectedFile.getName().lastIndexOf('.')));
-		    	
+		    public void actionPerformed(ActionEvent evt) 
+		    {
+		    	File selectedFile = new File(openVideoFile());
+		    	filepath = selectedFile.getAbsolutePath();
+		    	mode = "MOVIE";
+		    	confirm(selectedFile.getName().substring(0, selectedFile.getName().lastIndexOf('.')));
 		    }
+		});
+		
+		input_button.addActionListener(new ActionListener()
+		{
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				File selectedFile = searchDirectory();
+				filepath = selectedFile.getAbsolutePath();
+				mode = "PATH";
+		    	confirm(selectedFile.getAbsolutePath());
+			}
 		});
 		
 		cards.add(FindFileCard, "ff");
 		CardLayout cl = (CardLayout)(cards.getLayout());
 	    cl.show(cards, "ff");
-	    
-
-
 	}
 	
 	/**
@@ -150,14 +162,37 @@ public class FileFinderFrame extends JFrame
 		else
 		  return filePath;
 	}
+	
+	public File searchDirectory()
+	{
+		File filepath = null;
+		JFileChooser fileChooser = new JFileChooser();
 
+		fileChooser.setFileSelectionMode(
+		        JFileChooser.FILES_AND_DIRECTORIES);
+
+		int option = fileChooser.showDialog(null,
+		        "Select Directory");
+
+		if (option == JFileChooser.APPROVE_OPTION) {
+			filepath = fileChooser.getSelectedFile();
+		    // if the user accidently click a file, then select the parent directory.
+		    if (!filepath.isDirectory()) {
+		    	filepath = filepath.getParentFile();
+		    }
+		    System.out.println("Selected directory for import " + filepath);
+		}
+
+	    return filepath;
+	}
+	
 	/**
 	 * Movie confirmation layout change
 	 * @param filename
 	 */
 	public void confirm(String filename) 
 	{
-		
+		System.out.println(filename);
 		JPanel ConfirmCard = new JPanel();
 		
 		ConfirmCard.setPreferredSize(new Dimension(300, 300));
@@ -185,24 +220,23 @@ public class FileFinderFrame extends JFrame
 		});
 		ConfirmCard.add(cancel_button);
 
-		
 		cards.add(ConfirmCard, "cfm");
 		CardLayout cl = (CardLayout)(cards.getLayout());
 	    cl.show(cards, "cfm");
-
-		
 	}
 
+	public String getMode()
+	{
+		return mode;
+	}
+	
 	public String getFilepath() 
 	{
 		return filepath;
 	}
 
-	public static void setFilepath(String filepath) 
+	public void setFilepath(String filepath) 
 	{
-		FileFinderFrame.filepath = filepath;
+		this.filepath = filepath;
 	}
-	
-	
-	
 }

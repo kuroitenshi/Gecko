@@ -104,6 +104,7 @@ public class GenreClassifier
 	*/
 	public void classifyMovieGenre()
 	{
+		System.out.println("CLASSIFIYING AUDIAL + VISUAL");
 		StringBuilder shotGenres = new StringBuilder();
 		boolean classified = false;
 		for(int i=0; i < this.shotList.size(); i++)

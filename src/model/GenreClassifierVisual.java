@@ -50,6 +50,7 @@ public class GenreClassifierVisual
 	*/
 	public void classifyMovieGenre()
 	{
+		System.out.println("CLASSIFYING VISUAL ONLY");
 		StringBuilder shotGenres = new StringBuilder();
 		boolean classified = false;
 		for(int i=0; i < this.shotList.size(); i++)

@@ -3,9 +3,11 @@ package model;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 import javax.imageio.ImageIO;
 
@@ -27,15 +29,20 @@ public class Shot
 	private ArrayList<Frame> frameList = new ArrayList<Frame>();
 	StringBuilder hsbString = new StringBuilder();
 	public String classification;
-
+	
+	public Shot(int key)
+	{
+		this.key = key;
+	}
+	
 	public Shot(int key, String shotRangePath, String framePath)
 	{
-		this.shotRangePath = shotRangePath;
-		this.framePath = framePath;
+		this.setShotRangePath(shotRangePath);
+		this.setFramePath(framePath);
 		this.setKey(key);
 		
-		startingFrame = 0;
-		endingFrame = 0;
+		setStartingFrame(0);
+		setEndingFrame(0);
 		visualDisturbanceValue = 0;
 		luminanceValue = 0;				
 		VD_THRESHOLD = 0.35;
@@ -46,14 +53,10 @@ public class Shot
 		getFramesAndComputeRGB();
 		setVisualDisturbanceValue(0);
 	}
-
+	
 	/*Extract RGB Values for each frame once only*/
 	public void extractVisualFeatures()
 	{
-		/*
-		 * ADD COMPUTATION TIMES HERE
-		 * 
-		 * */
 		//Visual Disturbance
 		System.out.println("Extracting Visual Disturbance Values ");
 		this.setVisualDisturbanceValue(this.computeVisualDisturbance());		
@@ -63,19 +66,16 @@ public class Shot
 		//Flame Percentage
 		System.out.println("Extracting Flame Percentages Values ");
 		this.setFlamePercentageValue(this.computeFlamePercentage());
-		
-		
 	}
-	
 	
 	/**
 	 * Get the range of the frames
 	 */
-	private void getFrameRange() 
+	public void getFrameRange() 
 	{		
 		try
 		{
-			FileReader inputFile = new FileReader(shotRangePath);
+			FileReader inputFile = new FileReader(getShotRangePath());
 		    BufferedReader bufferReader = new BufferedReader(inputFile);
 		
 		    String line;
@@ -84,8 +84,8 @@ public class Shot
 		    	String[] returnValue = line.split(" ", 7);
 		    	if(returnValue[2].equals(""+key))
 		    	{
-		    		startingFrame = Integer.parseInt(returnValue[4]);
-		    		endingFrame = Integer.parseInt(returnValue[6]);
+		    		setStartingFrame(Integer.parseInt(returnValue[4]));
+		    		setEndingFrame(Integer.parseInt(returnValue[6]));
 		    		break;
 		    	}
 		    }
@@ -97,20 +97,19 @@ public class Shot
 	    }	
 	}	
 	
-	private void getFramesAndComputeRGB() 
+	public void getFramesAndComputeRGB() 
 	{
-		for(int i = startingFrame; i <= endingFrame; i++)
+		for(int i = getStartingFrame(); i <= getEndingFrame(); i++)
 		{
-			
 			String OS = System.getProperty("os.name").toLowerCase();
 
 			Frame retrievedFrame = null;
 			
 			if (OS.indexOf("win") >= 0){
-				retrievedFrame = new Frame(i, framePath + "\\" + i + ".jpeg" );
+				retrievedFrame = new Frame(i, getFramePath() + "\\" + i + ".jpeg" );
 			}
 			else if (OS.indexOf("mac") >= 0) {
-				retrievedFrame = new Frame(i, framePath + "/" + i + ".jpeg" );
+				retrievedFrame = new Frame(i, getFramePath() + "/" + i + ".jpeg" );
 			}
 			
 			File file = new File(retrievedFrame.getDirectory());
@@ -122,6 +121,26 @@ public class Shot
 			}			
 			retrievedFrame.setRgb(retrievedFrame.computeFrameVisualComponents(image));
 						
+			getFrameList().add(retrievedFrame);
+
+		}
+	}
+	
+	public void retrieveFrames()
+	{
+		for(int i = getStartingFrame(); i <= getEndingFrame(); i++)
+		{
+			String OS = System.getProperty("os.name").toLowerCase();
+
+			Frame retrievedFrame = null;
+			
+			if (OS.indexOf("win") >= 0){
+				retrievedFrame = new Frame(i, getFramePath() + "\\" + i + ".jpeg" );
+			}
+			else if (OS.indexOf("mac") >= 0) {
+				retrievedFrame = new Frame(i, getFramePath() + "/" + i + ".jpeg" );
+			}
+			
 			getFrameList().add(retrievedFrame);
 
 		}
@@ -154,7 +173,6 @@ public class Shot
 				double max = Math.max(r1, r2) + Math.max(g1, g2) + Math.max(b1, b2);
 				double difference = distance/max;
 							
-				
 				if(difference > VD_THRESHOLD)
 				{
 					temp++;
@@ -189,9 +207,9 @@ public class Shot
 		double luminanceAVG = 0.0;
 		int counter = 0;
 		
-		for(int i = startingFrame; i <= endingFrame; i++)
+		for(int i = getStartingFrame(); i <= getEndingFrame(); i++)
 		{			
-			if(i == startingFrame || i  == endingFrame || i == Math.floor((startingFrame + endingFrame) /2 ))
+			if(i == getStartingFrame() || i  == getEndingFrame() || i == Math.floor((getStartingFrame() + getEndingFrame()) /2 ))
 			{				
 				luminanceAVG += getFrameList().get(counter).getLuminance();
 			}
@@ -203,8 +221,6 @@ public class Shot
 		return luminanceAVG;
 	}
 	
-
-	
 	/**
 	 * Computes the Average Flame Percentage of a Shot
 	 * @return AVGFlamePercentage
@@ -215,7 +231,7 @@ public class Shot
 		double flamePercentageAVG = 0;
 		int counter = 0;
 		
-		for(int i = startingFrame; i <= endingFrame; i++)
+		for(int i = getStartingFrame(); i <= getEndingFrame(); i++)
 		{
 			flamePercentage = getFrameList().get(counter).getFlamePercentage();
 			if(flamePercentage >= FLAME_THRESHOLD)
@@ -225,20 +241,15 @@ public class Shot
 			counter++;
 		}
 		
-		flamePercentageAVG /= (endingFrame - startingFrame + 1.0); 
-		if(endingFrame-startingFrame == 0)
+		flamePercentageAVG /= (getEndingFrame() - getStartingFrame() + 1.0); 
+		if(getEndingFrame()-getStartingFrame() == 0)
 		{
 			flamePercentageAVG = 0;
 		}
 		
-		
 		return flamePercentageAVG;
 	}
 	
-	
-
-	
-
 	public int getKey() 
 	{
 		return key;
@@ -269,7 +280,6 @@ public class Shot
 		this.luminanceValue = luminanceValue;
 	}
 	
-
 	public double getFlamePercentageValue() 
 	{
 		return flamePercentageValue;
@@ -318,5 +328,37 @@ public class Shot
 	public void setFrameList(ArrayList<Frame> frameList) 
 	{
 		this.frameList = frameList;
+	}
+
+	public String getShotRangePath() {
+		return shotRangePath;
+	}
+
+	public void setShotRangePath(String shotRangePath) {
+		this.shotRangePath = shotRangePath;
+	}
+
+	public String getFramePath() {
+		return framePath;
+	}
+
+	public void setFramePath(String framePath) {
+		this.framePath = framePath;
+	}
+
+	public int getStartingFrame() {
+		return startingFrame;
+	}
+
+	public void setStartingFrame(int startingFrame) {
+		this.startingFrame = startingFrame;
+	}
+
+	public int getEndingFrame() {
+		return endingFrame;
+	}
+
+	public void setEndingFrame(int endingFrame) {
+		this.endingFrame = endingFrame;
 	}
 }

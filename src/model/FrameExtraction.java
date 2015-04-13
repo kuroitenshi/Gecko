@@ -26,16 +26,17 @@ public class FrameExtraction
 		String command = "";
 		String OS = System.getProperty("os.name").toLowerCase();
 
-		if (OS.indexOf("win") >= 0){
+		if (OS.indexOf("win") >= 0)
+		{
 			System.out.println("OS: Windows");
 			command = "ffmpeg -i " + movieFilePath + " -r 16 -f image2 " + "\"" + framesPath + "\\%d.jpeg\"";
 		}
-		else if (OS.indexOf("mac") >= 0) {
+		else if (OS.indexOf("mac") >= 0) 
+		{
 			System.out.println("OS: Mac");
 			command = "/usr/local/Cellar/ffmpeg/2.4.2/bin/ffmpeg -i " + movieFilePathMac + " -r 16 -f image2 " + framesPath + "/%d.jpeg";
 			System.out.println(command);
 		}
-		
 		
 		try 
 		{	
@@ -49,16 +50,14 @@ public class FrameExtraction
 	        outputGobbler.start();
 	        int exitVal = extractionProcess.waitFor();
             System.out.println("ExitValue: " + exitVal);   
-		} catch (Throwable e) 
+		} 
+		catch (Throwable e) 
 		{			
 			e.printStackTrace();
 		}
 		
-		
 		System.out.println("Frame Extraction Completed");
-		
 	}
-	
 	
 	/**
 	 * Gets the path of the movie file to create the results folders
@@ -72,11 +71,9 @@ public class FrameExtraction
 		setParentResultPath(resultsFolder.getAbsolutePath());
 		resultsFolder.mkdir();
 		
-		
 		File framesFolder = new File(resultsFolder.getAbsolutePath() + "/Frames");
 		setFramesPath(framesFolder.getAbsolutePath());
 		framesFolder.mkdir();
-		
 		
 		File visualDataFolder = new File(resultsFolder.getAbsolutePath() + "/Visual Data");
 		setVisualDataPath(visualDataFolder.getAbsolutePath());
@@ -89,10 +86,7 @@ public class FrameExtraction
 		File audialSegFolder = new File(resultsFolder.getAbsolutePath() + "/Audial Data/Segments");
 		setAudialSegPath(audialSegFolder.getAbsolutePath());
 		audialSegFolder.mkdir();
-		
-
-	}
-	
+	}	
 
 	public File getMovieFile() 
 	{
@@ -153,7 +147,4 @@ public class FrameExtraction
 	{
 		this.audialSegPath = audialSegPath;
 	}
-
-
-
 }
