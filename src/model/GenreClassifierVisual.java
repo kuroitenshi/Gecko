@@ -139,12 +139,12 @@ public class GenreClassifierVisual
 		public void classificationResultsWriter(String genreResults)
 		{
 			File resultGenreFile = new File(resultsDirectory.concat(
-					"\\GENRE RESULTS VISUAL.txt"));
+					"\\GENRE RESULTS VISUAL-NEW.txt"));
 			String OS = System.getProperty("os.name").toLowerCase();
 			if (OS.indexOf("mac") >= 0)
 			{
 				resultGenreFile = new File(resultsDirectory.concat(
-						"/GENRE RESULTS VISUAL.txt"));
+						"/GENRE RESULTS VISUAL-NEW.txt"));
 			}
 			FileWriter resultGenreFileWriter = null;
 			try {
