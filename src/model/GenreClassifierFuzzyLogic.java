@@ -17,49 +17,53 @@ public class GenreClassifierFuzzyLogic
 	public final double ACTION_FLAME_PERCENTAGE_LOW = 0.291225640; //lower
 	public final double ACTION_FLAME_PERCENTAGE_MID = 0.694210387; //OLD Not updated
 	
-	public final double ACTION_VISUAL_DISTURBANCE_UP = 0.096804224; //upper
-	public final double ACTION_VISUAL_DISTURBANCE_LOW = 0; //lower
-	public final double ACTION_VISUAL_DISTURBANCE_MID = 0.048394148; //LOWER
+	public final double ACTION_VISUAL_DISTURBANCE_UP = 0.268948514; //upper
+	public final double ACTION_VISUAL_DISTURBANCE_LOW = 0.023431134; //lowe
+	public final double ACTION_VISUAL_DISTURBANCE_MID = 0.146189824; //mid
 	
-	public final double ACTION_AUDIO_ENERGY_UP = 0.002525;//upper
-	public final double ACTION_AUDIO_ENERGY_LOW = 0.002525;//lower
-	public final double ACTION_AUDIO_ENERGY_MID = 0.002525;// ADJUSTED VARIANCE
+	public final double ACTION_AUDIO_ENERGY_UP = 0.02020;//upper
+	public final double ACTION_AUDIO_ENERGY_LOW = 0.00121;//lower
+	public final double ACTION_AUDIO_ENERGY_MID = 0.0107;// ADJUSTED VARIANCE
 	
-	public final double ACTION_AUDIO_PACE_UP= 85; //upper
-	public final double ACTION_AUDIO_PACE_LOW= 32; //lower
-	public final double ACTION_AUDIO_PACE_MID= 58; //ave
+	public final double ACTION_AUDIO_PACE_UP= 138; //upper
+	public final double ACTION_AUDIO_PACE_LOW= 89; //lower
+	public final double ACTION_AUDIO_PACE_MID= 113; //ave
 	
 
 	
 	/*-----------------------------------------------*/
 	/*-------------HORROR CONSTANTS------------------*/
 	/*-----------------------------------------------*/
-	public final double HORROR_VISUAL_DISTURBANCE_UP =  0.119626611; //upper 
-	public final double HORROR_VISUAL_DISTURBANCE_LOW =  -0.309569; //lower
-	public final double HORROR_VISUAL_DISTURBANCE_MID =  0.044334856; //VARIANCE
+
+	public final double HORROR_VISUAL_DISTURBANCE_UP =  0.448801645; //upper 
+	public final double HORROR_VISUAL_DISTURBANCE_LOW =  0.021292403 ; //lower
+	public final double HORROR_VISUAL_DISTURBANCE_MID =  0.235047024; //VARIANCE
 	
-	public final double HORROR_AUDIO_ENERGY_UP = 0.20971654; //upper
-	public final double HORROR_AUDIO_ENERGY_LOW = -0.096453792; //lower
-	public final double HORROR_AUDIO_ENERGY_MID = 0.0566; //VARIANCE
+	public final double HORROR_AUDIO_ENERGY_UP = 0.037900; //upper
+	public final double HORROR_AUDIO_ENERGY_LOW = 0.004744383; //lower
+	public final double HORROR_AUDIO_ENERGY_MID = 0.0213221915; //VARIANCE
 	
-	public final double HORROR_LUMINANCE_UP = 51.54390031; //upper
-	public final double HORROR_LUMINANCE_LOW = 12.08847398; //lower
-	public final double HORROR_LUMINANCE_MID = 31.81618715; //ADJUSTED
+	public final double HORROR_LUMINANCE_UP = 50; //upper
+	public final double HORROR_LUMINANCE_LOW = 14; //lower
+	public final double HORROR_LUMINANCE_MID = 32; //ADJUSTED
 
 	/*-----------------------------------------------*/
 	/*-------------COMEDY CONSTANTS------------------*/
 	/*-----------------------------------------------*/
-	public final double COMEDY_LUMINANCE_UP = 92.86900095; //upper
-	public final double COMEDY_LUMINANCE_MID = 67.59958553; //mid
-	public final double COMEDY_LUMINANCE_LOW = 42.33017011; //lower
+
+	public final double COMEDY_LUMINANCE_UP = 84; //upper
+	public final double COMEDY_LUMINANCE_MID = 57; //mid
+	public final double COMEDY_LUMINANCE_LOW = 30; //lower
 
 	
 	/*-----------------------------------------------*/
 	/*-------------DRAMA CONSTANTS------------------*/
 	/*-----------------------------------------------*/
-	public final double DRAMA_AUDIO_POWER_UP = 0.001650383; //upper
-	public final double DRAMA_AUDIO_POWER_LOW = 0.000174287; //lower
-	public final double DRAMA_AUDIO_POWER_MID = 0.000912335; //mid
+
+	public final double DRAMA_AUDIO_POWER_UP = 0.00221; //upper
+	public final double DRAMA_AUDIO_POWER_LOW = 0.000444905; //lower
+	public final double DRAMA_AUDIO_POWER_MID = 0.0013274525; //mid
+
 
 	
 	public GenreClassifierFuzzyLogic(ArrayList<Shot> shotList, String resultsDirectory)	
