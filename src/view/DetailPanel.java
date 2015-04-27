@@ -22,16 +22,16 @@ import model.Objects.StreamConsumer;
 
 public class DetailPanel extends JPanel {
 	
-	Shot shot;
-	int shotNumber;
-	String directory;
-	double dist;
-	double lumi;
-	double flam;
-	double enrg;
-	double powr;
-	double pace;
-	String classification;
+	private Shot shot;
+	private int shotNumber;
+	private String directory;
+	private double visualDisturbanceValue;
+	private double luminanceValue;
+	private double flamePercentageValue;
+	private double audioEnergyValue;
+	double audioPowerValue;
+	private double audioPaceValue;
+	private String classification;
 
 	public DetailPanel(final Shot shot, int selected, String directory) {
 		
@@ -42,12 +42,12 @@ public class DetailPanel extends JPanel {
 		thisAudio.replace('/', '\\');
 
 		
-		dist = shot.getVisualDisturbanceValue();
-		lumi = shot.getLuminanceValue();
-		flam = shot.getFlamePercentageValue();
-		enrg = shot.getAudioEnergyValue();
-		powr = shot.getAudioPowerValue();
-		pace = shot.getAudioPaceValue();
+		visualDisturbanceValue = shot.getVisualDisturbanceValue();
+		luminanceValue = shot.getLuminanceValue();
+		flamePercentageValue = shot.getFlamePercentageValue();
+		audioEnergyValue = shot.getAudioEnergyValue();
+		audioPowerValue = shot.getAudioPowerValue();
+		audioPaceValue = shot.getAudioPaceValue();
 		classification = shot.classification;
 		
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -68,19 +68,19 @@ public class DetailPanel extends JPanel {
 		videoLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 		add(videoLabel);
 		
-		JLabel distLabel = new JLabel("Disturbance: " + String.format( "%.5f", dist));
+		JLabel distLabel = new JLabel("Disturbance: " + String.format( "%.5f", visualDisturbanceValue));
 		distLabel.setFont(new Font("Sans Serif", Font.PLAIN, 12));		
 		distLabel.setMaximumSize(new Dimension(200, 30));
 		distLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 		add(distLabel);
 		
-		JLabel lumiLabel = new JLabel("Luminance: " + String.format( "%.5f", lumi));
+		JLabel lumiLabel = new JLabel("Luminance: " + String.format( "%.5f", luminanceValue));
 		lumiLabel.setFont(new Font("Sans Serif", Font.PLAIN, 12));		
 		lumiLabel.setMaximumSize(new Dimension(200, 30));
 		lumiLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 		add(lumiLabel);
 		
-		JLabel flamLabel = new JLabel("Flame: " + String.format( "%.5f", flam));
+		JLabel flamLabel = new JLabel("Flame: " + String.format( "%.5f", flamePercentageValue));
 		flamLabel.setFont(new Font("Sans Serif", Font.PLAIN, 12));		
 		flamLabel.setMaximumSize(new Dimension(200, 30));
 		flamLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -94,19 +94,19 @@ public class DetailPanel extends JPanel {
 		audioLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 		add(audioLabel);
 		
-		JLabel enrgLabel = new JLabel("Energy: " + String.format( "%.5f", enrg));
+		JLabel enrgLabel = new JLabel("Energy: " + String.format( "%.5f", audioEnergyValue));
 		enrgLabel.setFont(new Font("Sans Serif", Font.PLAIN, 12));		
 		enrgLabel.setMaximumSize(new Dimension(200, 30));
 		enrgLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 		add(enrgLabel);
 		
-		JLabel powrLabel = new JLabel("Power: " + String.format( "%.5f", powr));
+		JLabel powrLabel = new JLabel("Power: " + String.format( "%.5f", audioPowerValue));
 		powrLabel.setFont(new Font("Sans Serif", Font.PLAIN, 12));		
 		powrLabel.setMaximumSize(new Dimension(200, 30));
 		powrLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 		add(powrLabel);
 		
-		JLabel paceLabel = new JLabel("Pace: " + String.format( "%.5f", pace));
+		JLabel paceLabel = new JLabel("audioPaceValue: " + String.format( "%.5f", audioPaceValue));
 		paceLabel.setFont(new Font("Sans Serif", Font.PLAIN, 12));		
 		paceLabel.setMaximumSize(new Dimension(200, 30));
 		paceLabel.setAlignmentX(Component.CENTER_ALIGNMENT);

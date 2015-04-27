@@ -35,9 +35,9 @@ import org.jfree.util.Rotation;
 
 public class ResultsFrame extends JFrame {
 
-	String movieName;
-	String directory;
-	ArrayList<Shot> shotList;
+	private String movieName;
+	private String directory;
+	private ArrayList<Shot> shotList;
 	
 	public ResultsFrame(String movieName, ArrayList<Shot> shotList, ResultPercentages results, String directory) {
 		

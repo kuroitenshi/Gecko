@@ -28,8 +28,8 @@ import model.Shot;
 
 public class ShotPanel extends JPanel {
 
-	int howManyShots;
-	int selectedIndex;
+	private int howManyShots;
+	private int selectedIndex;
 	
 	public ShotPanel(int selectedShotIndex, ArrayList<Shot> shotList, final ShotFrame shotFrame) {
 		
