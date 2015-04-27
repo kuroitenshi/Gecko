@@ -26,7 +26,6 @@ import model.AudialSegmentation;
 import model.AudioExtraction;
 import model.FrameExtraction;
 import model.GenreClassifier;
-import model.GenreClassifierFuzzyLogic;
 import model.GenreClassifierVisual;
 import model.Segmentation;
 import model.Shot;
@@ -468,7 +467,6 @@ class Task extends SwingWorker
 	
 		GenreClassifier movieGenreClassifier = null;
 		GenreClassifierVisual movieGenreClassifierVisual = null;
-		GenreClassifierFuzzyLogic movieGenreClassifierFuzzyLogic = null;
 		String directory = "";		
 		String folderName = "";
 		
@@ -476,7 +474,6 @@ class Task extends SwingWorker
 		{
 			movieGenreClassifier = new GenreClassifier(shotList, extractionModel.getParentResultPath());
 			movieGenreClassifierVisual = new GenreClassifierVisual(shotList, extractionModel.getParentResultPath());
-			movieGenreClassifierFuzzyLogic = new GenreClassifierFuzzyLogic(shotList, extractionModel.getParentResultPath());
 			directory = movieFileChosen.getParent().replace("\\", "/");
 			folderName = movieFileChosen.getName().substring(0, movieFileChosen.getName().lastIndexOf('.'));
 			directory = directory+folderName;
@@ -486,13 +483,11 @@ class Task extends SwingWorker
 			System.out.println("CLASSIFYING");
 			movieGenreClassifier = new GenreClassifier(shotList, filepath);
 			movieGenreClassifierVisual = new GenreClassifierVisual(shotList, filepath);
-			movieGenreClassifierFuzzyLogic = new GenreClassifierFuzzyLogic(shotList, filepath);
 			directory = filepath;
 		}
 		
 		movieGenreClassifier.classifyMovieGenre();
 		movieGenreClassifierVisual.classifyMovieGenre();
-		movieGenreClassifierFuzzyLogic.classifyMovieGenre();
 				
 		System.out.println("CLASSIFICATION DONE");
 	
